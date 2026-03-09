@@ -886,8 +886,28 @@ body {
     .grid { gap: 0.75rem; }
     .card__info { padding: 0.5rem; }
     .card__title { font-size: 0.75rem; }
-    .modal__header { flex-direction: column; align-items: center; text-align: center; }
+
+    /* Keep thumbnail badges/tags inside poster on small screens */
+    .card__rating,
+    .card__badge,
+    .card__dltag {
+        font-size: 0.58rem;
+    }
+    .card__dltags {
+        max-width: calc(100% - 16px);
+        flex-wrap: wrap;
+        row-gap: 2px;
+    }
+
+    .modal__header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.85rem;
+    }
     .modal__poster-wrap { width: 140px; min-width: 140px; }
+    .modal__meta { justify-content: center; }
+
     .modal { margin: 1rem; }
     .modal-overlay { padding: 1rem; }
 }
@@ -896,4 +916,8 @@ body {
     :root { --card-width: 130px; }
     .header__logo-text { display: none; }
     .filter-select { min-width: 100px; font-size: 0.78rem; }
+
+    .download-links {
+        grid-template-columns: 1fr;
+    }
 }
