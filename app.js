@@ -312,12 +312,14 @@
         const icon = type === 'softsub' ? '🔴' : '🟢';
 
         let html = `
-            <div class="download-section">
-                <div class="download-section__label ${colorClass}">${icon} ${label}</div>
+            <section class="download-section">
+                <div class="download-section__label ${colorClass}">
+                    <span>${icon} ${label}</span>
+                    <span class="download-section__count">${toPersianNum(links.length)} لینک</span>
+                </div>
         `;
 
         if (movieType === 'tvSeries') {
-            // Group by season
             const seasons = {};
             links.forEach(link => {
                 const s = link.season || '?';
@@ -329,9 +331,12 @@
                 html += `<div class="download-season">فصل ${toPersianNum(season)}</div>`;
                 html += '<div class="download-links">';
                 seasons[season].forEach(link => {
+                    const quality = escHtml(link.quality || 'کیفیت نامشخص');
+                    const size = escHtml(link.size || 'حجم نامشخص');
                     html += `<a href="${escHtml(link.url)}" class="download-link" target="_blank" rel="noopener">
-                        📥 ${escHtml(link.quality)}
-                        ${link.size ? `<span class="download-link__size">(${link.size})</span>` : ''}
+                        <span class="download-link__main"><span class="download-link__icon">⬇</span><span class="download-link__quality">${quality}</span></span>
+                        <span class="download-link__meta">${size}</span>
+                        <span class="download-link__cta">دریافت</span>
                     </a>`;
                 });
                 html += '</div>';
@@ -339,15 +344,18 @@
         } else {
             html += '<div class="download-links">';
             links.forEach(link => {
+                const quality = escHtml(link.quality || 'کیفیت نامشخص');
+                const size = escHtml(link.size || 'حجم نامشخص');
                 html += `<a href="${escHtml(link.url)}" class="download-link" target="_blank" rel="noopener">
-                    📥 ${escHtml(link.quality)}
-                    ${link.size ? `<span class="download-link__size">(${link.size})</span>` : ''}
+                    <span class="download-link__main"><span class="download-link__icon">⬇</span><span class="download-link__quality">${quality}</span></span>
+                    <span class="download-link__meta">${size}</span>
+                    <span class="download-link__cta">دریافت</span>
                 </a>`;
             });
             html += '</div>';
         }
 
-        html += '</div>';
+        html += '</section>';
         return html;
     }
 
