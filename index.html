@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎬 آرشیو فیلم من</title>
+    <meta name="description" content="آرشیو کامل فیلم‌ها و سریال‌ها با لینک دانلود مستقیم">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header" id="header">
+        <div class="header__logo">
+            <span class="header__logo-icon">🎬</span>
+            <span class="header__logo-text">آرشیو فیلم من</span>
+        </div>
+        <div class="header__actions">
+            <div class="header__stats" id="stats">
+                <span id="statsMovieCount">۰</span> فیلم | <span id="statsSeriesCount">۰</span> سریال
+            </div>
+            <button class="theme-toggle" id="themeToggle" title="تغییر تم">🌙</button>
+        </div>
+    </header>
+
+    <!-- TOOLBAR -->
+    <div class="toolbar" id="toolbar">
+        <div class="search-box">
+            <span class="search-box__icon">🔍</span>
+            <input type="text" class="search-box__input" id="searchInput" placeholder="جستجوی فیلم یا سریال..." autocomplete="off">
+            <button class="search-box__clear" id="searchClear" title="پاک کردن جستجو" style="display:none">✕</button>
+        </div>
+
+        <div class="custom-select-wrap">
+            <select class="filter-select" id="typeFilter">
+                <option value="all">📂 همه انواع</option>
+                <option value="movie">🎬 فقط فیلم‌ها</option>
+                <option value="tvSeries">📺 فقط سریال‌ها</option>
+            </select>
+            <span class="custom-select-icon">▼</span>
+        </div>
+
+        <div class="custom-select-wrap">
+            <select class="filter-select" id="genreFilter">
+                <option value="all">🏷️ همه ژانرها</option>
+            </select>
+            <span class="custom-select-icon">▼</span>
+        </div>
+
+        <div class="custom-select-wrap">
+            <select class="filter-select" id="decadeFilter">
+                <option value="all">⏳ همه دهه‌ها</option>
+                <option value="2020">دهه ۲۰۲۰ (۲۰۲۰-اکنون)</option>
+                <option value="2010">دهه ۲۰۱۰ (۲۰۱۰-۲۰۱۹)</option>
+                <option value="2000">دهه ۲۰۰۰ (۲۰۰۰-۲۰۰۹)</option>
+                <option value="1990">دهه ۱۹۹۰ (۱۹۹۰-۱۹۹۹)</option>
+                <option value="classic">کلاسیک (قبل از ۱۹۹۰)</option>
+            </select>
+            <span class="custom-select-icon">▼</span>
+        </div>
+
+        <div class="custom-select-wrap">
+            <select class="filter-select" id="sortBy">
+                <option value="num">🔢 پیش‌فرض (شماره آرشیو)</option>
+                <option value="rating-desc">⭐ بالاترین امتیاز</option>
+                <option value="rating-asc">⭐ پایین‌ترین امتیاز</option>
+                <option value="year-desc">📅 جدیدترین سال</option>
+                <option value="year-asc">📅 قدیمی‌ترین سال</option>
+                <option value="title-asc">🔤 نام (الف‌بایی)</option>
+            </select>
+            <span class="custom-select-icon">▼</span>
+        </div>
+
+        <span class="toolbar__results" id="resultsCount"></span>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main" id="mainContent">
+        <div class="loading" id="loading">
+            <div class="loading__spinner"></div>
+            <span class="loading__text">در حال بارگذاری آرشیو...</span>
+        </div>
+        <div class="grid" id="grid"></div>
+        <div class="empty-state" id="emptyState" style="display:none">
+            <div class="empty-state__icon">🎭</div>
+            <div class="empty-state__text">فیلمی یافت نشد</div>
+        </div>
+    </main>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modal">
+            <button class="modal__close" id="modalClose">✕</button>
+            <div class="modal__body" id="modalBody">
+                <div class="modal__header" id="modalHeader"></div>
+                <div class="modal__content" id="modalContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCROLL TO TOP -->
+    <button class="scroll-top" id="scrollTop" title="بازگشت به بالا">↑</button>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
