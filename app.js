@@ -285,7 +285,7 @@
         `;
 
         // Downloads
-        let downloadsHtml = '<h3 class="modal__downloads-title">📥 لینک‌های دانلود</h3>';
+        let downloadsHtml = '<div class="modal__downloads"><h3 class="modal__downloads-title">📥 لینک‌های دانلود</h3>';
 
         const dl = movie.downloads || {};
 
