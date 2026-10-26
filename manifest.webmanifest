@@ -1,0 +1,28 @@
+{
+  "name": "سدفلیکس (SadFlix)",
+  "short_name": "سدفلیکس",
+  "description": "مرجع جامع هزاران فیلم و سریال برتر با تماشای آنلاین، لینک مستقیم، زیرنویس چسبیده و دوبله اختصاصی فارسی",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#141414",
+  "theme_color": "#141414",
+  "dir": "rtl",
+  "lang": "fa",
+  "scope": "/",
+  "categories": ["entertainment", "movies", "video"],
+  "icons": [
+    {
+      "src": "/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

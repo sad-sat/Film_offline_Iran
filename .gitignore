@@ -1,0 +1,41 @@
+# Node & Dependencies
+node_modules/
+package-lock.json
+
+# Python & Caches
+__pycache__/
+*.py[cod]
+.agents/
+graphify-out/
+
+# Android & Build Artifacts
+android/
+flutter_netflix/
+download/
+*.apk
+*.aab
+.gradle/
+local.properties
+
+# Databases & Archives
+*.db
+*.sqlite
+*.sqlite3
+*.tar
+*.zip
+*.rar
+new_backdrops.tar
+extra_posters.tar
+extra_posters_webp/
+
+# Testing & Artifact Screenshots
+*.png
+!images/*.png
+!img/*.png
+!movie-streaming-webapp-master/**/*.png
+
+# Temporary & Server Binaries
+server-rust-bin
+server-rust/target/
+dist/
+dist.zip

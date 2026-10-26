@@ -103,7 +103,8 @@ def parse_archive(filepath):
 
         # Title type
         type_match = re.search(r'Title Type:\s*</b>\s*(\w+)', entry)
-        title_type = type_match.group(1) if type_match else "movie"
+        raw_type = type_match.group(1).lower() if type_match else "movie"
+        title_type = "tvSeries" if raw_type in ("series", "tvseries") else "movie"
 
         # Votes
         votes_match = re.search(r'IMDb Votes:\s*</b>\s*([\d,]+)', entry)
@@ -189,10 +190,94 @@ def parse_archive(filepath):
     return movies
 
 if __name__ == "__main__":
-    movies = parse_archive("donyaye_serial_all_archive.html")
-    with open("movies.json", "w", encoding="utf-8") as f:
-        json.dump(movies, f, ensure_ascii=False, indent=None, separators=(',', ':'))
+    import sqlite3, os
+
+    archive_file = "donyaye_serial_all_archive.html"
+    print(f"Parsing {archive_file}...")
+    movies = parse_archive(archive_file)
     print(f"Parsed {len(movies)} entries")
     print(f"Movies: {sum(1 for m in movies if m['type'] == 'movie')}")
     print(f"TV Series: {sum(1 for m in movies if m['type'] == 'tvSeries')}")
-    print(f"movies.json size: {round(len(json.dumps(movies, ensure_ascii=False)) / 1024 / 1024, 2)} MB")
+
+    # 1. Save movies.json
+    with open("movies.json", "w", encoding="utf-8") as f:
+        json.dump(movies, f, ensure_ascii=False, indent=None, separators=(',', ':'))
+    print(f"movies.json size: {round(os.path.getsize('movies.json') / 1024 / 1024, 2)} MB")
+
+    # 2. Save data.js for offline fallback
+    with open("data.js", "w", encoding="utf-8") as f:
+        f.write("const MOVIES_DATA = ")
+        json.dump(movies, f, ensure_ascii=False, indent=None, separators=(',', ':'))
+        f.write(";\n")
+    print(f"data.js size: {round(os.path.getsize('data.js') / 1024 / 1024, 2)} MB")
+
+    # 3. Populate SQLite database (server/data/movies.db)
+    db_dir = os.path.join("server", "data")
+    os.makedirs(db_dir, exist_ok=True)
+    db_path = os.path.join(db_dir, "movies.db")
+    conn = sqlite3.connect(db_path)
+    cur = conn.cursor()
+
+    cur.execute('''
+    CREATE TABLE IF NOT EXISTS movies (
+        id TEXT PRIMARY KEY,
+        num INTEGER,
+        title TEXT NOT NULL,
+        title_fa TEXT,
+        year TEXT,
+        type TEXT,
+        rating REAL,
+        rating_str TEXT,
+        votes TEXT,
+        votes_num INTEGER,
+        genre TEXT,
+        synopsis TEXT,
+        downloads JSON
+    );
+    ''')
+    cur.execute('CREATE INDEX IF NOT EXISTS idx_movies_rating ON movies(rating DESC);')
+    cur.execute('CREATE INDEX IF NOT EXISTS idx_movies_votes ON movies(votes_num DESC);')
+    cur.execute('CREATE INDEX IF NOT EXISTS idx_movies_year ON movies(year DESC);')
+    cur.execute('CREATE INDEX IF NOT EXISTS idx_movies_num ON movies(num ASC);')
+    cur.execute('CREATE INDEX IF NOT EXISTS idx_movies_type ON movies(type);')
+
+    def parse_votes(v):
+        if not v: return 0
+        try: return int(v.replace(',', '').strip())
+        except: return 0
+
+    def parse_rating(r):
+        if not r: return 0.0
+        try:
+            val = float(r.strip())
+            return val if 0.0 <= val <= 10.0 else 0.0
+        except: return 0.0
+
+    rows = []
+    for m in movies:
+        rows.append((
+            m['id'],
+            m['num'],
+            m['title'],
+            m['titleFa'],
+            m['year'],
+            m['type'],
+            parse_rating(m['rating']),
+            m['rating'],
+            m['votes'],
+            parse_votes(m['votes']),
+            m['genre'],
+            m['synopsis'],
+            json.dumps(m['downloads'], ensure_ascii=False)
+        ))
+
+    with conn:
+        cur.execute('DELETE FROM movies;')
+        cur.executemany('''
+            INSERT OR REPLACE INTO movies (
+                id, num, title, title_fa, year, type, rating, rating_str, votes, votes_num, genre, synopsis, downloads
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', rows)
+
+    conn.close()
+    print(f"Populated SQLite database {db_path} with {len(rows)} movies.")
