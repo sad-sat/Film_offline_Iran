@@ -820,15 +820,7 @@
             </div>
             <div class="row-slider-wrap">
                 <button class="slider-arrow left-paddle" onclick="scrollRow('sliderSpotlight', -600)">‹</button>
-                <div class="row-slider" id="sliderSpotlight">
-                    <div class="skeleton-card"></div>
-                    <div class="skeleton-card"></div>
-                    <div class="skeleton-card"></div>
-                    <div class="skeleton-card"></div>
-                    <div class="skeleton-card"></div>
-                    <div class="skeleton-card"></div>
-                    <div class="skeleton-card"></div>
-                </div>
+                <div class="row-slider" id="sliderSpotlight"></div>
                 <button class="slider-arrow right-paddle" onclick="scrollRow('sliderSpotlight', 600)">›</button>
             </div>
         </div>
@@ -840,15 +832,7 @@
             </div>
             <div class="row-slider-wrap">
                 <button class="slider-arrow left-paddle" onclick="scrollRow('sliderTrending', -600)">‹</button>
-                <div class="row-slider" id="sliderTrending">
-                    <div class="skeleton-card"></div>
-                    <div class="skeleton-card"></div>
-                    <div class="skeleton-card"></div>
-                    <div class="skeleton-card"></div>
-                    <div class="skeleton-card"></div>
-                    <div class="skeleton-card"></div>
-                    <div class="skeleton-card"></div>
-                </div>
+                <div class="row-slider" id="sliderTrending"></div>
                 <button class="slider-arrow right-paddle" onclick="scrollRow('sliderTrending', 600)">›</button>
             </div>
         </div>
@@ -860,15 +844,7 @@
             </div>
             <div class="row-slider-wrap">
                 <button class="slider-arrow left-paddle" onclick="scrollRow('sliderSeries', -600)">‹</button>
-                <div class="row-slider" id="sliderSeries">
-                    <div class="skeleton-card"></div>
-                    <div class="skeleton-card"></div>
-                    <div class="skeleton-card"></div>
-                    <div class="skeleton-card"></div>
-                    <div class="skeleton-card"></div>
-                    <div class="skeleton-card"></div>
-                    <div class="skeleton-card"></div>
-                </div>
+                <div class="row-slider" id="sliderSeries"></div>
                 <button class="slider-arrow right-paddle" onclick="scrollRow('sliderSeries', 600)">›</button>
             </div>
         </div>
@@ -880,15 +856,7 @@
             </div>
             <div class="row-slider-wrap">
                 <button class="slider-arrow left-paddle" onclick="scrollRow('sliderMovies', -600)">‹</button>
-                <div class="row-slider" id="sliderMovies">
-                    <div class="skeleton-card"></div>
-                    <div class="skeleton-card"></div>
-                    <div class="skeleton-card"></div>
-                    <div class="skeleton-card"></div>
-                    <div class="skeleton-card"></div>
-                    <div class="skeleton-card"></div>
-                    <div class="skeleton-card"></div>
-                </div>
+                <div class="row-slider" id="sliderMovies"></div>
                 <button class="slider-arrow right-paddle" onclick="scrollRow('sliderMovies', 600)">›</button>
             </div>
         </div>
@@ -997,51 +965,8 @@
             `;
         }
 
-        function renderHeroBanner(heroMovies) {
-            if (!heroMovies || heroMovies.length === 0) return;
-            const hero = heroMovies[0];
-            if (!hero) return;
-            currentHeroId = hero.id;
-            const heroImg = document.getElementById('heroImg');
-            const heroTitle = document.getElementById('heroTitle');
-            const heroDesc = document.getElementById('heroDesc');
-            const heroPlayBtn = document.getElementById('heroPlayBtn');
-            const heroFavBtn = document.getElementById('heroFavBtn');
-            const heroSeriesTag = document.getElementById('heroSeriesTag');
-            const heroTitleLogo = document.getElementById('heroTitleLogo');
-
-            const isTv = hero.type === 'tvSeries' || hero.type === 'series' || hero.type === 'tv';
-            if (heroSeriesTag) {
-                heroSeriesTag.textContent = isTv ? 'S E R I E S' : 'M O V I E';
-            }
-            if (heroTitleLogo) {
-                heroTitleLogo.style.display = 'none';
-            }
-            if (heroTitle) {
-                heroTitle.textContent = hero.title || hero.titleFa || hero.title_fa || '';
-            }
-            if (heroDesc) {
-                heroDesc.textContent = hero.synopsis || '';
-            }
-            if (heroImg && hero.backdrop) {
-                heroImg.src = hero.backdrop;
-            }
-            if (heroPlayBtn) {
-                heroPlayBtn.href = isTv 
-                    ? `/htmls/tvshowreview.html?id=${encodeURIComponent(hero.id)}`
-                    : `/htmls/moviereview.html?id=${encodeURIComponent(hero.id)}`;
-            }
-            if (heroFavBtn) {
-                heroFavBtn.setAttribute('onclick', `toggleHeroFav('${hero.id}')`);
-            }
-            updateHeroFavBtn();
-        }
-
         function renderAllSliders(data) {
             if (!data) return;
-            if (data.hero_movies && data.hero_movies.length > 0) {
-                renderHeroBanner(data.hero_movies);
-            }
             const sliderMap = [
                 { key: 'spotlight_movies', id: 'sliderSpotlight' },
                 { key: 'popular_movies', id: 'sliderTrending' },
@@ -1178,6 +1103,7 @@
 
         async function initPage() {
             updateNavProfile();
+            updateHeroFavBtn();
 
             // 1. Instant 0ms Paint from Client Cache (if available)
             const cached = ClientCache.get('home');
