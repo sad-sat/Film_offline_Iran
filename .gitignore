@@ -5,6 +5,7 @@ package-lock.json
 # Python & Caches
 __pycache__/
 *.py[cod]
+deploy_*.py
 .agents/
 graphify-out/
 
@@ -16,6 +17,13 @@ download/
 *.aab
 .gradle/
 local.properties
+
+# Media & Trailers
+*.mp4
+*.m4a
+*.mkv
+*.webm
+*.avi
 
 # Databases & Archives
 *.db

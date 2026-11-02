@@ -1,0 +1,1254 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>SadFlix - Watch TV Shows Online, Watch Movies Online</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Watch SadFlix movies & TV shows online or stream right to your smart TV, game console, PC, Mac, mobile, tablet and more.">
+    <meta name="theme-color" content="#141414" />
+    <link rel="icon" href="/favicon.ico">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SadSat FilM">
+    <link rel="apple-touch-icon" href="/images/icon-192.png">
+    <script src="/pwa-register.js" defer></script>
+    <script>
+        if (window.SadSatNative || (navigator.userAgent && navigator.userAgent.indexOf('SadSatFilmAndroid') !== -1)) {
+            document.documentElement.classList.add('is-native-app');
+        }
+    </script>
+    <style>
+        @font-face {
+            font-family: 'Vazirmatn';
+            src: url('/fonts/Vazirmatn-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Vazirmatn';
+            src: url('/fonts/Vazirmatn-Medium.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Vazirmatn';
+            src: url('/fonts/Vazirmatn-Bold.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+        *, *::before, *::after {
+            box-sizing: border-box;
+            direction: ltr !important;
+        }
+        html, body {
+            background-color: #141414 !important;
+            color: #fff;
+            font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            width: 100%;
+            direction: ltr !important;
+            text-align: left !important;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Top Netflix Navigation */
+        .netflix-nav {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1000;
+            height: 68px;
+            padding: 0 4%;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+            transition: background-color 0.35s ease;
+            direction: ltr !important;
+        }
+        .netflix-nav.solid {
+            background: #141414 !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.85);
+        }
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            direction: ltr !important;
+        }
+        .nav-start {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+            direction: ltr !important;
+        }
+        .brand-logo-link {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .sadflix-logo-img {
+            height: 32px;
+            width: auto;
+            display: block;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            direction: ltr !important;
+        }
+        .nav-link {
+            color: #e5e5e5;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+        }
+        .nav-link:hover {
+            color: #b3b3b3;
+        }
+        .nav-link.active {
+            color: #ffffff;
+            font-weight: 700;
+            cursor: default;
+        }
+        .nav-end {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            direction: ltr !important;
+        }
+        .nav-search-btn {
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+        .nav-search-btn:hover {
+            transform: scale(1.1);
+        }
+        .nav-profile-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        .nav-profile-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: border-color 0.2s;
+        }
+        .nav-profile-link:hover .nav-profile-avatar {
+            border-color: #e50914;
+        }
+
+        /* Hero Billboard Section */
+        .hero-billboard {
+            position: relative;
+            width: 100%;
+            height: 85vh;
+            min-height: 580px;
+            max-height: 940px;
+            overflow: hidden;
+            background: #141414;
+            direction: ltr !important;
+        }
+        .hero-billboard img.hero-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 25%;
+            z-index: 1;
+        }
+        .hero-vignette {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            background: 
+                linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.1) 20%, transparent 40%),
+                linear-gradient(90deg, rgba(12,13,17,0.98) 0%, rgba(12,13,17,0.85) 30%, rgba(12,13,17,0.25) 55%, transparent 75%),
+                linear-gradient(0deg, #141414 0%, rgba(20,20,20,0.85) 14%, rgba(20,20,20,0.35) 30%, transparent 55%);
+        }
+        .hero-caption {
+            position: absolute;
+            top: 20%;
+            left: 4%;
+            z-index: 3;
+            max-width: 580px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            direction: ltr !important;
+        }
+        .hero-series-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+            direction: ltr !important;
+        }
+        .hero-series-text {
+            color: #e5e5e5;
+            font-size: 0.88rem;
+            font-weight: 800;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+        }
+        .hero-title-logo {
+            display: block;
+            width: 100%;
+            max-width: 440px;
+            height: auto;
+            margin-bottom: 22px;
+            filter: drop-shadow(0 4px 16px rgba(0,0,0,0.8));
+        }
+        .hero-title-text {
+            display: none;
+            font-family: 'Cinzel', 'Benguiat', 'Times New Roman', serif;
+            font-size: clamp(3rem, 6.5vw, 5.2rem);
+            font-weight: 900;
+            line-height: 0.95;
+            color: #fff;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin: 0 0 18px 0;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.95), 0 2px 4px rgba(0,0,0,0.85);
+        }
+        .hero-desc {
+            font-size: 1.15rem;
+            font-weight: 400;
+            color: #ffffff;
+            line-height: 1.45;
+            max-width: 500px;
+            margin: 0 0 26px 0;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
+            direction: ltr !important;
+            text-align: left !important;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            direction: ltr !important;
+        }
+        .btn-netflix-play {
+            background: #ffffff;
+            color: #000000 !important;
+            padding: 11px 32px;
+            border-radius: 4px;
+            font-weight: 800;
+            font-size: 1.18rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            min-height: 48px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+            direction: ltr !important;
+        }
+        .btn-netflix-play:hover {
+            background: rgba(255, 255, 255, 0.75);
+            transform: scale(1.02);
+        }
+        .btn-netflix-list {
+            background: rgba(109, 109, 110, 0.7);
+            color: #ffffff !important;
+            padding: 11px 28px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 1.18rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            min-height: 48px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            direction: ltr !important;
+        }
+        .btn-netflix-list:hover {
+            background: rgba(109, 109, 110, 0.4);
+            transform: scale(1.02);
+        }
+
+        /* Content Rows Area */
+        .content-wrap {
+            position: relative;
+            z-index: 10;
+            margin-top: -120px;
+            padding: 0 4% 80px;
+            width: 100%;
+            box-sizing: border-box;
+            direction: ltr !important;
+            text-align: left !important;
+        }
+        .row-container {
+            position: relative;
+            margin-bottom: 44px;
+            direction: ltr !important;
+        }
+        .row-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #e5e5e5;
+            margin: 0 0 12px 0;
+            letter-spacing: 0.2px;
+            direction: ltr !important;
+            text-align: left !important;
+        }
+        .row-slider-wrap {
+            position: relative;
+            width: 100%;
+            direction: ltr !important;
+        }
+        .row-slider {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            padding: 14px 0 24px;
+            scroll-behavior: smooth;
+            direction: ltr !important;
+        }
+        .row-slider::-webkit-scrollbar { display: none; }
+
+        /* The Poster Card */
+        .netflix-card {
+            position: relative;
+            flex-shrink: 0;
+            width: calc((100% - 48px) / 7);
+            min-width: 170px;
+            max-width: 250px;
+            aspect-ratio: 2 / 3;
+            border-radius: 4px;
+            overflow: hidden;
+            background: #181818;
+            text-decoration: none;
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.6);
+            transition: transform 0.28s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.28s ease;
+            direction: ltr !important;
+        }
+        .netflix-card:hover {
+            transform: scale(1.08);
+            z-index: 40;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.95);
+        }
+        .card-s-badge,
+        .card-n-badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            z-index: 5;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.95)) drop-shadow(0 0 2px rgba(0,0,0,0.8));
+            pointer-events: none;
+        }
+        .card-s-badge img,
+        .card-n-badge img {
+            display: block;
+            width: 14px;
+            height: 22px;
+            object-fit: contain;
+        }
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 250ms ease-in-out;
+        }
+        .card-img.loaded {
+            opacity: 1;
+        }
+
+        /* Skeleton Shimmer Card matching .netflix-card flex geometry */
+        .skeleton-card {
+            flex-shrink: 0;
+            width: calc((100% - 48px) / 7);
+            min-width: 170px;
+            max-width: 250px;
+            aspect-ratio: 2 / 3;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #181818 25%, #282828 50%, #181818 75%);
+            background-size: 200% 100%;
+            animation: skeletonShimmer 1.5s infinite;
+        }
+
+        @media (max-width: 768px) {
+            .skeleton-card {
+                width: 130px;
+                min-width: 130px;
+            }
+        }
+
+        @keyframes skeletonShimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .slider-error {
+            padding: 24px 16px;
+            color: #aaa;
+            font-size: 0.95rem;
+            text-align: center;
+            width: 100%;
+        }
+        .card-fallback {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: #1e1e1e;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 12px;
+            text-align: center;
+        }
+        .card-no-poster .card-fallback {
+            display: flex;
+        }
+        .card-no-poster .card-img {
+            display: none;
+        }
+        .card-hover-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 45%, transparent 75%);
+            opacity: 0;
+            transition: opacity 0.22s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 12px 10px;
+            pointer-events: none;
+        }
+        .netflix-card:hover .card-hover-overlay {
+            opacity: 1;
+        }
+        .card-hover-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.3;
+            margin-bottom: 4px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+        }
+        .card-hover-meta {
+            font-size: 0.74rem;
+            color: #aaa;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        /* Floating Paddle Arrows */
+        .slider-arrow {
+            position: absolute;
+            top: 14px;
+            bottom: 24px;
+            width: 44px;
+            background: rgba(20, 20, 20, 0.7);
+            color: #fff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            cursor: pointer;
+            z-index: 30;
+            opacity: 0;
+            transition: opacity 0.2s, background 0.2s;
+        }
+        .row-slider-wrap:hover .slider-arrow {
+            opacity: 1;
+        }
+        .slider-arrow:hover {
+            background: rgba(20, 20, 20, 0.95);
+        }
+        .slider-arrow.left-paddle {
+            left: 0;
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+        }
+        .slider-arrow.right-paddle {
+            right: 0;
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+
+        .toast-notify {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #e50914;
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            z-index: 9999;
+            display: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .netflix-nav {
+                height: auto;
+                min-height: 82px;
+                padding: 8px 12px 6px;
+                background: linear-gradient(180deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.7) 65%, transparent 100%);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            .netflix-nav.solid {
+                background: rgba(18, 18, 18, 0.98) !important;
+                backdrop-filter: blur(12px);
+                box-shadow: 0 4px 24px rgba(0,0,0,0.85);
+            }
+            .nav-container {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                gap: 0;
+                row-gap: 8px;
+            }
+            .nav-start {
+                display: contents;
+            }
+            .brand-logo-link {
+                order: 1;
+                flex-shrink: 0;
+                display: inline-flex;
+                align-items: center;
+            }
+            .sadflix-logo-img,
+            .netflix-logo-svg {
+                height: 24px;
+                width: auto;
+            }
+            .nav-end {
+                order: 2;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                flex-shrink: 0;
+            }
+            .nav-links {
+                order: 3;
+                width: 100%;
+                flex-basis: 100%;
+                display: flex !important;
+                align-items: center;
+                gap: 6px;
+                list-style: none;
+                margin: 0;
+                padding: 2px 2px 4px;
+                overflow-x: auto;
+                overflow-y: hidden;
+                white-space: nowrap;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                -webkit-overflow-scrolling: touch;
+            }
+            .nav-links::-webkit-scrollbar {
+                display: none;
+                width: 0;
+                height: 0;
+            }
+            .nav-link {
+                flex-shrink: 0;
+                font-size: 0.78rem;
+                font-weight: 600;
+                padding: 5px 11px;
+                border-radius: 16px;
+                background: rgba(255, 255, 255, 0.1);
+                color: #e5e5e5;
+                text-decoration: none;
+                white-space: nowrap;
+                transition: all 0.2s ease;
+            }
+            .nav-link:hover {
+                color: #ffffff;
+                background: rgba(255, 255, 255, 0.2);
+            }
+            .nav-link.active {
+                background: #e50914;
+                color: #ffffff;
+                font-weight: 700;
+                box-shadow: 0 2px 10px rgba(229, 9, 20, 0.5);
+            }
+            .nav-search-btn svg {
+                width: 20px;
+                height: 20px;
+            }
+            .nav-profile-avatar {
+                width: 28px;
+                height: 28px;
+            }
+            .hero-billboard {
+                height: 65vh;
+                min-height: 480px;
+            }
+            .hero-caption {
+                bottom: 26px;
+                left: 16px;
+                max-width: calc(100% - 32px);
+            }
+            .hero-title {
+                font-size: 2.5rem;
+                margin-bottom: 10px;
+            }
+            .hero-desc {
+                font-size: 0.95rem;
+                margin-bottom: 18px;
+                -webkit-line-clamp: 2;
+            }
+            .hero-actions {
+                gap: 10px;
+            }
+            .btn-netflix-play, .btn-netflix-list {
+                padding: 8px 20px;
+                font-size: 1rem;
+                min-height: 40px;
+            }
+            .content-wrap {
+                margin-top: -40px;
+                padding: 0 16px 80px;
+            }
+            .netflix-card {
+                width: 130px;
+                min-width: 130px;
+            }
+            .slider-arrow {
+                display: none !important;
+            }
+        }
+
+        /* Bottom navigation is hidden on the mobile website version; only displayed in the native app */
+        .bottom-nav {
+            display: none !important;
+        }
+
+        @media(max-width: 768px) {
+            .is-native-app body,
+            body.is-native-app {
+                padding-bottom: calc(70px + env(safe-area-inset-bottom, 12px)) !important;
+            }
+            .is-native-app .bottom-nav,
+            body.is-native-app .bottom-nav {
+                display: flex !important;
+                position: fixed;
+                bottom: max(10px, env(safe-area-inset-bottom, 10px));
+                left: 14px;
+                right: 14px;
+                background: rgba(18, 18, 18, 0.92);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                border-radius: 24px;
+                height: 62px;
+                padding: 4px 8px;
+                box-sizing: border-box;
+                z-index: 2000;
+                justify-content: space-around;
+                align-items: center;
+                box-shadow: 0 10px 32px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            }
+            .bottom-nav__item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 2px;
+                color: #888;
+                text-decoration: none;
+                flex: 1;
+                user-select: none;
+                -webkit-tap-highlight-color: transparent;
+                transition: color 0.2s ease, transform 0.2s ease;
+                min-width: 52px;
+                height: 50px;
+                position: relative;
+            }
+            .bottom-nav__icon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 22px;
+                height: 22px;
+            }
+            .bottom-nav__label {
+                font-size: 0.72rem;
+                font-weight: 700;
+                line-height: 1.1;
+                white-space: nowrap;
+            }
+            .bottom-nav__item.active {
+                color: #e50914;
+            }
+            .bottom-nav__item.active .bottom-nav__icon {
+                transform: scale(1.1);
+                color: #e50914;
+            }
+            .bottom-nav__item.active::before {
+                content: '';
+                position: absolute;
+                top: 2px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 20px;
+                height: 3px;
+                background: #e50914;
+                border-radius: 999px;
+                box-shadow: 0 0 10px #e50914;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Netflix Navigation -->
+    <header class="netflix-nav" id="netflixNav">
+        <div class="nav-container">
+            <div class="nav-start">
+                <a href="/" class="brand-logo-link" aria-label="SadFlix">
+                    <img src="/images/sadflix_logo.png" alt="SadFlix" class="sadflix-logo-img">
+                </a>
+                <nav class="nav-links">
+                    <a href="/htmls/browse.htm" class="nav-link active">Home</a>
+                    <a href="/htmls/tvshows.html" class="nav-link">TV Shows</a>
+                    <a href="/htmls/movies.html" class="nav-link">Movies</a>
+                    <a href="/htmls/browse.htm#sliderSpotlight" class="nav-link">New & Popular</a>
+                    <a href="/htmls/browse.htm#favoritesRowContainer" class="nav-link">My List</a>
+                </nav>
+            </div>
+            <div class="nav-end">
+                <a href="/htmls/search.html" class="nav-search-btn" title="جستجو" aria-label="جستجو">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </a>
+                <a href="/htmls/profile-manage.html" class="nav-profile-link" title="حساب کاربری" aria-label="حساب کاربری">
+                    <img src="/movie-streaming-webapp-master/img/profile-pic/1.png" alt="پروفایل" class="nav-profile-avatar" id="activeProfileAvatar">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Billboard Section (Stranger Things Spotlight) -->
+    <section class="hero-billboard" id="heroBillboard">
+        <img id="heroImg" class="hero-bg" src="/images/backdrops/clean_stranger_things_s3.webp" alt="Stranger Things" onerror="this.src='/images/placeholder.webp'">
+        <div class="hero-vignette"></div>
+        <div class="hero-caption">
+            <div class="hero-series-badge">
+                <img src="/images/sadflix_s_badge.png" width="16" height="24" alt="SadFlix" class="hero-s-logo" style="display:block;">
+                <span class="hero-series-text" id="heroSeriesTag">S E R I E S</span>
+            </div>
+            <img src="/images/stranger_things_logo.png" alt="STRANGER THINGS" class="hero-title-logo" id="heroTitleLogo">
+            <h1 class="hero-title-text" id="heroTitle">STRANGER THINGS</h1>
+            <p class="hero-desc" id="heroDesc">When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces and a strange little girl.</p>
+            <div class="hero-actions">
+                <a href="/htmls/tvshowreview.html?id=tt4574334" id="heroPlayBtn" class="btn-netflix-play">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4l15 8-15 8z"/></svg>
+                    <span>Play</span>
+                </a>
+                <button type="button" class="btn-netflix-list" id="heroFavBtn" onclick="toggleHeroFav('tt4574334')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                    <span id="heroFavBtnText">My List</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Rows Area -->
+    <main class="content-wrap">
+        <!-- Favorites Row (User-based Likes) -->
+        <div class="row-container" id="favoritesRowContainer" style="display: none;">
+            <div class="row-header">
+                <h2 class="row-title" id="favoritesRowTitle">My List</h2>
+            </div>
+            <div class="row-slider-wrap">
+                <button class="slider-arrow left-paddle" onclick="scrollRow('sliderFavorites', -600)">‹</button>
+                <div class="row-slider" id="sliderFavorites"></div>
+                <button class="slider-arrow right-paddle" onclick="scrollRow('sliderFavorites', 600)">›</button>
+            </div>
+        </div>
+
+        <!-- Popular on SadFlix (Primary Featured Row) -->
+        <div class="row-container">
+            <div class="row-header">
+                <h2 class="row-title">Popular on SadFlix</h2>
+            </div>
+            <div class="row-slider-wrap">
+                <button class="slider-arrow left-paddle" onclick="scrollRow('sliderSpotlight', -600)">‹</button>
+                <div class="row-slider" id="sliderSpotlight">
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                </div>
+                <button class="slider-arrow right-paddle" onclick="scrollRow('sliderSpotlight', 600)">›</button>
+            </div>
+        </div>
+
+        <!-- Trending Now Row -->
+        <div class="row-container">
+            <div class="row-header">
+                <h2 class="row-title">Trending Now</h2>
+            </div>
+            <div class="row-slider-wrap">
+                <button class="slider-arrow left-paddle" onclick="scrollRow('sliderTrending', -600)">‹</button>
+                <div class="row-slider" id="sliderTrending">
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                </div>
+                <button class="slider-arrow right-paddle" onclick="scrollRow('sliderTrending', 600)">›</button>
+            </div>
+        </div>
+
+        <!-- TV Shows & Series Row -->
+        <div class="row-container">
+            <div class="row-header">
+                <h2 class="row-title">TV Shows & Series</h2>
+            </div>
+            <div class="row-slider-wrap">
+                <button class="slider-arrow left-paddle" onclick="scrollRow('sliderSeries', -600)">‹</button>
+                <div class="row-slider" id="sliderSeries">
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                </div>
+                <button class="slider-arrow right-paddle" onclick="scrollRow('sliderSeries', 600)">›</button>
+            </div>
+        </div>
+
+        <!-- Blockbuster Movies Row -->
+        <div class="row-container">
+            <div class="row-header">
+                <h2 class="row-title">Blockbuster Movies</h2>
+            </div>
+            <div class="row-slider-wrap">
+                <button class="slider-arrow left-paddle" onclick="scrollRow('sliderMovies', -600)">‹</button>
+                <div class="row-slider" id="sliderMovies">
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                </div>
+                <button class="slider-arrow right-paddle" onclick="scrollRow('sliderMovies', 600)">›</button>
+            </div>
+        </div>
+    </main>
+
+    <div class="toast-notify" id="toast"></div>
+
+    <script>
+        function getActiveProfile() {
+            return localStorage.getItem('activeProfile') || 'کاربر اصلی';
+        }
+
+        function getProfileFavs() {
+            const p = getActiveProfile();
+            const key = 'userFavorites_' + encodeURIComponent(p);
+            let favs = JSON.parse(localStorage.getItem(key) || 'null');
+            if (!favs && p === 'کاربر اصلی') {
+                favs = JSON.parse(localStorage.getItem('userFavorites') || '[]');
+                localStorage.setItem(key, JSON.stringify(favs));
+            }
+            return favs || [];
+        }
+
+        function setProfileFavs(favs) {
+            const p = getActiveProfile();
+            const key = 'userFavorites_' + encodeURIComponent(p);
+            localStorage.setItem(key, JSON.stringify(favs));
+            if (p === 'کاربر اصلی') localStorage.setItem('userFavorites', JSON.stringify(favs));
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            if (!t) return;
+            t.textContent = msg;
+            t.style.display = 'block';
+            setTimeout(() => { t.style.display = 'none'; }, 2400);
+        }
+
+        function scrollRow(id, amount) {
+            const el = document.getElementById(id);
+            if (el) el.scrollBy({ left: amount, behavior: 'smooth' });
+        }
+
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('netflixNav');
+            if (window.scrollY > 40) nav.classList.add('solid');
+            else nav.classList.remove('solid');
+        });
+
+        window.onCardPosterError = function(img) {
+            const id = img.dataset.id;
+            if (!img.dataset.triedMetahub && id && id.startsWith('tt')) {
+                img.dataset.triedMetahub = '1';
+                img.src = `https://images.metahub.space/poster/medium/${id}/img`;
+            } else {
+                img.parentElement.classList.add('card-no-poster');
+            }
+        };
+
+        // ClientCache Singleton (sessionStorage with Expiration)
+        const ClientCache = {
+            get(key) {
+                try {
+                    const raw = sessionStorage.getItem('sadflix_' + key);
+                    if (!raw) return null;
+                    const item = JSON.parse(raw);
+                    if (Date.now() > item.exp) {
+                        sessionStorage.removeItem('sadflix_' + key);
+                        return null;
+                    }
+                    return item.data;
+                } catch (e) { return null; }
+            },
+            set(key, data, ttlMs = 300000) { // Default 5 minutes
+                try {
+                    sessionStorage.setItem('sadflix_' + key, JSON.stringify({ data, exp: Date.now() + ttlMs }));
+                } catch (e) {}
+            }
+        };
+
+        function renderCard(movie) {
+            const englishTitle = movie.title || movie.titleFa || movie.title_fa || '';
+            const poster = movie.poster || `/images/posters/${movie.id}.webp`;
+            const year = movie.year || '';
+            const isSeries = movie.type === 'tvSeries' || movie.type === 'series' || movie.type === 'tv';
+            const targetUrl = isSeries ? `/htmls/tvshowreview.html?id=${encodeURIComponent(movie.id)}` : `/htmls/moviereview.html?id=${encodeURIComponent(movie.id)}`;
+            return `
+                <a href="${targetUrl}" class="netflix-card" data-id="${movie.id}" title="${englishTitle}">
+                    <div class="card-s-badge" aria-hidden="true">
+                        <img src="/images/sadflix_s_badge.png" width="14" height="22" alt="S" style="display: block;">
+                    </div>
+                    <img data-id="${movie.id}" class="card-img" src="${poster}" alt="${englishTitle}" loading="lazy" onload="this.classList.add('loaded'); if(this.naturalWidth <= 1) window.onCardPosterError && window.onCardPosterError(this);" onerror="window.onCardPosterError && window.onCardPosterError(this)">
+                    <div class="card-fallback">
+                        <span style="font-size: 2rem; margin-bottom: 6px;">${isSeries ? '📺' : '🎬'}</span>
+                        <span style="font-size: 0.8rem; font-weight: 700; color: #ccc;">${englishTitle}</span>
+                    </div>
+                    <div class="card-hover-overlay">
+                        <div class="card-hover-title">${englishTitle}</div>
+                        <div class="card-hover-meta">
+                            <span>${year}</span>
+                            ${year ? '<span>•</span>' : ''}
+                            <span>${isSeries ? 'Series' : 'Movie'}</span>
+                        </div>
+                    </div>
+                </a>
+            `;
+        }
+
+        function renderHeroBanner(heroMovies) {
+            if (!heroMovies || heroMovies.length === 0) return;
+            const hero = heroMovies[0];
+            if (!hero) return;
+            currentHeroId = hero.id;
+            const heroImg = document.getElementById('heroImg');
+            const heroTitle = document.getElementById('heroTitle');
+            const heroDesc = document.getElementById('heroDesc');
+            const heroPlayBtn = document.getElementById('heroPlayBtn');
+            const heroFavBtn = document.getElementById('heroFavBtn');
+            const heroSeriesTag = document.getElementById('heroSeriesTag');
+            const heroTitleLogo = document.getElementById('heroTitleLogo');
+
+            const isTv = hero.type === 'tvSeries' || hero.type === 'series' || hero.type === 'tv';
+            if (heroSeriesTag) {
+                heroSeriesTag.textContent = isTv ? 'S E R I E S' : 'M O V I E';
+            }
+            if (heroTitleLogo) {
+                heroTitleLogo.style.display = 'none';
+            }
+            if (heroTitle) {
+                heroTitle.textContent = hero.title || hero.titleFa || hero.title_fa || '';
+            }
+            if (heroDesc) {
+                heroDesc.textContent = hero.synopsis || '';
+            }
+            if (heroImg && hero.backdrop) {
+                heroImg.src = hero.backdrop;
+            }
+            if (heroPlayBtn) {
+                heroPlayBtn.href = isTv 
+                    ? `/htmls/tvshowreview.html?id=${encodeURIComponent(hero.id)}`
+                    : `/htmls/moviereview.html?id=${encodeURIComponent(hero.id)}`;
+            }
+            if (heroFavBtn) {
+                heroFavBtn.setAttribute('onclick', `toggleHeroFav('${hero.id}')`);
+            }
+            updateHeroFavBtn();
+        }
+
+        function renderAllSliders(data) {
+            if (!data) return;
+            if (data.hero_movies && data.hero_movies.length > 0) {
+                renderHeroBanner(data.hero_movies);
+            }
+            const sliderMap = [
+                { key: 'spotlight_movies', id: 'sliderSpotlight' },
+                { key: 'popular_movies', id: 'sliderTrending' },
+                { key: 'tv_series', id: 'sliderSeries' },
+                { key: 'blockbuster_movies', id: 'sliderMovies' },
+            ];
+            sliderMap.forEach(({ key, id }) => {
+                const container = document.getElementById(id);
+                if (container && Array.isArray(data[key])) {
+                    container.innerHTML = data[key].map(renderCard).join('');
+                }
+            });
+        }
+
+        function showHomeErrorBanner() {
+            ['sliderSpotlight', 'sliderTrending', 'sliderSeries', 'sliderMovies'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.innerHTML = '<div class="slider-error">عدم برقراری ارتباط با سرور. لطفا دوباره تلاش کنید.</div>';
+                }
+            });
+        }
+
+        function setupNavigationPrefetch() {
+            const targets = document.querySelectorAll('.bottom-nav__item, .netflix-nav .nav-link');
+            targets.forEach(item => {
+                const prefetch = () => {
+                    const href = item.getAttribute('href');
+                    if (href && href !== window.location.pathname && !href.startsWith('#')) {
+                        const link = document.createElement('link');
+                        link.rel = 'prefetch';
+                        link.href = href;
+                        document.head.appendChild(link);
+                    }
+                };
+                item.addEventListener('mouseenter', prefetch, { once: true, passive: true });
+                item.addEventListener('touchstart', prefetch, { once: true, passive: true });
+            });
+        }
+
+        window.toggleCardFav = function(e, id) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            let favs = getProfileFavs();
+            const wasFav = favs.includes(id);
+            if (wasFav) {
+                favs = favs.filter(x => x !== id);
+                showToast('Removed from My List');
+            } else {
+                favs.push(id);
+                showToast('Added to My List ✓');
+            }
+            setProfileFavs(favs);
+
+            const token = localStorage.getItem('movieToken');
+            if (token) {
+                const method = wasFav ? 'DELETE' : 'POST';
+                const url = wasFav ? `/api/favorites/${id}` : '/api/favorites';
+                const body = wasFav ? undefined : JSON.stringify({ movieId: id });
+                fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body
+                }).catch(() => {});
+            }
+
+            renderFavoritesRow();
+            updateHeroFavBtn();
+        };
+
+        let currentHeroId = 'tt4574334';
+        function updateHeroFavBtn() {
+            const btn = document.getElementById('heroFavBtnText');
+            if (!btn) return;
+            const favs = getProfileFavs();
+            if (favs.includes(currentHeroId)) {
+                btn.textContent = 'In My List ✓';
+            } else {
+                btn.textContent = 'My List';
+            }
+        }
+
+        window.toggleHeroFav = function(id) {
+            window.toggleCardFav(null, id);
+        };
+
+        async function renderFavoritesRow() {
+            const favs = getProfileFavs();
+            const container = document.getElementById('favoritesRowContainer');
+            const slider = document.getElementById('sliderFavorites');
+            const title = document.getElementById('favoritesRowTitle');
+            const p = getActiveProfile();
+
+            if (!favs || favs.length === 0) {
+                container.style.display = 'none';
+                return;
+            }
+
+            title.textContent = `My List (${p})`;
+            container.style.display = 'block';
+
+            try {
+                const res = await fetch('/api/movies/batch', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ids: favs.slice(0, 30) })
+                });
+                if (res.ok) {
+                    const movies = await res.json();
+                    if (Array.isArray(movies) && movies.length > 0) {
+                        slider.innerHTML = movies.map(renderCard).join('');
+                        return;
+                    }
+                }
+            } catch (e) {
+                console.warn('Failed to load batch favorites:', e);
+            }
+        }
+
+        function updateNavProfile() {
+            const user = localStorage.getItem('movieUser');
+            let profile = getActiveProfile();
+            if (user && profile === 'کاربر اصلی') {
+                profile = user;
+                localStorage.setItem('activeProfile', user);
+            }
+
+            const pic = localStorage.getItem('activeProfilePic') || '1';
+            const avatarEl = document.getElementById('activeProfileAvatar');
+            if (avatarEl) {
+                avatarEl.src = (pic === '3') ? '/img/profile-pic/3.jpg' : `/img/profile-pic/${pic}.png`;
+            }
+        }
+        window.updateNavProfile = updateNavProfile;
+
+        async function initPage() {
+            updateNavProfile();
+
+            // 1. Instant 0ms Paint from Client Cache (if available)
+            const cached = ClientCache.get('home');
+            let hasRenderedCache = false;
+            if (cached) {
+                renderAllSliders(cached);
+                hasRenderedCache = true;
+            }
+
+            // 2. Fetch fresh data in a single consolidated network flight
+            try {
+                const homePromise = fetch('/api/home').then(r => r.ok ? r.json() : null);
+                const token = localStorage.getItem('movieToken');
+                const favPromise = token 
+                    ? fetch('/api/favorites', { headers: { 'Authorization': `Bearer ${token}` } }).then(r => r.ok ? r.json() : null)
+                    : Promise.resolve(null);
+
+                const [homeData, favData] = await Promise.all([homePromise, favPromise]);
+
+                if (favData && favData.favorites) {
+                    const cur = getProfileFavs();
+                    setProfileFavs(Array.from(new Set([...cur, ...favData.favorites])));
+                }
+
+                if (homeData) {
+                    ClientCache.set('home', homeData, 300000);
+                    // Avoid resetting scroll positions if cached data matches fresh payload
+                    if (!hasRenderedCache || JSON.stringify(cached) !== JSON.stringify(homeData)) {
+                        renderAllSliders(homeData);
+                    }
+                } else if (!hasRenderedCache) {
+                    showHomeErrorBanner();
+                }
+
+                renderFavoritesRow();
+            } catch (err) {
+                console.error('Home initialization failed:', err);
+                if (!hasRenderedCache) {
+                    showHomeErrorBanner();
+                }
+            }
+
+            // 3. Attach Link Prefetching for Bottom and Desktop Navigation
+            setupNavigationPrefetch();
+        }
+
+        initPage();
+    </script>
+
+    <!-- STICKY MOBILE BOTTOM NAVIGATION BAR -->
+    <nav class="bottom-nav" id="bottomNav" aria-label="Main Navigation">
+        <a href="/" class="bottom-nav__item active" data-tab="home" id="navHome">
+            <span class="bottom-nav__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+            <span class="bottom-nav__label">Home</span>
+        </a>
+        <a href="/htmls/movies.html" class="bottom-nav__item" data-tab="movies" id="navMovies">
+            <span class="bottom-nav__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 8 7 4-7 4Z"/></svg></span>
+            <span class="bottom-nav__label">Movies</span>
+        </a>
+        <a href="/htmls/tvshows.html" class="bottom-nav__item" data-tab="tvshows" id="navTvShows">
+            <span class="bottom-nav__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg></span>
+            <span class="bottom-nav__label">TV Shows</span>
+        </a>
+        <a href="/htmls/search.html" class="bottom-nav__item" data-tab="search" id="navSearch">
+            <span class="bottom-nav__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
+            <span class="bottom-nav__label">Search</span>
+        </a>
+        <a href="/htmls/profile-manage.html" class="bottom-nav__item" data-tab="profile" id="navProfile">
+            <span class="bottom-nav__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+            <span class="bottom-nav__label">Profile</span>
+        </a>
+    </nav>
+</body>
+</html>

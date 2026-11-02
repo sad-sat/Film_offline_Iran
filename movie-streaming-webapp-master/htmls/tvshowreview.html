@@ -1,0 +1,4136 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+    <script>
+        if (window.SadSatNative || (navigator.userAgent && navigator.userAgent.indexOf('SadSatFilmAndroid') !== -1)) {
+            document.documentElement.classList.add('is-native-app');
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">📺 تماشای آنلاین و دانلود سریال | صدسط فیلم</title>
+    <meta name="theme-color" content="#141414">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SadSat FilM">
+    <link rel="apple-touch-icon" href="/images/icon-192.png">
+    <script src="/pwa-register.js" defer></script>
+    <link rel="stylesheet" href="/index.css">
+    <style>
+        html, body {
+            background-color: #141414;
+            color: #fff;
+            font-family: 'Vazirmatn', sans-serif;
+            margin: 0;
+            padding: 0;
+            direction: rtl;
+            overflow-x: hidden;
+            max-width: 100vw;
+        }
+        /* Top Netflix Navigation */
+        .netflix-nav {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1000;
+            height: 68px;
+            padding: 0 4%;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+            transition: background-color 0.35s ease;
+            max-width: 100vw;
+            box-sizing: border-box;
+            overflow-x: hidden;
+            direction: ltr !important;
+        }
+        .netflix-nav.solid {
+            background: #141414 !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.85);
+        }
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            direction: ltr !important;
+        }
+        .nav-start {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+            direction: ltr !important;
+        }
+        .brand-logo-link {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .sadflix-logo-img {
+            height: 32px;
+            width: auto;
+            display: block;
+            transition: transform 0.2s ease;
+        }
+        .sadflix-logo-img:hover {
+            transform: scale(1.04);
+        }
+        .card-s-badge,
+        .card-n-badge {
+            position: absolute !important;
+            top: 8px !important;
+            left: 8px !important;
+            z-index: 10 !important;
+            width: 14px !important;
+            height: 22px !important;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.95)) drop-shadow(0 0 2px rgba(0,0,0,0.8));
+            pointer-events: none;
+        }
+        .card-img-wrap .card-s-badge img,
+        .card-s-badge img,
+        .card-n-badge img {
+            width: 14px !important;
+            height: 22px !important;
+            max-width: 14px !important;
+            max-height: 22px !important;
+            object-fit: contain !important;
+            display: block !important;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            direction: ltr !important;
+        }
+        .nav-link {
+            color: #e5e5e5;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+            padding: 4px 8px;
+        }
+        .nav-link:hover {
+            color: #b3b3b3;
+        }
+        .nav-link.active {
+            color: #ffffff;
+            font-weight: 700;
+            cursor: default;
+        }
+        .nav-end {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            direction: ltr !important;
+        }
+        .nav-search-btn {
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+        .nav-search-btn:hover {
+            transform: scale(1.1);
+        }
+        .nav-profile-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        .nav-profile-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: border-color 0.2s;
+        }
+        .nav-profile-link:hover .nav-profile-avatar {
+            border-color: #e50914;
+        }
+        /* =========================================
+           NETFLIX CINEMATIC TITLE PAGE BILLBOARD
+           ========================================= */
+        .review-hero {
+            position: relative;
+            width: 100%;
+            min-height: 72vh;
+            max-height: 820px;
+            padding-top: 85px;
+            padding-bottom: 50px;
+            display: flex;
+            align-items: flex-end;
+            background: #141414;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        .billboard-backdrop-wrap {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .review-hero__bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 20%;
+            opacity: 0.65;
+            filter: contrast(1.05) brightness(0.9);
+            transform: scale(1.02);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .billboard-vignette-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 160px;
+            background: linear-gradient(180deg, rgba(20,20,20,0.92) 0%, rgba(20,20,20,0.45) 50%, transparent 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+        .billboard-vignette-side {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(270deg, rgba(20,20,20,0.96) 0%, rgba(20,20,20,0.85) 40%, rgba(20,20,20,0.3) 75%, transparent 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+        .billboard-vignette-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 240px;
+            background: linear-gradient(0deg, #141414 0%, rgba(20,20,20,0.88) 45%, rgba(20,20,20,0.2) 80%, transparent 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+        .review-hero__content {
+            position: relative;
+            z-index: 3;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 4%;
+            box-sizing: border-box;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 40px;
+        }
+        .review-meta-box {
+            flex: 1;
+            max-width: 780px;
+        }
+        .netflix-brand-tag-row {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .netflix-s-symbol {
+            width: 18px;
+            height: 28px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+        }
+        .netflix-tag-text {
+            color: #e50914;
+            font-size: 0.95rem;
+            font-weight: 800;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .review-title-fa {
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            font-weight: 900;
+            line-height: 1.15;
+            margin: 0 0 8px 0;
+            color: #ffffff;
+            text-shadow: 0 2px 14px rgba(0,0,0,0.9);
+            letter-spacing: -0.5px;
+        }
+        .review-title-en {
+            font-size: 1.3rem;
+            color: #a3a3a3;
+            font-weight: 600;
+            margin-bottom: 16px;
+            direction: ltr;
+            text-align: right;
+            letter-spacing: 1.2px;
+            text-shadow: 0 1px 6px rgba(0,0,0,0.8);
+        }
+        .netflix-meta-strip {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+            font-size: 0.92rem;
+            color: #e5e5e5;
+        }
+        .meta-item {
+            font-weight: 700;
+        }
+        .meta-badge {
+            border: 1px solid rgba(255,255,255,0.4);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(4px);
+        }
+        .meta-badge.meta-rating {
+            background: #e50914;
+            border-color: #e50914;
+            color: #ffffff;
+            font-weight: 800;
+            padding: 3px 9px;
+        }
+        .meta-badge.meta-maturity {
+            border-color: rgba(255,255,255,0.6);
+            color: #fff;
+        }
+        .meta-badge.meta-quality {
+            border-color: rgba(255,255,255,0.45);
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+        .meta-badge.meta-dubbed {
+            background: rgba(229,9,20,0.22);
+            border-color: rgba(229,9,20,0.6);
+            color: #ff9999;
+        }
+        .meta-badge.meta-sound {
+            border-color: rgba(255,255,255,0.3);
+            font-size: 0.78rem;
+            color: #cbd5e1;
+        }
+        .review-synopsis {
+            font-size: 1.05rem;
+            color: #d1d5db;
+            line-height: 1.75;
+            max-width: 720px;
+            margin-bottom: 16px;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.9);
+            font-weight: 400;
+        }
+        .hero-credits-snippet {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 22px;
+            font-size: 0.88rem;
+            color: #9ca3af;
+        }
+        .credit-row {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+        .credit-label {
+            color: #737373;
+            font-weight: 600;
+        }
+        .credit-value {
+            color: #e5e5e5;
+            font-weight: 500;
+        }
+        .hero-actions-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .btn-netflix-hero-play {
+            background: #ffffff;
+            color: #000000;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 6px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            transition: background 0.2s, transform 0.2s;
+            font-family: inherit;
+        }
+        .btn-netflix-hero-play:hover {
+            background: rgba(255,255,255,0.78);
+            transform: scale(1.03);
+        }
+        .btn-netflix-hero-secondary {
+            background: rgba(109, 109, 110, 0.7);
+            color: #ffffff;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 6px;
+            font-size: 0.98rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(8px);
+            transition: background 0.2s, transform 0.2s;
+            font-family: inherit;
+        }
+        .btn-netflix-hero-secondary:hover {
+            background: rgba(109, 109, 110, 0.45);
+            transform: scale(1.02);
+            color: #ffffff;
+        }
+        .btn-netflix-hero-vlc {
+            background: #f97316;
+            color: #ffffff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.2s;
+            box-shadow: 0 4px 14px rgba(249,115,22,0.35);
+        }
+        .btn-netflix-hero-vlc:hover {
+            background: #ea580c;
+            transform: scale(1.02);
+            color: #fff;
+        }
+        .btn-netflix-hero-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(42, 42, 42, 0.75);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s, transform 0.2s;
+        }
+        .btn-netflix-hero-icon:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: #fff;
+            transform: scale(1.06);
+        }
+        .netflix-poster-card {
+            position: relative !important;
+            width: 220px;
+            min-width: 220px;
+            aspect-ratio: 2 / 3;
+            border-radius: 8px !important;
+            overflow: hidden;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.9);
+            border: 1px solid rgba(255,255,255,0.18);
+            background: linear-gradient(145deg, #1e1e1e 0%, #0d0d0d 100%);
+            transition: transform 0.3s;
+        }
+        #posterCardWrapper,
+        .review-poster {
+            position: relative !important;
+        }
+        .netflix-poster-card:hover {
+            transform: scale(1.02);
+        }
+        .netflix-poster-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .poster-fallback-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 16px;
+            background: radial-gradient(circle at center, rgba(229,9,20,0.22) 0%, rgba(15,15,15,0.98) 75%), #0f0f0f;
+            z-index: 5;
+        }
+        .poster-fallback-icon {
+            font-size: 2.6rem;
+            margin-bottom: 8px;
+        }
+        .poster-fallback-title {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.35;
+            margin-bottom: 6px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+        }
+        .poster-fallback-year {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        /* In-Page Sticky Subnav */
+        .netflix-subnav {
+            position: sticky;
+            top: 68px;
+            z-index: 100;
+            background: rgba(20, 20, 20, 0.94);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding: 0 4%;
+            box-sizing: border-box;
+        }
+        .subnav-inner {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            max-width: 1400px;
+            margin: 0 auto;
+            height: 52px;
+        }
+        .subnav-inner::-webkit-scrollbar { display: none; }
+        .subnav-item {
+            color: #9ca3af;
+            text-decoration: none;
+            font-size: 0.92rem;
+            font-weight: 600;
+            padding: 6px 2px;
+            white-space: nowrap;
+            position: relative;
+            transition: color 0.2s;
+        }
+        .subnav-item:hover { color: #fff; }
+        .subnav-item.active {
+            color: #fff;
+            font-weight: 800;
+        }
+        .subnav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #e50914;
+            border-radius: 2px;
+        }
+
+        /* Netflix Episodes Section */
+        .episodes-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+        .season-select-wrapper {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .season-label {
+            font-size: 0.9rem;
+            color: #bbb;
+            font-weight: 600;
+        }
+        .netflix-season-dropdown {
+            background: #242424;
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .netflix-season-dropdown:focus {
+            outline: 2px solid #e50914;
+        }
+        .netflix-episode-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 18px 20px;
+            border-radius: 10px;
+            background: #191919;
+            border: 1px solid rgba(255,255,255,0.06);
+            margin-bottom: 12px;
+            transition: background 0.2s, border-color 0.2s, transform 0.2s;
+        }
+        .netflix-episode-item:hover {
+            background: #222222;
+            border-color: rgba(255,255,255,0.12);
+        }
+        .netflix-episode-item.active-ep {
+            background: rgba(229, 9, 20, 0.12) !important;
+            border-color: #e50914 !important;
+            box-shadow: 0 0 16px rgba(229, 9, 20, 0.3);
+        }
+        .ep-left-wrap {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            flex: 1;
+        }
+        .ep-index-number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #737373;
+            min-width: 32px;
+            text-align: center;
+        }
+        .ep-thumb-container {
+            position: relative;
+            width: 140px;
+            min-width: 140px;
+            aspect-ratio: 16 / 9;
+            border-radius: 6px;
+            overflow: hidden;
+            background: #000;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+        }
+        .ep-thumb-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s;
+        }
+        .ep-thumb-container:hover .ep-thumb-image {
+            transform: scale(1.08);
+        }
+        .ep-thumb-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .ep-thumb-container:hover .ep-thumb-overlay {
+            opacity: 1;
+        }
+        .ep-duration-tag {
+            position: absolute;
+            bottom: 4px;
+            left: 6px;
+            background: rgba(0,0,0,0.8);
+            color: #fff;
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 2px 5px;
+            border-radius: 3px;
+            direction: ltr;
+        }
+        .ep-meta-content {
+            flex: 1;
+        }
+        .ep-meta-top {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+        .ep-title-text {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0;
+        }
+        .ep-quality-tag {
+            font-size: 0.72rem;
+            font-weight: 700;
+            background: rgba(255,255,255,0.08);
+            color: #38bdf8;
+            padding: 2px 7px;
+            border-radius: 4px;
+            border: 1px solid rgba(56,189,248,0.25);
+        }
+        .ep-synopsis-text {
+            font-size: 0.88rem;
+            color: #9ca3af;
+            line-height: 1.6;
+            margin: 0;
+        }
+        .ep-right-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        /* "About" Metadata 3-Column Card */
+        .about-card {
+            background: #181818;
+            border-radius: 12px;
+            padding: 28px;
+            border: 1px solid rgba(255,255,255,0.08);
+            margin-bottom: 40px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+        }
+        .about-title-header {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin: 0 0 20px;
+            color: #fff;
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+        .about-col {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .about-row {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 0.92rem;
+        }
+        .about-label {
+            color: #737373;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        .about-val {
+            color: #e5e5e5;
+            line-height: 1.6;
+        }
+
+        /* More Like This Grid */
+        .more-like-this-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 60px;
+        }
+
+        @media(max-width: 992px) {
+            .review-hero__content {
+                gap: 24px;
+            }
+            .about-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .netflix-poster-card {
+                width: 180px;
+                min-width: 180px;
+            }
+        }
+        @media(max-width: 768px) {
+            .review-hero {
+                min-height: auto;
+                padding-top: 85px;
+                padding-bottom: 30px;
+            }
+            .review-hero__content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .netflix-poster-card {
+                display: none;
+            }
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+            .netflix-episode-item {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+                padding: 14px;
+            }
+            .ep-right-actions {
+                justify-content: stretch;
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 6px;
+            }
+            .ep-right-actions .btn-ep-play,
+            .ep-right-actions .btn-ep-dl,
+            .ep-right-actions .btn-ep-vlc {
+                width: 100%;
+                text-align: center;
+                justify-content: center;
+                box-sizing: border-box;
+            }
+            .more-like-this-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+        }
+        @media(max-width: 480px) {
+            .ep-left-wrap {
+                flex-wrap: wrap;
+            }
+            .ep-thumb-container {
+                width: 100%;
+                max-width: 220px;
+            }
+            .more-like-this-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .ios-notice-banner {
+            display: none;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin-bottom: 22px;
+            font-size: 0.88rem;
+            color: #ddd;
+            text-align: center;
+            line-height: 1.6;
+        }
+        body.is-ios .ios-notice-banner {
+            display: block;
+        }
+        body.is-ios .player-wrapper {
+            display: none !important;
+        }
+        body.is-ios .stream-status-tag {
+            display: none !important;
+        }
+        body.is-ios .episode-card.active-ep,
+        body.is-ios .dl-item.active-stream {
+            border-color: rgba(255, 255, 255, 0.08) !important;
+            background: #141414 !important;
+            box-shadow: none !important;
+        }
+        body.is-ios .btn-ep-play,
+        body.is-ios .btn-stream {
+            display: none !important;
+        }
+        body.is-ios .btn-ep-vlc {
+            background: #e50914 !important;
+            border-color: #e50914 !important;
+            color: #ffffff !important;
+            padding: 6px 12px !important;
+            font-size: 0.8rem !important;
+            font-weight: 700 !important;
+            border-radius: 5px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 4px !important;
+        }
+        body.is-ios .btn-ep-dl {
+            padding: 6px 10px !important;
+            font-size: 0.8rem !important;
+            border-radius: 5px !important;
+        }
+
+        .main-container {
+            width: 100%;
+            margin: 0 auto;
+            padding: 30px 4% 80px;
+            box-sizing: border-box;
+        }
+
+        .player-wrapper {
+            position: relative;
+            background: #0d0d0d;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 16px 48px rgba(0,0,0,0.85);
+            border: 1px solid rgba(255,255,255,0.12);
+            margin-bottom: 36px;
+        }
+        .player-split-layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            width: 100%;
+            background: #0d0d0d;
+        }
+        .player-stage-col {
+            position: relative;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 0;
+            overflow: hidden;
+        }
+        .player-container {
+            position: relative;
+            width: 100% !important;
+            max-width: none !important;
+            aspect-ratio: 16 / 9;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .player-container.has-hub {
+            aspect-ratio: auto;
+            min-height: 270px;
+            height: auto;
+        }
+        .player-container .art-video-player {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        .player-options-panel {
+            background: #151515;
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+        .options-panel-header {
+            display: flex;
+            align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .options-panel-title {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .active-stream-title {
+            font-size: 0.88rem;
+            color: #eee;
+            font-weight: 700;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .active-stream-lbl {
+            font-size: 0.78rem;
+            color: #94a3b8;
+        }
+        .active-stream-val {
+            font-size: 0.88rem;
+            color: #38bdf8;
+            font-weight: 800;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+        .quick-quality-box {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .quick-quality-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #cbd5e1;
+        }
+        .quick-quality-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            max-height: 180px;
+            overflow-y: auto;
+            padding: 2px 2px 4px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.2) transparent;
+        }
+        .quick-quality-chips::-webkit-scrollbar {
+            width: 4px;
+        }
+        .quick-quality-chips::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+        }
+        .quality-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            color: #e2e8f0;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 7px 11px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .quality-chip:hover {
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 255, 255, 0.35);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+        .quality-chip.active {
+            background: #e50914;
+            border-color: #e50914;
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(229, 9, 20, 0.45);
+        }
+        .chip-lang-icon {
+            font-size: 0.92rem;
+            line-height: 1;
+        }
+        .chip-quality-text {
+            line-height: 1.2;
+            direction: ltr;
+        }
+        .player-toolbar {
+            padding: 0;
+            background: transparent;
+            border-top: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .toolbar-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            width: 100%;
+        }
+        .toolbar-actions .btn-action-vlc {
+            grid-column: 1 / -1;
+            justify-content: center;
+            padding: 10px 14px;
+            font-size: 0.9rem;
+        }
+        .toolbar-actions .btn-action {
+            justify-content: center;
+            text-align: center;
+            padding: 8px 10px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+        .player-hint-box {
+            font-size: 0.74rem;
+            color: #94a3b8;
+            line-height: 1.6;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .player-hub {
+            position: relative;
+            width: 100%;
+            min-height: 270px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 24px 18px;
+            background: radial-gradient(circle at center, rgba(229,9,20,0.18) 0%, rgba(20,20,20,0.95) 75%), #0c0c0c;
+            box-sizing: border-box;
+        }
+        .player-hub__icon {
+            font-size: 2.4rem;
+            margin-bottom: 8px;
+        }
+        .player-hub__title {
+            font-size: 1.3rem;
+            font-weight: 900;
+            margin: 0 0 8px;
+            color: #fff;
+            line-height: 1.3;
+        }
+        .player-hub__desc {
+            color: #aaa;
+            max-width: 600px;
+            font-size: 0.88rem;
+            line-height: 1.6;
+            margin: 0 0 16px;
+        }
+        .player-hub__actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+        }
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: none;
+        }
+        .btn-action-vlc {
+            background: #f97316;
+            color: #fff;
+        }
+        .btn-action-vlc:hover { background: #ea580c; color: #fff; }
+        .btn-action-share {
+            background: #e50914;
+            color: #fff;
+        }
+        .btn-action-share:hover { background: #c10712; color: #fff; }
+        .btn-action-secondary {
+            background: rgba(255,255,255,0.12);
+            color: #eee;
+        }
+        .btn-action-secondary:hover { background: rgba(255,255,255,0.22); color: #fff; }
+
+        .mkv-notice {
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 10px 16px;
+            margin: 12px 20px;
+            font-size: 0.82rem;
+            color: #fcd34d;
+            display: none;
+        }
+
+        .section-heading {
+            font-size: 1.35rem;
+            font-weight: 800;
+            margin: 0 0 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            scroll-margin-top: 100px;
+        }
+        #downloadsArea {
+            scroll-margin-top: 100px;
+        }
+        .section-heading::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: #e50914;
+            border-radius: 2px;
+            display: inline-block;
+        }
+
+        .downloads-box {
+            background: #181818;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.08);
+            margin-bottom: 40px;
+        }
+        .dl-group-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            margin: 16px 0 12px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .dl-group-title.dubbed { color: #38bdf8; }
+        .dl-group-title.subbed { color: #4ade80; }
+        .dl-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .dl-item {
+            background: #202020;
+            padding: 12px 16px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: background 0.2s;
+        }
+        .dl-item:hover { background: #262626; }
+        .dl-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+        .dl-quality { color: #fff; }
+        .dl-size {
+            font-size: 0.78rem;
+            color: #888;
+            direction: ltr;
+            background: rgba(255,255,255,0.06);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .dl-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-stream {
+            background: #e50914;
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s;
+        }
+        .btn-stream:hover { background: #b80710; }
+        .btn-download {
+            background: rgba(255,255,255,0.1);
+            color: #ddd;
+            padding: 6px 14px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .btn-download:hover { background: rgba(255,255,255,0.2); color: #fff; }
+        .dl-item.active-stream {
+            border-color: #e50914 !important;
+            background: rgba(229, 9, 20, 0.14) !important;
+            box-shadow: 0 0 14px rgba(229, 9, 20, 0.28);
+        }
+        .dl-item.failed-stream {
+            opacity: 0.6;
+            border-color: rgba(239, 68, 68, 0.35) !important;
+        }
+        .dl-item.failed-stream .dl-quality {
+            text-decoration: line-through;
+            color: #94a3b8;
+        }
+        .stream-status-tag {
+            font-size: 0.72rem;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-weight: 700;
+        }
+        .stream-status-tag.active {
+            background: #e50914;
+            color: #fff;
+        }
+        .stream-status-tag.failed {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+        }
+        .player-fallback-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 10, 0.94);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 50;
+            border-radius: 8px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .player-fallback-card {
+            max-width: 520px;
+            background: #181818;
+            border: 1px solid rgba(229, 9, 20, 0.45);
+            border-radius: 12px;
+            padding: 24px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.9);
+        }
+        .player-fallback-icon { font-size: 2.4rem; }
+        .player-fallback-title { font-size: 1.15rem; font-weight: 800; color: #fff; }
+        .player-fallback-desc { font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; }
+        .player-fallback-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; width: 100%; margin-top: 8px; }
+
+        .season-tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            margin-bottom: 16px;
+            padding-bottom: 4px;
+            scrollbar-width: none;
+        }
+        .season-tab {
+            padding: 8px 18px;
+            background: #242424;
+            color: #bbb;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+            font-size: 0.88rem;
+            font-weight: 700;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .season-tab.active {
+            background: #e50914;
+            color: #fff;
+            border-color: #e50914;
+        }
+
+        /* Download Section Toolbar & Language Selector */
+        .dl-toolbar-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 18px;
+            background: #141414;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .lang-selector-group {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #1c1c1c;
+            padding: 4px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .lang-selector-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 18px;
+            border-radius: 6px;
+            background: transparent;
+            color: #bbb;
+            border: none;
+            cursor: pointer;
+            font-size: 0.88rem;
+            font-weight: 700;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .lang-selector-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .lang-selector-btn.active {
+            background: #e50914;
+            color: #fff;
+            box-shadow: 0 2px 12px rgba(229, 9, 20, 0.4);
+        }
+
+        .lang-selector-btn .lang-badge {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 7px;
+            border-radius: 10px;
+            font-size: 0.74rem;
+            font-weight: 600;
+        }
+
+        .lang-selector-btn.active .lang-badge {
+            background: rgba(255, 255, 255, 0.22);
+            color: #fff;
+        }
+
+        /* Quality Dropdown Filter */
+        .quality-dropdown-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quality-dropdown-box label {
+            font-size: 0.84rem;
+            color: #aaa;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .quality-dropdown-select {
+            appearance: none;
+            -webkit-appearance: none;
+            background: #202020 url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23bbb'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E") no-repeat left 10px center;
+            background-size: 16px;
+            color: #fff;
+            padding: 9px 14px 9px 32px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            min-width: 180px;
+            transition: all 0.2s;
+        }
+
+        .quality-dropdown-select:hover,
+        .quality-dropdown-select:focus {
+            border-color: #e50914;
+            outline: none;
+            background-color: #262626;
+        }
+
+        /* Direct Quality Row (Clean & Simplified for Movies) */
+        .quality-row-card {
+            background: #181818;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .quality-row-card:hover {
+            background: #202020;
+            border-color: rgba(229, 9, 20, 0.4);
+        }
+
+        .quality-row-card .q-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .quality-row-card .q-badge {
+            background: rgba(229, 9, 20, 0.15);
+            color: #ff3b47;
+            border: 1px solid rgba(229, 9, 20, 0.35);
+            font-weight: 800;
+            font-size: 0.9rem;
+            padding: 4px 10px;
+            border-radius: 6px;
+            letter-spacing: 0.3px;
+        }
+
+        .quality-row-card .q-size-badge {
+            color: #aaa;
+            font-size: 0.82rem;
+            font-weight: 600;
+            direction: ltr;
+        }
+
+        .quality-row-card .q-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        @media(max-width: 600px) {
+            .quality-row-card {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+                padding: 10px 12px;
+            }
+            .quality-row-card .q-left {
+                justify-content: space-between;
+            }
+            .quality-row-card .q-actions,
+            .quality-row-card .ep-btns {
+                width: 100%;
+                display: flex;
+                gap: 6px;
+            }
+            .quality-row-card .ep-btns a,
+            .quality-row-card .ep-btns button {
+                flex: 1;
+                text-align: center;
+                justify-content: center;
+                padding: 8px 4px;
+            }
+        }
+
+        /* Quality Accordion Dropdowns */
+        .quality-accordion-card {
+            background: #181818;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            margin-bottom: 14px;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+
+        .quality-accordion-card:hover {
+            border-color: rgba(255, 255, 255, 0.18);
+        }
+
+        .quality-accordion-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 13px 16px;
+            background: #202020;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s;
+        }
+
+        .quality-accordion-header:hover {
+            background: #262626;
+        }
+
+        .quality-accordion-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .quality-title {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #fff;
+        }
+        .quality-tag-dubbed {
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.12);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+        .quality-tag-softsub {
+            color: #a78bfa;
+            background: rgba(167, 139, 250, 0.12);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+        .quality-count {
+            color: #888;
+            font-size: 0.8rem;
+        }
+        .dl-size {
+            color: #94a3b8;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .quality-accordion-arrow {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+            color: #e50914;
+            font-size: 0.72rem;
+            transition: transform 0.25s ease, background 0.2s;
+            transform: rotate(0deg);
+        }
+
+        .quality-accordion-card.is-open .quality-accordion-arrow {
+            transform: rotate(180deg);
+            background: rgba(229, 9, 20, 0.18);
+        }
+
+        .quality-accordion-card.is-open .quality-accordion-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .quality-accordion-body {
+            display: none;
+            background: #141414;
+            animation: fadeInAccordion 0.22s ease-out;
+        }
+
+        .quality-accordion-card.is-open .quality-accordion-body {
+            display: block;
+        }
+
+        @keyframes fadeInAccordion {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn-folder-link {
+            font-size: 0.78rem;
+            color: #aaa;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 5px 11px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.2s;
+        }
+        .btn-folder-link:hover {
+            background: rgba(255,255,255,0.12);
+            color: #fff;
+        }
+
+        .episodes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 10px;
+            padding: 14px 16px;
+        }
+
+        .episode-card {
+            background: #141414;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 6px;
+            padding: 11px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            transition: all 0.2s;
+            min-width: 0;
+            box-sizing: border-box;
+        }
+        .episode-card:hover {
+            border-color: rgba(229, 9, 20, 0.4);
+            background: #1a1a1a;
+        }
+        .episode-card.active-ep {
+            border-color: #e50914 !important;
+            background: rgba(229, 9, 20, 0.14) !important;
+            box-shadow: 0 0 12px rgba(229, 9, 20, 0.28);
+        }
+        .episode-card.failed-ep {
+            opacity: 0.55;
+            border-color: rgba(239, 68, 68, 0.3) !important;
+        }
+        .ep-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow: hidden;
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+        .ep-num-pill {
+            background: #282828;
+            color: #ddd;
+            font-size: 0.78rem;
+            font-weight: 800;
+            padding: 4px 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            direction: ltr;
+        }
+        .episode-card.active-ep .ep-num-pill {
+            background: #e50914;
+            color: #fff;
+        }
+        .ep-title-txt {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #aaa;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            direction: rtl;
+            min-width: 0;
+            flex: 1 1 auto;
+        }
+
+        /* Optimized button styling for mobile and desktop */
+        .ep-btns {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .btn-ep-play, .btn-ep-dl, .btn-ep-vlc {
+            min-height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s;
+            box-sizing: border-box;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .btn-ep-play {
+            background: #e50914;
+            color: #fff;
+            padding: 8px 14px;
+            border: none;
+        }
+        .btn-ep-play:hover { background: #b80710; }
+
+        .btn-ep-dl {
+            background: rgba(255,255,255,0.08);
+            color: #e2e8f0;
+            padding: 8px 14px;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+        .btn-ep-dl:hover {
+            background: rgba(255,255,255,0.18);
+            color: #fff;
+        }
+
+        .btn-ep-vlc {
+            background: rgba(249, 115, 22, 0.15);
+            color: #fb923c;
+            border: 1px solid rgba(249, 115, 22, 0.35);
+            padding: 8px 12px;
+        }
+        .btn-ep-vlc:hover {
+            background: rgba(249, 115, 22, 0.3);
+            color: #fff;
+        }
+
+        body.is-ios .btn-ep-vlc {
+            background: #e50914 !important;
+            border-color: #e50914 !important;
+            color: #ffffff !important;
+            padding: 8px 15px !important;
+            min-height: 38px !important;
+        }
+
+        @media (max-width: 600px) {
+            .dl-toolbar-wrap {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+                padding: 10px 10px;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+            .lang-selector-group {
+                display: flex;
+                width: 100%;
+                box-sizing: border-box;
+                gap: 4px;
+                padding: 3px;
+                min-width: 0;
+            }
+            .lang-selector-btn {
+                flex: 1 1 0;
+                min-width: 0;
+                justify-content: center;
+                padding: 8px 4px;
+                font-size: 0.78rem;
+                gap: 4px;
+                white-space: nowrap;
+                box-sizing: border-box;
+            }
+            .lang-selector-btn .lang-word-prefix {
+                display: none;
+            }
+            .lang-selector-btn .lang-badge {
+                padding: 2px 5px;
+                font-size: 0.7rem;
+                border-radius: 8px;
+            }
+            .quality-dropdown-box {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                box-sizing: border-box;
+            }
+            .quality-dropdown-select {
+                flex: 1;
+                min-width: 0;
+                width: 100%;
+                box-sizing: border-box;
+                font-size: 0.82rem;
+                padding: 8px 10px 8px 28px;
+            }
+            .quality-accordion-card {
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+            .quality-accordion-header {
+                padding: 10px 12px;
+                gap: 8px;
+            }
+            .quality-accordion-title-wrap {
+                gap: 6px;
+            }
+            .quality-title {
+                font-size: 0.88rem;
+            }
+            .quality-tag-dubbed, .quality-tag-softsub {
+                font-size: 0.72rem;
+                padding: 1px 6px;
+            }
+            .dl-size {
+                font-size: 0.72rem;
+            }
+            .episodes-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+                padding: 10px 12px;
+            }
+            .episode-card {
+                padding: 9px 12px;
+                min-height: 48px;
+                gap: 8px;
+                box-sizing: border-box;
+                max-width: 100%;
+            }
+            .ep-num-pill {
+                font-size: 0.75rem;
+                padding: 3px 6px;
+            }
+            .ep-title-txt {
+                font-size: 0.78rem;
+            }
+            .ep-btns {
+                gap: 6px;
+            }
+            .btn-ep-play, .btn-ep-dl, .btn-ep-vlc {
+                min-height: 38px;
+                padding: 7px 10px;
+                font-size: 0.76rem;
+                gap: 4px;
+            }
+            .btn-folder-link {
+                padding: 4px 8px;
+                font-size: 0.74rem;
+            }
+            .season-tab {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+        }
+
+        .row-slider {
+            display: flex;
+            gap: 14px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding: 10px 4px 20px;
+            scroll-behavior: smooth;
+        }
+        .row-slider::-webkit-scrollbar { display: none; }
+        .netflix-card {
+            min-width: 165px;
+            max-width: 165px;
+            border-radius: 0 !important;
+            overflow: hidden;
+            background: #181818;
+            text-decoration: none;
+            color: #fff;
+            transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s;
+            flex-shrink: 0;
+            position: relative;
+        }
+        .netflix-card:hover {
+            transform: translateY(-8px) scale(1.1);
+            z-index: 20;
+            box-shadow: 0 16px 36px rgba(0,0,0,0.8), 0 0 20px rgba(229,9,20,0.35);
+        }
+        .card-img-wrap {
+            width: 100%;
+            aspect-ratio: 2 / 3;
+            overflow: hidden;
+            position: relative;
+            background: radial-gradient(circle at 50% 30%, #2a2a2a, #121212);
+            border-radius: 0 !important;
+        }
+        .card-img-wrap > img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 0 !important;
+        }
+        .card-img-wrap .card-s-badge img {
+            width: 14px !important;
+            height: 22px !important;
+            max-width: 14px !important;
+            max-height: 22px !important;
+        }
+        .card-img-wrap.no-poster img { display: none; }
+        .card-fallback {
+            display: none;
+            position: absolute;
+            inset: 0;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            text-align: center;
+        }
+        .card-img-wrap.no-poster .card-fallback { display: flex; }
+        .fallback-icon { font-size: 2.2rem; margin-bottom: 6px; opacity: 0.85; }
+        .fallback-title { font-size: 0.75rem; color: #ccc; line-height: 1.3; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; font-weight: 700; }
+        .card-rating-badge,
+        .card-fav-btn {
+            display: none !important;
+        }
+        .card-info { padding: 8px 10px 8px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .card-title-en {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #f1f1f1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.25;
+            direction: ltr;
+            text-align: center;
+            margin-bottom: 2px;
+            letter-spacing: 0.15px;
+        }
+        .netflix-card:hover .card-title-en {
+            color: #fff;
+        }
+        .card-meta {
+            font-size: 0.72rem;
+            color: #888;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            direction: ltr;
+        }
+
+        .share-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .share-modal.active { display: flex; }
+        .share-box {
+            background: #1f1f1f;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 440px;
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+            position: relative;
+        }
+        .share-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .share-header h3 { margin: 0; font-size: 1.15rem; font-weight: 800; }
+        .share-close {
+            background: none;
+            border: none;
+            color: #bbb;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .share-links {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .share-btn-target {
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .share-btn-tg { background: #229ED9; }
+        .share-btn-wa { background: #25D366; }
+        .share-btn-eitaa { background: #ea580c; }
+        .share-btn-copy { background: #4f46e5; }
+        .share-url-box {
+            display: flex;
+            gap: 8px;
+            background: #141414;
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .share-url-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #ccc;
+            font-size: 0.82rem;
+            outline: none;
+            direction: ltr;
+        }
+
+        .toast-notify {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #e50914;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+            z-index: 4000;
+            display: none;
+            animation: fadeIn 0.2s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media(max-width: 768px) {
+            .toast-notify {
+                bottom: 85px;
+                right: 50%;
+                transform: translateX(50%);
+                max-width: 90%;
+                text-align: center;
+                white-space: nowrap;
+            }
+            .netflix-nav {
+                height: auto;
+                min-height: 82px;
+                padding: 8px 12px 6px;
+                background: linear-gradient(180deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.7) 65%, transparent 100%);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            .netflix-nav.solid {
+                background: rgba(18, 18, 18, 0.98) !important;
+                backdrop-filter: blur(12px);
+                box-shadow: 0 4px 24px rgba(0,0,0,0.85);
+            }
+            .nav-container {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                gap: 0;
+                row-gap: 8px;
+            }
+            .nav-start {
+                display: contents;
+            }
+            .brand-logo-link {
+                order: 1;
+                flex-shrink: 0;
+                display: inline-flex;
+                align-items: center;
+            }
+            .sadflix-logo-img {
+                height: 24px;
+                width: auto;
+            }
+            .nav-end {
+                order: 2;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                flex-shrink: 0;
+            }
+            .nav-links {
+                order: 3;
+                width: 100%;
+                flex-basis: 100%;
+                display: flex !important;
+                align-items: center;
+                gap: 6px;
+                list-style: none;
+                margin: 0;
+                padding: 2px 2px 4px;
+                overflow-x: auto;
+                overflow-y: hidden;
+                white-space: nowrap;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                -webkit-overflow-scrolling: touch;
+            }
+            .nav-links::-webkit-scrollbar {
+                display: none;
+                width: 0;
+                height: 0;
+            }
+            .nav-link {
+                flex-shrink: 0;
+                font-size: 0.78rem;
+                font-weight: 600;
+                padding: 5px 11px;
+                border-radius: 16px;
+                background: rgba(255, 255, 255, 0.1);
+                color: #e5e5e5;
+                text-decoration: none;
+                white-space: nowrap;
+                transition: all 0.2s ease;
+            }
+            .nav-link:hover {
+                color: #ffffff;
+                background: rgba(255, 255, 255, 0.2);
+            }
+            .nav-link.active {
+                background: #e50914;
+                color: #ffffff;
+                font-weight: 700;
+                box-shadow: 0 2px 10px rgba(229, 9, 20, 0.5);
+            }
+            .nav-search-btn svg {
+                width: 20px;
+                height: 20px;
+            }
+            .nav-profile-avatar {
+                width: 28px;
+                height: 28px;
+            }
+            .review-hero {
+                padding-top: 125px !important;
+                padding-bottom: 24px;
+                min-height: auto;
+            }
+            .review-hero__content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 16px;
+            }
+            .review-poster {
+                width: 150px;
+                min-width: 150px;
+                margin-top: 4px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.85);
+            }
+            .review-title-fa { font-size: 1.6rem; }
+            .review-title-en { text-align: center; }
+            .review-badges { justify-content: center; }
+            .player-split-layout {
+                grid-template-columns: 1fr;
+            }
+            .player-options-panel {
+                border-right: none;
+                border-top: 1px solid rgba(255, 255, 255, 0.08);
+                padding: 16px;
+                gap: 12px;
+            }
+            .player-container {
+                min-height: 220px;
+            }
+            .player-container.has-hub {
+                aspect-ratio: auto;
+                min-height: 280px;
+                height: auto;
+            }
+            .player-hub {
+                padding: 16px 12px;
+                min-height: 260px;
+            }
+            .player-hub__icon {
+                font-size: 1.8rem;
+                margin-bottom: 4px;
+            }
+            .player-hub__title {
+                font-size: 1.15rem;
+                margin-bottom: 6px;
+            }
+            .player-hub__desc {
+                font-size: 0.82rem;
+                line-height: 1.5;
+                margin-bottom: 12px;
+            }
+            .player-hub__actions {
+                flex-direction: column;
+                gap: 8px;
+                align-items: stretch;
+                max-width: 320px;
+                margin: 0 auto;
+            }
+            .player-hub__actions .btn-action {
+                width: 100%;
+                justify-content: center;
+                padding: 9px 12px;
+                font-size: 0.85rem;
+            }
+            .player-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+                padding: 12px 14px;
+            }
+            .active-stream-title {
+                font-size: 0.85rem;
+                justify-content: center;
+                text-align: center;
+                flex-wrap: wrap;
+            }
+            .toolbar-actions {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+                width: 100%;
+            }
+            .toolbar-actions .btn-action {
+                width: 100%;
+                justify-content: center;
+                padding: 8px 6px;
+                font-size: 0.82rem;
+                white-space: nowrap;
+            }
+            .season-tabs {
+                gap: 6px;
+                padding: 4px 2px 8px;
+                -webkit-overflow-scrolling: touch;
+            }
+            .season-tab {
+                padding: 6px 12px;
+                font-size: 0.82rem;
+            }
+            .dl-item {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+                padding: 10px 12px;
+            }
+            .dl-info {
+                justify-content: center;
+                font-size: 0.85rem;
+            }
+            .dl-actions {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+                width: 100%;
+            }
+            .dl-actions .btn-stream,
+            .dl-actions .btn-download {
+                width: 100%;
+                text-align: center;
+                padding: 8px;
+                font-size: 0.8rem;
+                box-sizing: border-box;
+            }
+            .netflix-card {
+                min-width: 135px;
+                max-width: 135px;
+            }
+            .card-title {
+                font-size: 0.8rem;
+            }
+        }
+        @media(max-width: 380px) {
+            .netflix-card {
+                min-width: 120px;
+                max-width: 120px;
+            }
+            .review-hero {
+                padding-top: 130px !important;
+            }
+            .review-poster {
+                width: 130px;
+                min-width: 130px;
+            }
+            .card-title {
+                font-size: 0.75rem;
+            }
+        }
+
+        /* Bottom navigation hidden on mobile website */
+        .bottom-nav { display: none !important; }
+        @media(max-width: 768px) {
+            .is-native-app body, body.is-native-app { padding-bottom: calc(70px + env(safe-area-inset-bottom, 12px)) !important; }
+            .is-native-app .bottom-nav, body.is-native-app .bottom-nav { display: flex !important;
+                position: fixed;
+                bottom: max(10px, env(safe-area-inset-bottom, 10px));
+                left: 14px;
+                right: 14px;
+                max-width: 440px;
+                margin: 0 auto;
+                height: 60px;
+                padding: 4px 0.5rem;
+                background: rgba(18, 18, 18, 0.94);
+                backdrop-filter: blur(24px) saturate(190%);
+                -webkit-backdrop-filter: blur(24px) saturate(190%);
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                border-radius: 28px;
+                z-index: 2000;
+                justify-content: space-around;
+                align-items: center;
+                box-shadow: 0 10px 32px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            }
+            .bottom-nav__item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 2px;
+                background: none;
+                border: none;
+                color: #b3b3b3;
+                text-decoration: none;
+                cursor: pointer;
+                padding: 3px 6px;
+                border-radius: 16px;
+                transition: color 0.2s ease, transform 0.2s ease;
+                min-width: 52px;
+                height: 50px;
+                position: relative;
+            }
+            .bottom-nav__icon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 22px;
+                height: 22px;
+            }
+            .bottom-nav__label {
+                font-size: 0.72rem;
+                font-weight: 700;
+                line-height: 1.1;
+                white-space: nowrap;
+            }
+            .bottom-nav__item.active {
+                color: #e50914;
+            }
+            .bottom-nav__item.active .bottom-nav__icon {
+                transform: scale(1.1);
+                color: #e50914;
+            }
+            .bottom-nav__item.active::before {
+                content: '';
+                position: absolute;
+                top: 2px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 14px;
+                height: 3px;
+                background: #e50914;
+                border-radius: 999px;
+                box-shadow: 0 0 10px #e50914;
+            }
+        }
+        @media(min-width: 769px) {
+            .bottom-nav { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Netflix Navigation -->
+    <header class="netflix-nav" id="netflixNav">
+        <div class="nav-container">
+            <div class="nav-start">
+                <a href="/" class="brand-logo-link" aria-label="SadFlix">
+                    <img src="/images/sadflix_logo.png" alt="SadFlix" class="sadflix-logo-img">
+                </a>
+                <nav class="nav-links">
+                    <a href="/htmls/browse.htm" class="nav-link">Home</a>
+                    <a href="/htmls/tvshows.html" class="nav-link active">TV Shows</a>
+                    <a href="/htmls/movies.html" class="nav-link">Movies</a>
+                    <a href="/htmls/browse.htm#sliderSpotlight" class="nav-link">New & Popular</a>
+                    <a href="/htmls/browse.htm#favoritesRowContainer" class="nav-link">My List</a>
+                </nav>
+            </div>
+            <div class="nav-end">
+                <a href="/htmls/search.html" class="nav-search-btn" title="جستجو" aria-label="جستجو">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </a>
+                <a href="/htmls/profile-manage.html" class="nav-profile-link" title="حساب کاربری" aria-label="حساب کاربری">
+                    <img src="/movie-streaming-webapp-master/img/profile-pic/1.png" alt="پروفایل" class="nav-profile-avatar" id="activeProfileAvatar">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Cinematic Netflix Hero Billboard -->
+    <section class="review-hero" id="overviewSection">
+        <div class="billboard-backdrop-wrap">
+            <img id="heroBackdrop" class="review-hero__bg" src="/images/placeholder.webp" alt="Backdrop" onload="if(this.src && !this.src.includes('placeholder') && this.naturalWidth <= 1) window.onBackdropMissing(this);" onerror="window.onBackdropMissing(this);">
+            <div class="billboard-vignette-top"></div>
+            <div class="billboard-vignette-side"></div>
+            <div class="billboard-vignette-bottom"></div>
+        </div>
+        <div class="review-hero__content">
+            <div class="review-meta-box">
+                <div class="netflix-brand-tag-row">
+                    <img src="/images/sadflix_s_badge.png" class="netflix-s-symbol" alt="S">
+                    <span class="netflix-tag-text">S E R I E S</span>
+                </div>
+                <h1 class="review-title-fa" id="movieTitleFa">در حال بارگذاری…</h1>
+                <div class="review-title-en" id="movieTitleEn">Loading...</div>
+                
+                <div class="netflix-meta-strip">
+                    <span class="meta-item meta-year" id="movieYear">--</span>
+                    <span class="meta-badge meta-rating" id="movieRating">★ --</span>
+                    <span class="meta-badge meta-maturity" id="movieMaturity">16+</span>
+                    <span class="meta-item meta-duration" id="movieDurationOrSeasons">--</span>
+                    <span class="meta-badge meta-quality" id="movieQualityBadge">Ultra HD 4K</span>
+                    <span class="meta-badge meta-dubbed" id="movieDubbedBadge">🎙️ دوبله اختصاصی</span>
+                    <span class="meta-badge meta-sound">5.1 Audio</span>
+                    <!-- Hidden elements for script backwards compatibility -->
+                    <span id="movieType" style="display:none;">سریال</span>
+                    <span id="movieGenre" style="display:none;">--</span>
+                    <span id="movieVotes" style="display:none;">-- رای</span>
+                </div>
+
+                <p class="review-synopsis" id="movieSynopsis"></p>
+
+                <div class="hero-credits-snippet" id="heroCreditsSnippet">
+                    <div class="credit-row"><span class="credit-label">ژانرها:</span> <span class="credit-value" id="heroGenres">--</span></div>
+                    <div class="credit-row"><span class="credit-label">بازیگران:</span> <span class="credit-value" id="heroCast">--</span></div>
+                </div>
+
+                <div class="hero-actions-bar">
+                    <button type="button" id="heroPrimaryPlayBtn" class="btn-netflix-hero-play" onclick="scrollAndPlayFirst()">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                        <span>▶ پخش آنلاین</span>
+                    </button>
+                    <button id="heroFavBtn" type="button" class="btn-netflix-hero-secondary">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        <span>+ لیست من</span>
+                    </button>
+                    <a id="heroVlcBtn" href="#" class="btn-netflix-hero-vlc">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                        <span>پخش با VLC</span>
+                    </a>
+                    <button id="heroShareBtn" type="button" class="btn-netflix-hero-icon" title="اشتراک‌گذاری" aria-label="اشتراک‌گذاری">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                    </button>
+                    <a href="#downloadsArea" class="btn-netflix-hero-secondary" style="text-decoration:none;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 13 12 18 17 13"/><polyline points="7 6 12 11 17 6"/></svg>
+                        <span>⬇️ فهرست قسمت‌ها</span>
+                    </a>
+                </div>
+            </div>
+            <div class="review-poster netflix-poster-card" id="posterCardWrapper">
+                <div class="card-s-badge" aria-hidden="true">
+                    <img src="/images/sadflix_s_badge.png" width="14" height="22" alt="S" style="display: block;">
+                </div>
+                <img id="moviePoster" src="/images/placeholder.webp" alt="Poster" onload="if(this.src && !this.src.includes('placeholder') && this.naturalWidth <= 1) window.onPosterMissing(this);" onerror="window.onPosterMissing(this);">
+                <div class="poster-fallback-overlay" id="posterFallbackOverlay" style="display: none;">
+                    <span class="poster-fallback-icon">📺</span>
+                    <span class="poster-fallback-title" id="posterFallbackTitle">SadFlix</span>
+                    <span class="poster-fallback-year" id="posterFallbackYear"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- In-Page Sticky Subnav -->
+    <nav class="netflix-subnav" id="netflixSubnav">
+        <div class="subnav-inner">
+            <a href="#overviewSection" class="subnav-item active">معرفی</a>
+            <a href="#downloadsArea" class="subnav-item">قسمت‌ها (Episodes)</a>
+            <a href="#playerSection" class="subnav-item">پلیر آنلاین</a>
+            <a href="#aboutSection" class="subnav-item">مشخصات کامل</a>
+            <a href="#moreLikeThisSection" class="subnav-item">سریال‌های مشابه</a>
+        </div>
+    </nav>
+
+    <!-- Main Player & Actions -->
+    <main class="main-container">
+        <!-- Download & Quality Section -->
+        <section class="downloads-section" style="scroll-margin-top: 130px;">
+            <div class="episodes-header-row">
+                <h2 class="section-heading">قسمت‌ها و فصل‌های سریال</h2>
+                <div class="season-select-wrapper" id="seasonSelectWrapper">
+                    <label for="seasonSelectDropdown" class="season-label">فصل:</label>
+                    <select id="seasonSelectDropdown" class="netflix-season-dropdown" onchange="switchSeason(this.value)">
+                    </select>
+                </div>
+            </div>
+            <div class="downloads-box" id="downloadsArea">
+                <div style="text-align: center; color: #888; padding: 20px;">در حال دریافت فصل‌ها و قسمت‌ها…</div>
+            </div>
+        </section>
+
+        <!-- Main Player & Actions -->
+        <section id="playerSection" class="player-section-wrap" style="scroll-margin-top: 130px;">
+            <h2 class="section-heading">پلیر پخش آنلاین</h2>
+            <div class="player-wrapper">
+                <div class="player-split-layout">
+                    <!-- Main Video Stage -->
+                    <div class="player-stage-col">
+                        <div id="player" class="player-container has-hub"></div>
+                        <div class="mkv-notice" id="mkvNotice">
+                            ⚠️ در صورت عدم پخش روان صدای این ویدیو روی مرورگر موبایل، لطفاً از دکمه «پخش با VLC» استفاده کنید.
+                        </div>
+                    </div>
+
+                    <!-- Side Options & Controls Panel -->
+                    <div class="player-options-panel">
+                        <div class="options-panel-header">
+                            <span class="options-panel-title">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                                تنظیمات و گزینه‌های پخش
+                            </span>
+                        </div>
+
+                        <!-- Active Stream Status -->
+                        <div class="active-stream-title" id="activeStreamTitle">
+                            <span class="active-stream-lbl">📺 قسمت و کیفیت در حال پخش:</span>
+                            <span id="currentQualityName" class="active-stream-val">--</span>
+                        </div>
+
+                        <!-- Quick Quality Selector Chips -->
+                        <div class="quick-quality-box">
+                            <div class="quick-quality-label">انتخاب سریع کیفیت / قسمت:</div>
+                            <div class="quick-quality-chips" id="quickQualityChips">
+                                <span style="font-size:0.75rem; color:#888;">در حال آماده‌سازی…</span>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="player-toolbar">
+                            <div class="toolbar-actions">
+                                <a id="vlcBtn" href="#" class="btn-action btn-action-vlc" title="پخش با کیفیت اصلی در VLC Player">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                                    <span>پخش در VLC</span>
+                                </a>
+                                <button id="nextStreamBtn" type="button" class="btn-action btn-action-secondary" onclick="manualNextStream()" title="تغییر به کیفیت بعدی در صف">
+                                    ⏭️ کیفیت بعدی
+                                </button>
+                                <button id="copyStreamBtn" type="button" class="btn-action btn-action-secondary" title="کپی لینک مستقیم ویدیو">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                    <span>کپی لینک</span>
+                                </button>
+                                <button id="favBtn" type="button" class="btn-action btn-action-secondary" title="افزودن به لیست من">
+                                    + لیست من
+                                </button>
+                                <button id="shareBtn" type="button" class="btn-action btn-action-share" onclick="openShareModal()" title="اشتراک‌گذاری">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                                    <span>اشتراک</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Hints / Notice -->
+                        <div class="player-hint-box">
+                            💡 می‌توانید برای تماشای بدون وقفه یا پخش زیرنویس‌های خارجی، از دکمه پخش در VLC یا جدول کامل قسمت‌ها در بالا استفاده نمایید.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- "About Title" / "More Details" Card -->
+        <section id="aboutSection" class="about-section-wrap" style="scroll-margin-top: 130px;">
+            <h2 class="section-heading">مشخصات و عوامل سریال</h2>
+            <div class="about-card">
+                <h3 class="about-title-header">درباره <span id="aboutTitleFa">...</span></h3>
+                <div class="about-grid">
+                    <div class="about-col">
+                        <div class="about-row">
+                            <span class="about-label">تماشای آفلاین:</span>
+                            <span class="about-val">امکان دانلود مستقیم تمامی کیفیت‌ها برای تماشا در سفر و بدون نیاز به اینترنت</span>
+                        </div>
+                        <div class="about-row">
+                            <span class="about-label">صدا و دوبله:</span>
+                            <span class="about-val" id="aboutAudioVal">دوبله اختصاصی استودیویی فارسی، صدای اصلی ۵.۱ دالبی دیجیتال</span>
+                        </div>
+                        <div class="about-row">
+                            <span class="about-label">زیرنویس:</span>
+                            <span class="about-val">زیرنویس فارسی دقیق و هماهنگ، فونت استاندارد وزیرمتن</span>
+                        </div>
+                    </div>
+                    <div class="about-col">
+                        <div class="about-row">
+                            <span class="about-label">ژانرها:</span>
+                            <span class="about-val" id="aboutGenresVal">--</span>
+                        </div>
+                        <div class="about-row">
+                            <span class="about-label">حال و هوای اثر:</span>
+                            <span class="about-val" id="aboutMoodVal">معمایی، هیجان‌انگیز، ماجراجویانه، تماشایی</span>
+                        </div>
+                        <div class="about-row">
+                            <span class="about-label">رده‌بندی سنی:</span>
+                            <span class="about-val"><span class="meta-badge meta-maturity">16+</span> مناسب برای افراد بالای ۱۶ سال</span>
+                        </div>
+                    </div>
+                    <div class="about-col">
+                        <div class="about-row">
+                            <span class="about-label">سازندگان و عوامل:</span>
+                            <span class="about-val" id="aboutCreatorsVal">تیم سازندگان و کارگردانی بین‌المللی</span>
+                        </div>
+                        <div class="about-row">
+                            <span class="about-label">بازیگران برتر:</span>
+                            <span class="about-val" id="aboutCastVal">ستارگان و بازیگران برجسته این مجموعه</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recommendations Row -->
+        <section id="moreLikeThisSection" class="recommendations-section-wrap" style="scroll-margin-top: 130px;">
+            <h2 class="section-heading">سریال‌های برتر و پیشنهادی (More Like This)</h2>
+            <div class="more-like-this-grid" id="recommendationsRow"></div>
+        </section>
+    </main>
+
+    <!-- Share Modal -->
+    <div class="share-modal" id="shareModal">
+        <div class="share-box">
+            <div class="share-header">
+                <h3>اشتراک‌گذاری این سریال</h3>
+                <button type="button" class="share-close" onclick="closeShareModal()">×</button>
+            </div>
+            <div class="share-links">
+                <a id="shareTg" href="#" target="_blank" rel="noopener" class="share-btn-target share-btn-tg">تلگرام</a>
+                <a id="shareWa" href="#" target="_blank" rel="noopener" class="share-btn-target share-btn-wa">واتس‌اپ</a>
+                <a id="shareEitaa" href="#" target="_blank" rel="noopener" class="share-btn-target share-btn-eitaa">ایتا</a>
+                <button type="button" onclick="copyShareLink()" class="share-btn-target share-btn-copy">کپی لینک صفحه</button>
+            </div>
+            <div class="share-url-box">
+                <input type="text" id="shareUrlInput" class="share-url-input" readonly>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-notify" id="toast"></div>
+
+    <!-- ArtPlayer & App Scripts -->
+    <script src="/vendor/artplayer.js"></script>
+    <script>
+        let currentMovie = null;
+        let art = null;
+        let currentStreamUrl = '';
+        const isIOS = () => [/iPad/i, /iPhone/i, /iPod/i].some(s => s.test(navigator.userAgent)) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        const isAndroid = () => /Android/i.test(navigator.userAgent);
+        const isMobile = () => isIOS() || isAndroid() || (window.innerWidth <= 768 && ('ontouchstart' in window || navigator.maxTouchPoints > 0));
+
+        function getVlcUrl(url, title = 'ویدیو') {
+            if (isAndroid()) {
+                const isHttps = url.startsWith('https://');
+                const scheme = isHttps ? 'https' : 'http';
+                const cleanUrl = url.replace(/^https?:\/\//, '');
+                const encodedTitle = encodeURIComponent(title || 'ویدیو');
+                return `intent://${cleanUrl}#Intent;action=android.intent.action.VIEW;type=video/*;package=org.videolan.vlc;scheme=${scheme};S.title=${encodedTitle};S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dorg.videolan.vlc;end`;
+            }
+            if (isIOS()) {
+                return `vlc-x-callback://x-callback-url/stream?url=${encodeURIComponent(url)}`;
+            }
+            return `vlc://${url}`;
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.style.display = 'block';
+            setTimeout(() => { t.style.display = 'none'; }, 2600);
+        }
+
+        function getActiveProfile() {
+            return localStorage.getItem('activeProfile') || 'کاربر اصلی';
+        }
+
+        function getProfileFavs() {
+            const p = getActiveProfile();
+            const key = 'userFavorites_' + encodeURIComponent(p);
+            let favs = JSON.parse(localStorage.getItem(key) || 'null');
+            if (!favs && p === 'کاربر اصلی') {
+                favs = JSON.parse(localStorage.getItem('userFavorites') || '[]');
+                localStorage.setItem(key, JSON.stringify(favs));
+            }
+            return favs || [];
+        }
+
+        function setProfileFavs(favs) {
+            const p = getActiveProfile();
+            const key = 'userFavorites_' + encodeURIComponent(p);
+            localStorage.setItem(key, JSON.stringify(favs));
+            if (p === 'کاربر اصلی') localStorage.setItem('userFavorites', JSON.stringify(favs));
+        }
+
+        function updateFavBtn(movieId) {
+            const favs = getProfileFavs();
+            const isSaved = favs.includes(movieId);
+            ['favBtn', 'heroFavBtn'].forEach(id => {
+                const btn = document.getElementById(id);
+                if (!btn) return;
+                const labelSpan = btn.querySelector('span');
+                if (labelSpan) {
+                    labelSpan.textContent = isSaved ? '✓ در لیست من' : '+ لیست من';
+                } else {
+                    btn.textContent = isSaved ? '✓ در لیست من' : '+ لیست من';
+                }
+                if (isSaved) {
+                    btn.style.background = '#e50914';
+                    btn.style.color = '#fff';
+                } else {
+                    btn.style.background = 'rgba(255,255,255,0.12)';
+                    btn.style.color = '#eee';
+                }
+            });
+        }
+
+        function toggleFav(movieId) {
+            let favs = getProfileFavs();
+            if (favs.includes(movieId)) {
+                favs = favs.filter(x => x !== movieId);
+                showToast('از لیست من حذف شد');
+            } else {
+                favs.push(movieId);
+                showToast('به لیست من اضافه شد! ✓');
+            }
+            setProfileFavs(favs);
+            updateFavBtn(movieId);
+            document.querySelectorAll(`.netflix-card[data-id="${movieId}"] .card-fav-btn`).forEach(btn => {
+                const nowFav = favs.includes(movieId);
+                btn.className = `card-fav-btn ${nowFav ? 'active' : ''}`;
+                btn.textContent = nowFav ? '❤️' : '🤍';
+            });
+        }
+
+        window.toggleCardFav = function(e, id) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            toggleFav(id);
+        };
+
+        function openShareModal() {
+            const url = window.location.href;
+            const title = currentMovie ? (currentMovie.titleFa || currentMovie.title) : 'صدسط فیلم';
+            document.getElementById('shareUrlInput').value = url;
+            document.getElementById('shareTg').href = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`;
+            document.getElementById('shareWa').href = `https://api.whatsapp.com/send?text=${encodeURIComponent(title + '\n' + url)}`;
+            document.getElementById('shareEitaa').href = `https://eitaa.com/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`;
+            document.getElementById('shareModal').classList.add('active');
+        }
+
+        function closeShareModal() {
+            document.getElementById('shareModal').classList.remove('active');
+        }
+
+        function copyShareLink() {
+            const url = document.getElementById('shareUrlInput').value;
+            navigator.clipboard.writeText(url).then(() => {
+                showToast('لینک صفحه در کلیپ‌بورد کپی شد! ✓');
+            }).catch(() => showToast('خطا در کپی لینک'));
+        }
+
+        window.onPosterMissing = function(img) {
+            if (!img) img = document.getElementById('moviePoster');
+            if (!img) return;
+            const fallbackEl = document.getElementById('posterFallbackOverlay');
+            const movieId = currentMovie ? currentMovie.id : null;
+            if (!img.dataset.triedMetahub && movieId && movieId.startsWith('tt')) {
+                img.dataset.triedMetahub = '1';
+                img.src = `https://images.metahub.space/poster/medium/${movieId}/img`;
+            } else {
+                img.style.display = 'none';
+                if (fallbackEl) {
+                    fallbackEl.style.display = 'flex';
+                    const titleEl = document.getElementById('posterFallbackTitle');
+                    const yearEl = document.getElementById('posterFallbackYear');
+                    if (titleEl && currentMovie) titleEl.textContent = currentMovie.titleFa || currentMovie.title || 'سریال';
+                    if (yearEl && currentMovie) yearEl.textContent = currentMovie.year || '';
+                }
+            }
+        };
+
+        window.onBackdropMissing = function(img) {
+            if (!img) img = document.getElementById('heroBackdrop');
+            if (!img) return;
+            const movieId = currentMovie ? currentMovie.id : null;
+            if (!movieId) return;
+            if (!img.dataset.triedMetahub && movieId.startsWith('tt')) {
+                img.dataset.triedMetahub = '1';
+                img.src = `https://images.metahub.space/background/medium/${movieId}/img`;
+            } else if (!img.dataset.triedPoster && movieId.startsWith('tt')) {
+                img.dataset.triedPoster = '1';
+                img.src = `/images/posters/${movieId}.webp`;
+                img.style.filter = 'blur(24px) brightness(0.5)';
+                img.style.transform = 'scale(1.15)';
+            } else if (!img.dataset.triedMetahubPoster && movieId.startsWith('tt')) {
+                img.dataset.triedMetahubPoster = '1';
+                img.src = `https://images.metahub.space/poster/medium/${movieId}/img`;
+                img.style.filter = 'blur(24px) brightness(0.5)';
+                img.style.transform = 'scale(1.15)';
+            } else {
+                img.style.display = 'none';
+                const wrap = img.parentElement;
+                if (wrap) wrap.style.background = 'radial-gradient(ellipse at 50% 20%, #1e293b 0%, #0a0a0a 100%)';
+            }
+        };
+
+        function renderQuickQualityChips(movie) {
+            const container = document.getElementById('quickQualityChips');
+            if (!container) return;
+            if (!streamQueue || streamQueue.length === 0) {
+                container.innerHTML = '<span style="font-size:0.75rem; color:#888;">منبع پخشی یافت نشد</span>';
+                return;
+            }
+            container.innerHTML = streamQueue.map((st, idx) => {
+                const isActive = (idx === currentStreamIndex);
+                const langIcon = st.isDubbed ? '🎙️' : '💬';
+                const qText = st.quality || ('کیفیت ' + (idx + 1));
+                const epText = st.episode ? `قسمت ${st.episode} - ` : '';
+                return `<button type="button" class="quality-chip ${isActive ? 'active' : ''}" onclick="selectStreamByIndex(${idx})" title="سوییچ به ${st.label || qText}">
+                    <span class="chip-lang-icon">${langIcon}</span>
+                    <span class="chip-quality-text">${epText}${qText}</span>
+                </button>`;
+            }).join('');
+        }
+
+        function selectStreamByIndex(idx) {
+            if (!streamQueue || !streamQueue[idx]) return;
+            currentStreamIndex = idx;
+            const target = streamQueue[idx];
+            initPlayer(target.url, (currentMovie?.titleFa || currentMovie?.title || 'سریال'), target.label, true);
+            renderQuickQualityChips(currentMovie);
+        }
+
+        let streamQueue = [];
+        let currentStreamIndex = 0;
+        let autoSwitchTimer = null;
+        let isAutoSwitching = false;
+        let failedStreamUrls = new Set();
+
+        function parseSizeToMB(sizeStr, qualityStr) {
+            if (sizeStr && typeof sizeStr === 'string') {
+                const clean = sizeStr.trim().toUpperCase();
+                const match = clean.match(/([\d\.]+)\s*(GB|MB|KB|G|M|K)?/);
+                if (match) {
+                    const val = parseFloat(match[1]);
+                    if (!isNaN(val)) {
+                        const unit = match[2] || 'MB';
+                        if (unit.startsWith('G')) return val * 1024;
+                        if (unit.startsWith('K')) return val / 1024;
+                        return val;
+                    }
+                }
+            }
+            const q = (qualityStr || '').toLowerCase();
+            if (q.includes('480')) return 480;
+            if (q.includes('720')) return 1200;
+            if (q.includes('1080')) return 2500;
+            if (q.includes('2160') || q.includes('4k')) return 5000;
+            return 1500;
+        }
+
+        function buildStreamQueue(movie, targetEpisode = 1) {
+            const dl = (movie && movie.downloads) || {};
+            const videoExts = ['.mkv', '.mp4', '.webm', '.avi', '.mov'];
+            const isPlayableUrl = (url) => {
+                if (!url || typeof url !== 'string') return false;
+                const clean = url.split('?')[0].toLowerCase();
+                return videoExts.some(ext => clean.endsWith(ext));
+            };
+
+            const processList = (list, isDubbed, groupName) => {
+                if (!Array.isArray(list)) return [];
+                const queue = [];
+
+                // Sort qualities: lowest size first!
+                const sortedQualities = [...list].sort((a, b) => {
+                    const sizeA = parseSizeToMB(a.size, a.quality);
+                    const sizeB = parseSizeToMB(b.size, b.quality);
+                    return sizeA - sizeB;
+                });
+
+                sortedQualities.forEach(item => {
+                    if (!item) return;
+                    const s = item.season || '1';
+                    const sLabel = `فصل ${s} - `;
+
+                    // If item has parsed episodes:
+                    if (Array.isArray(item.episodes) && item.episodes.length > 0) {
+                        const ep = item.episodes.find(e => e.episode === targetEpisode) || item.episodes[0];
+                        if (ep && ep.url && isPlayableUrl(ep.url)) {
+                            queue.push({
+                                url: ep.url,
+                                quality: item.quality || 'معمولی',
+                                size: ep.size || item.size || '',
+                                sizeMB: parseSizeToMB(ep.size || item.size, item.quality),
+                                isDubbed: !!isDubbed,
+                                group: groupName,
+                                season: s,
+                                episode: ep.episode || targetEpisode,
+                                label: `${groupName} - ${sLabel}قسمت ${ep.episode || targetEpisode} (${item.quality || ''})`
+                            });
+                        }
+                    } else if (item.url && isPlayableUrl(item.url)) {
+                        queue.push({
+                            url: item.url,
+                            quality: item.quality || 'معمولی',
+                            size: item.size || '',
+                            sizeMB: parseSizeToMB(item.size, item.quality),
+                            isDubbed: !!isDubbed,
+                            group: groupName,
+                            season: s,
+                            episode: targetEpisode,
+                            label: `${groupName} - ${sLabel}${item.quality || ''}`
+                        });
+                    }
+                });
+
+                return queue;
+            };
+
+            const dubbedQueue = processList(dl.dubbed, true, '🎙️ دوبله فارسی');
+            const softsubQueue = processList(dl.softsub, false, '💬 زیرنویس فارسی');
+
+            return [...dubbedQueue, ...softsubQueue];
+        }
+
+        function clearAutoSwitchTimer() {
+            if (autoSwitchTimer) {
+                clearTimeout(autoSwitchTimer);
+                autoSwitchTimer = null;
+            }
+        }
+
+        function armStreamWatchdog(timeoutMs = 7500) {
+            clearAutoSwitchTimer();
+            autoSwitchTimer = setTimeout(() => {
+                if (!art || !art.video) return;
+                if (art.video.readyState < 2 && !art.video.paused) {
+                    console.warn('[Player Watchdog] Stalled/unsupported codec timeout on:', currentStreamUrl);
+                    handleStreamError('عدم دریافت دیتای ویدیو یا کدک نامعتبر (Timeout)');
+                }
+            }, timeoutMs);
+        }
+
+        function attachPlayerEvents() {
+            if (!art) return;
+
+            const onPlaying = () => {
+                clearAutoSwitchTimer();
+                hideFallbackOverlay();
+                const cur = streamQueue[currentStreamIndex];
+                if (cur) {
+                    showToast(`✓ در حال پخش «${cur.label}»`);
+                }
+            };
+
+            art.on('video:canplay', onPlaying);
+            art.on('video:playing', onPlaying);
+            art.on('video:timeupdate', () => {
+                if (art.video && art.video.currentTime > 0.5) {
+                    clearAutoSwitchTimer();
+                }
+            });
+
+            art.on('error', (err) => {
+                console.warn('[Artplayer Event] error:', err);
+                handleStreamError('خطای بارگذاری Artplayer');
+            });
+
+            art.on('video:error', (e) => {
+                console.warn('[Artplayer Event] video:error:', e);
+                handleStreamError('خطای فایل ویدیو در مرورگر');
+            });
+
+            if (art.video) {
+                art.video.addEventListener('error', (e) => {
+                    console.warn('[HTML5 Video Event] error:', e);
+                    handleStreamError('خطای دیکد یا اتصال مرورگر');
+                });
+            }
+        }
+
+        function handleStreamError(reason) {
+            clearAutoSwitchTimer();
+            if (isAutoSwitching) return;
+            isAutoSwitching = true;
+
+            const failedStream = streamQueue[currentStreamIndex];
+            const failedLabel = failedStream ? failedStream.label : 'کیفیت فعلی';
+            if (failedStream) {
+                failedStreamUrls.add(failedStream.url);
+            }
+            updateAllStreamRowsUI();
+
+            if (currentStreamIndex + 1 < streamQueue.length) {
+                currentStreamIndex++;
+                window.currentStreamIndex = currentStreamIndex;
+                const nextStream = streamQueue[currentStreamIndex];
+                showToast(`⚠️ «${failedLabel}» پاسخ نداد. در حال سوئیچ خودکار به کیفیت بعدی: «${nextStream.label}»...`);
+
+                setTimeout(() => {
+                    isAutoSwitching = false;
+                    initPlayer(nextStream.url, (currentMovie?.titleFa || currentMovie?.title || 'سریال'), nextStream.label, true);
+                }, 1200);
+            } else {
+                isAutoSwitching = false;
+                showAllStreamsFailedUI();
+            }
+        }
+
+        function manualNextStream() {
+            if (streamQueue.length <= 1) {
+                showToast('کیفیت جایگزین دیگری برای این عنوان ثبت نشده است');
+                return;
+            }
+            currentStreamIndex = (currentStreamIndex + 1) % streamQueue.length;
+            window.currentStreamIndex = currentStreamIndex;
+            const next = streamQueue[currentStreamIndex];
+            showToast(`در حال سوئیچ به: «${next.label}»...`);
+            initPlayer(next.url, (currentMovie?.titleFa || currentMovie?.title || 'سریال'), next.label, true);
+        }
+
+        function selectStream(url, qualityLabel, shouldPlay = true) {
+            const idx = streamQueue.findIndex(s => s.url === url);
+            if (idx !== -1) {
+                currentStreamIndex = idx;
+                window.currentStreamIndex = currentStreamIndex;
+            }
+            currentStreamUrl = url;
+            updateAllStreamRowsUI();
+
+            const heroVlc = document.getElementById('heroVlcBtn');
+            if (heroVlc) heroVlc.href = getVlcUrl(url, (currentMovie?.titleFa || currentMovie?.title || 'سریال'));
+
+            if (window.SadSatNative && typeof window.SadSatNative.playVideo === 'function') {
+                if (shouldPlay) {
+                    const isMkv = url.toLowerCase().includes('.mkv');
+                    const hasSub = (window.activeDownloadLang === 'softsub') || url.toLowerCase().includes('softsub') || (qualityLabel && qualityLabel.includes('زیرنویس'));
+                    const title = (currentMovie?.titleFa || currentMovie?.title || 'سریال') + ' ' + (qualityLabel || '');
+                    const backdrop = currentMovie ? (currentMovie.backdrop || `/images/backdrops/${currentMovie.id}.webp`) : '';
+                    window.SadSatNative.playVideo(url, title, isMkv, hasSub, backdrop);
+                }
+                return;
+            }
+
+            if (isIOS()) {
+                if (shouldPlay) {
+                    showToast('در حال باز کردن در نرم‌افزار VLC… ▶');
+                    window.location.href = getVlcUrl(url, (currentMovie?.titleFa || currentMovie?.title || 'سریال') + ' ' + (qualityLabel || ''));
+                }
+                return;
+            }
+
+            hideFallbackOverlay();
+            initPlayer(url, (currentMovie?.titleFa || currentMovie?.title || 'سریال'), qualityLabel, shouldPlay);
+            if (shouldPlay) {
+                const playerWrap = document.querySelector('.player-wrapper');
+                if (playerWrap) {
+                    window.scrollTo({ top: playerWrap.offsetTop - 70, behavior: 'smooth' });
+                }
+            }
+        }
+
+        window.playSpecificEpisode = function(url, label) {
+            const title = (currentMovie?.titleFa || currentMovie?.title || 'سریال');
+            let idx = streamQueue.findIndex(s => s.url === url);
+            if (idx === -1) {
+                streamQueue.unshift({
+                    url: url,
+                    label: label,
+                    isDubbed: label.includes('دوبله'),
+                    sizeMB: 0
+                });
+                idx = 0;
+            }
+            currentStreamIndex = idx;
+            window.currentStreamIndex = currentStreamIndex;
+            currentStreamUrl = url;
+            updateAllStreamRowsUI();
+            renderQuickQualityChips(currentMovie);
+
+            const heroVlc = document.getElementById('heroVlcBtn');
+            if (heroVlc) heroVlc.href = getVlcUrl(url, title);
+
+            if (window.SadSatNative && typeof window.SadSatNative.playVideo === 'function') {
+                const isMkv = url.toLowerCase().includes('.mkv');
+                const hasSub = !label.includes('دوبله') && (label.includes('زیرنویس') || url.toLowerCase().includes('softsub') || url.toLowerCase().includes('sub'));
+                const fullTitle = title + ' ' + (label || '');
+                const backdrop = currentMovie ? (currentMovie.backdrop || `/images/backdrops/${currentMovie.id}.webp`) : '';
+                window.SadSatNative.playVideo(url, fullTitle, isMkv, hasSub, backdrop);
+                return;
+            }
+
+            if (isIOS()) {
+                showToast('در حال باز کردن در نرم‌افزار VLC… ▶');
+                window.location.href = getVlcUrl(url, title + ' ' + (label || ''));
+                return;
+            }
+
+            hideFallbackOverlay();
+            initPlayer(url, title, label, true);
+            const playerWrap = document.querySelector('.player-wrapper');
+            if (playerWrap) {
+                window.scrollTo({ top: playerWrap.offsetTop - 70, behavior: 'smooth' });
+            }
+        };
+
+        function updateAllStreamRowsUI() {
+            if (isIOS()) {
+                document.querySelectorAll('.dl-item, .episode-card').forEach(el => {
+                    el.classList.remove('active-stream', 'failed-stream', 'active-ep', 'failed-ep');
+                    const badge = el.querySelector('.stream-status-tag');
+                    if (badge) badge.remove();
+                });
+                return;
+            }
+            document.querySelectorAll('.dl-item, .episode-card').forEach(el => {
+                const u = el.getAttribute('data-url');
+                if (!u) return;
+
+                el.classList.remove('active-stream', 'failed-stream', 'active-ep', 'failed-ep');
+                const badge = el.querySelector('.stream-status-tag');
+                if (badge) badge.remove();
+
+                if (u === currentStreamUrl) {
+                    el.classList.add('active-stream', 'active-ep');
+                    const info = el.querySelector('.ep-meta-top') || el.querySelector('.dl-info') || el.querySelector('.ep-left') || el.querySelector('.q-left');
+                    if (info) {
+                        const tag = document.createElement('span');
+                        tag.className = 'stream-status-tag active';
+                        tag.textContent = 'در حال پخش';
+                        info.appendChild(tag);
+                    }
+                } else if (failedStreamUrls.has(u)) {
+                    el.classList.add('failed-stream', 'failed-ep');
+                    const info = el.querySelector('.ep-meta-top') || el.querySelector('.dl-info') || el.querySelector('.ep-left') || el.querySelector('.q-left');
+                    if (info) {
+                        const tag = document.createElement('span');
+                        tag.className = 'stream-status-tag failed';
+                        tag.textContent = 'سوئیچ شد';
+                        info.appendChild(tag);
+                    }
+                }
+            });
+        }
+
+        window.handleStreamError = handleStreamError;
+        window.manualNextStream = manualNextStream;
+        window.selectStream = selectStream;
+        window.retryStreamQueue = retryStreamQueue;
+
+        function hideFallbackOverlay() {
+            const overlay = document.getElementById('playerFallbackOverlay');
+            if (overlay) overlay.style.display = 'none';
+        }
+
+        function showAllStreamsFailedUI() {
+            showToast('⚠️ تمام کیفیت‌های آنلاین بررسی شدند اما پخش مرورگر پشتیبانی نشد. از «پخش با VLC» استفاده کنید.', 6000);
+            const playerEl = document.getElementById('player');
+            if (!playerEl) return;
+            const vlcUrl = currentStreamUrl ? getVlcUrl(currentStreamUrl, (currentMovie?.titleFa || currentMovie?.title || 'سریال')) : '#';
+
+            let fallbackOverlay = document.getElementById('playerFallbackOverlay');
+            if (!fallbackOverlay) {
+                fallbackOverlay = document.createElement('div');
+                fallbackOverlay.id = 'playerFallbackOverlay';
+                fallbackOverlay.className = 'player-fallback-overlay';
+                playerEl.parentElement.appendChild(fallbackOverlay);
+            }
+            fallbackOverlay.innerHTML = `
+                <div class="player-fallback-card">
+                    <div class="player-fallback-icon">📺</div>
+                    <div class="player-fallback-title">عدم پشتیبانی کدک در مرورگر</div>
+                    <div class="player-fallback-desc">فرمت ویدیو یا صدای این قسمت در مرورگر وب پشتیبانی نمی‌شود. می‌توانید با یک کلیک آن را مستقیماً در نرم‌افزار VLC بدون محدودیت پخش کنید:</div>
+                    <div class="player-fallback-actions">
+                        <a href="${vlcUrl}" class="btn-action btn-action-vlc" style="padding: 10px 20px; font-size: 0.95rem;">
+                            ▶ پخش مستقیم در VLC Player
+                        </a>
+                        <button type="button" class="btn-action btn-action-secondary" onclick="retryStreamQueue()" style="padding: 10px 18px;">
+                            🔄 تلاش مجدد
+                        </button>
+                    </div>
+                </div>
+            `;
+            fallbackOverlay.style.display = 'flex';
+        }
+
+        function retryStreamQueue() {
+            hideFallbackOverlay();
+            failedStreamUrls.clear();
+            currentStreamIndex = 0;
+            if (streamQueue.length > 0) {
+                const first = streamQueue[0];
+                initPlayer(first.url, (currentMovie?.titleFa || currentMovie?.title || 'سریال'), first.label, true);
+            }
+        }
+
+        function initPlayer(url, title, quality, shouldPlay = false) {
+            currentStreamUrl = url;
+            clearAutoSwitchTimer();
+            if (isIOS()) return;
+
+            const pContainer = document.querySelector('.player-container');
+            if (pContainer) pContainer.classList.remove('has-hub');
+
+            const qualityLabel = quality || 'اصلی';
+            const qBadge = document.getElementById('currentQualityName');
+            if (qBadge) qBadge.textContent = qualityLabel;
+
+            const vlcBtn = document.getElementById('vlcBtn');
+            if (vlcBtn) vlcBtn.href = getVlcUrl(url, title);
+
+            if (isMobile() && url.toLowerCase().endsWith('.mkv')) {
+                document.getElementById('mkvNotice').style.display = 'block';
+            } else {
+                document.getElementById('mkvNotice').style.display = 'none';
+            }
+
+            updateAllStreamRowsUI();
+
+            if (art) {
+                art.switchUrl(url).then(() => {
+                    if (shouldPlay) {
+                        art.play().catch(e => console.warn('Play prevented:', e));
+                        armStreamWatchdog();
+                    }
+                }).catch(err => {
+                    console.warn('switchUrl error:', err);
+                    handleStreamError('خطای سوییچ منبع ویدیو');
+                });
+                return;
+            }
+
+            if (!window.Artplayer) return;
+
+            art = new Artplayer({
+                container: '#player',
+                url: url,
+                title: title,
+                poster: currentMovie ? (currentMovie.backdrop || `/images/backdrops/${currentMovie.id}.webp`) : '',
+                volume: 0.75,
+                autoplay: !!shouldPlay,
+                pip: true,
+                screenshot: true,
+                setting: true,
+                loop: false,
+                playbackRate: true,
+                aspectRatio: true,
+                fullscreen: true,
+                fullscreenWeb: true,
+                theme: '#e50914',
+                lang: 'fa'
+            });
+
+            attachPlayerEvents();
+
+            if (shouldPlay) {
+                armStreamWatchdog();
+            }
+        }
+
+        window.promptDirectStream = function(defaultTitle, prefillUrl = '') {
+            const entered = prompt('لطفاً لینک مستقیم فایل ویدیو (یا قسمت دلخواه) را جهت پخش در پلیر وارد فرمایید:', prefillUrl || (currentStreamUrl || ''));
+            if (entered && entered.trim()) {
+                const clean = entered.trim();
+                if (isIOS()) {
+                    showToast('در حال باز کردن در نرم‌افزار VLC… ▶');
+                    window.location.href = getVlcUrl(clean, defaultTitle || 'قسمت انتخابی');
+                    return;
+                }
+                initPlayer(clean, defaultTitle || 'قسمت انتخابی', 'پخش مستقیم');
+                showToast('پلیر با لینک وارد شده راه‌اندازی شد! ▶');
+                const pw = document.querySelector('.player-wrapper');
+                if (pw) {
+                    window.scrollTo({ top: pw.offsetTop - 60, behavior: 'smooth' });
+                }
+            }
+        };
+
+        window.onCardPosterError = function(img) {
+            const id = img.dataset.id;
+            if (!img.dataset.triedMetahub && id && id.startsWith('tt')) {
+                img.dataset.triedMetahub = '1';
+                img.src = `https://images.metahub.space/poster/medium/${id}/img`;
+            } else {
+                img.parentElement.classList.add('no-poster');
+            }
+        };
+
+        function renderMovieCard(m) {
+            const englishTitle = m.title || m.titleFa;
+            const poster = m.poster || `/images/posters/${m.id}.webp`;
+            const year = m.year || '';
+            const isSeries = m.type === 'tvSeries';
+            const link = isSeries ? `/htmls/tvshowreview.html?id=${m.id}` : `/htmls/moviereview.html?id=${m.id}`;
+            return `
+                <a href="${link}" class="netflix-card" data-id="${m.id}">
+                    <div class="card-img-wrap">
+                        <div class="card-s-badge" aria-hidden="true">
+                            <img src="/images/sadflix_s_badge.png" width="14" height="22" alt="S" style="display: block;">
+                        </div>
+                        <img data-id="${m.id}" src="${poster}" alt="${englishTitle}" loading="lazy" onload="if(this.naturalWidth <= 1) window.onCardPosterError(this)" onerror="window.onCardPosterError(this)">
+                        <div class="card-fallback">
+                            <span class="fallback-icon">${isSeries ? '📺' : '🎬'}</span>
+                            <span class="fallback-title">${englishTitle}</span>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title-en" dir="ltr" title="${englishTitle}">${englishTitle}</div>
+                        <div class="card-meta" dir="ltr">
+                            <span>${year}</span>
+                            ${year ? '<span>•</span>' : ''}
+                            <span>${isSeries ? 'Series' : 'Movie'}</span>
+                        </div>
+                    </div>
+                </a>
+            `;
+        }
+
+        window.activeDownloadLang = null;
+        window.currentMovieData = null;
+
+        window.toggleQualityAccordion = function(headerEl) {
+            const card = headerEl.closest('.quality-accordion-card');
+            if (!card) return;
+            const body = card.querySelector('.quality-accordion-body');
+            const isOpen = card.classList.contains('is-open');
+            if (isOpen) {
+                card.classList.remove('is-open');
+                if (body) body.style.display = 'none';
+            } else {
+                card.classList.add('is-open');
+                if (body) body.style.display = 'block';
+            }
+        };
+
+        window.switchDownloadLang = function(lang) {
+            window.activeDownloadLang = lang;
+            if (window.currentMovieData) {
+                renderDownloads(window.currentMovieData);
+            }
+        };
+
+        function getActiveDownloadScope() {
+            const allSeasons = document.querySelectorAll('.season-content');
+            if (allSeasons && allSeasons.length > 0) {
+                for (const s of allSeasons) {
+                    if (s.style.display !== 'none' && window.getComputedStyle(s).display !== 'none') {
+                        return s;
+                    }
+                }
+                return allSeasons[0];
+            }
+            return document.getElementById('downloadsArea') || document;
+        }
+
+        window.onQualityDropdownChange = function(selectedQuality) {
+            const scope = getActiveDownloadScope();
+            const cards = scope.querySelectorAll('.quality-accordion-card, .quality-row-card');
+            const targetQ = (selectedQuality || 'all').trim();
+            cards.forEach(card => {
+                const q = (card.getAttribute('data-quality') || '').trim();
+                const body = card.querySelector('.quality-accordion-body');
+                const arrow = card.querySelector('.quality-accordion-arrow');
+                if (targetQ === 'all' || q === targetQ) {
+                    card.style.display = '';
+                    if (targetQ !== 'all' && body) {
+                        card.classList.add('is-open');
+                        body.style.display = 'block';
+                        if (arrow) arrow.textContent = '▲';
+                    }
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        };
+
+        function populateQualityDropdown() {
+            const select = document.getElementById('qualityDropdownSelect');
+            if (!select) return;
+            const scope = getActiveDownloadScope();
+            const cards = scope.querySelectorAll('.quality-accordion-card, .quality-row-card');
+            const qualities = [];
+            cards.forEach(c => {
+                const q = (c.getAttribute('data-quality') || '').trim();
+                if (q && !qualities.includes(q)) qualities.push(q);
+            });
+            let opts = '<option value="all">همه کیفیت‌ها ▼</option>';
+            qualities.forEach(q => {
+                opts += `<option value="${q}">${q}</option>`;
+            });
+            select.innerHTML = opts;
+            select.value = 'all';
+        }
+
+        window.handleNativeDownload = function(event, url) {
+            if (window.SadSatNative && typeof window.SadSatNative.downloadFile === 'function') {
+                if (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                const fileName = url.substring(url.lastIndexOf('/') + 1) || 'sadsat_video.mkv';
+                window.SadSatNative.downloadFile(url, decodeURIComponent(fileName));
+                return false;
+            }
+            return true;
+        };
+
+        window.handleNativeVlc = function(event, url, title) {
+            if (window.SadSatNative && typeof window.SadSatNative.openVlc === 'function') {
+                if (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                window.SadSatNative.openVlc(url, title || 'صدسط فیلم');
+                return false;
+            }
+            return true;
+        };
+
+        function renderEpisodeBtns(url, epLabel, vlcTitle, isPlayable = true) {
+            if (isIOS()) {
+                return `
+                    <div class="ep-btns">
+                        <a href="${getVlcUrl(url, vlcTitle)}" class="btn-ep-vlc" title="پخش در نرم‌افزار VLC" onclick="return handleNativeVlc(event, '${url}', '${vlcTitle}')">
+                            ▶ پخش با VLC
+                        </a>
+                        <a href="${url}" class="btn-ep-dl" target="_blank" download title="دانلود مستقیم فایل" onclick="return handleNativeDownload(event, '${url}')">
+                            ⬇ دانلود
+                        </a>
+                    </div>
+                `;
+            }
+            return `
+                <div class="ep-btns">
+                    ${isPlayable ? `<button type="button" class="btn-ep-play" onclick="playSpecificEpisode('${url}', '${epLabel}')" title="پخش آنلاین در مرورگر">▶ پخش</button>` : ''}
+                    <a href="${url}" class="btn-ep-dl" target="_blank" download title="دانلود مستقیم فایل" onclick="return handleNativeDownload(event, '${url}')">⬇ دانلود</a>
+                    <a href="${getVlcUrl(url, vlcTitle)}" class="btn-ep-vlc" title="پخش در نرم‌افزار VLC" onclick="return handleNativeVlc(event, '${url}', '${vlcTitle}')">VLC</a>
+                </div>
+            `;
+        }
+
+        function renderDownloads(movie) {
+            window.currentMovieData = movie;
+            const area = document.getElementById('downloadsArea');
+            const dl = movie.downloads || {};
+            const isSeries = movie.type === 'tvSeries';
+            const videoExts = ['.mkv', '.mp4', '.webm', '.avi', '.mov'];
+
+            const hasDubbed = Array.isArray(dl.dubbed) && dl.dubbed.length > 0;
+            const hasSoftsub = Array.isArray(dl.softsub) && dl.softsub.length > 0;
+
+            if (!hasDubbed && !hasSoftsub) {
+                area.innerHTML = '<div style="color:#aaa; text-align:center; padding:30px; font-weight:700;">هیچ قسمت یا کیفیتی برای این سریال ثبت نشده است.</div>';
+                return;
+            }
+
+            // Determine active language
+            if (!window.activeDownloadLang) {
+                window.activeDownloadLang = hasDubbed ? 'dubbed' : 'softsub';
+            } else if (window.activeDownloadLang === 'dubbed' && !hasDubbed && hasSoftsub) {
+                window.activeDownloadLang = 'softsub';
+            } else if (window.activeDownloadLang === 'softsub' && !hasSoftsub && hasDubbed) {
+                window.activeDownloadLang = 'dubbed';
+            }
+            const activeLang = window.activeDownloadLang;
+
+            let html = '';
+
+            // 1. Top Toolbar: Language Selector + Quality Dropdown
+            html += `
+                <div class="dl-toolbar-wrap">
+                    <div class="lang-selector-group">
+                        ${hasDubbed ? `
+                            <button type="button" class="lang-selector-btn ${activeLang === 'dubbed' ? 'active' : ''}" onclick="switchDownloadLang('dubbed')">
+                                <span class="lang-icon">🎙️</span>
+                                <span>دوبله فارسی</span>
+                                <span class="lang-badge">${dl.dubbed.length}</span>
+                            </button>
+                        ` : ''}
+                        ${hasSoftsub ? `
+                            <button type="button" class="lang-selector-btn ${activeLang === 'softsub' ? 'active' : ''}" onclick="switchDownloadLang('softsub')">
+                                <span class="lang-icon">💬</span>
+                                <span>زیرنویس فارسی</span>
+                                <span class="lang-badge">${dl.softsub.length}</span>
+                            </button>
+                        ` : ''}
+                    </div>
+                    <div class="quality-dropdown-box">
+                        <label for="qualityDropdownSelect">کیفیت:</label>
+                        <select id="qualityDropdownSelect" class="quality-dropdown-select" onchange="onQualityDropdownChange(this.value)">
+                            <option value="all">همه کیفیت‌ها ▼</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+
+            const currentList = activeLang === 'dubbed' ? (dl.dubbed || []) : (dl.softsub || []);
+            const isDubbed = activeLang === 'dubbed';
+
+            if (isSeries) {
+                const seasons = {};
+                currentList.forEach(l => {
+                    const s = l.season || '1';
+                    if (!seasons[s]) seasons[s] = [];
+                    seasons[s].push(l);
+                });
+
+                const seasonKeys = Object.keys(seasons).sort((a,b) => parseInt(a) - parseInt(b));
+                if (seasonKeys.length === 0) {
+                    html += '<div style="color:#aaa; text-align:center; padding:20px;">در این بخش قسمتی ثبت نشده است.</div>';
+                } else {
+                    const seasonSelect = document.getElementById('seasonSelectDropdown');
+                    if (seasonSelect) {
+                        seasonSelect.innerHTML = seasonKeys.map(k => `<option value="${k}">فصل ${k} — Season ${k}</option>`).join('');
+                        seasonSelect.value = seasonKeys[0] || '1';
+                    }
+
+                    html += `<div class="season-tabs" id="seasonTabsContainer">`;
+                    seasonKeys.forEach((s, idx) => {
+                        html += `<button class="season-tab ${idx === 0 ? 'active' : ''}" data-season="${s}" onclick="switchSeason('${s}', event)">فصل ${s} — Season ${s}</button>`;
+                    });
+                    html += `</div>`;
+
+                    seasonKeys.forEach((s, sIdx) => {
+                        html += `<div class="season-content" id="season-${s}" style="display: ${sIdx === 0 ? 'block' : 'none'};">`;
+
+                        seasons[s].forEach((item, qIdx) => {
+                            const episodes = Array.isArray(item.episodes) ? item.episodes : [];
+                            const isFirstQuality = qIdx === 0;
+
+                            html += `
+                                <div class="quality-accordion-card ${isFirstQuality ? 'is-open' : ''}" data-quality="${item.quality || 'اصلی'}">
+                                    <div class="quality-accordion-header" onclick="toggleQualityAccordion(this)">
+                                        <div class="quality-accordion-title-wrap">
+                                            <span class="quality-accordion-arrow">▼</span>
+                                            <span class="quality-title">${item.quality || 'کیفیت اصلی'}</span>
+                                            ${episodes.length > 0 ? `<span class="quality-count">(${episodes.length} قسمت)</span>` : ''}
+                                            ${item.size ? `<span class="dl-size">• ${item.size}</span>` : ''}
+                                        </div>
+                                        <div class="quality-accordion-actions" onclick="event.stopPropagation()">
+                                            ${item.url ? `
+                                                <a href="${item.url}" target="_blank" rel="noopener" class="btn-folder-link" title="دانلود یکجای تمام قسمت‌ها از پوشه سرور">
+                                                    📁 پوشه سرور
+                                                </a>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+                                    <div class="quality-accordion-body" style="display: ${isFirstQuality ? 'block' : 'none'};">
+                            `;
+
+                            if (episodes.length > 0) {
+                                html += `<div class="episodes-list-wrap">`;
+                                episodes.forEach(ep => {
+                                    const epLabel = `${isDubbed ? 'دوبله' : 'زیرنویس'} - فصل ${s} قسمت ${ep.episode} (${item.quality || ''})`;
+                                    const epVlcTitle = (movie.titleFa || movie.title || 'سریال') + ' E' + ep.episode;
+                                    const backdropSrc = movie.backdrop || `/images/backdrops/${movie.id}.webp`;
+                                    html += `
+                                        <div class="netflix-episode-item episode-card" data-url="${ep.url}">
+                                            <div class="ep-left-wrap">
+                                                <div class="ep-index-number">${ep.episode}</div>
+                                                <div class="ep-thumb-container" onclick="playSpecificEpisode('${ep.url}', '${epLabel}')" title="پخش آنلاین قسمت ${ep.episode}">
+                                                    <img src="${backdropSrc}" class="ep-thumb-image" alt="قسمت ${ep.episode}" loading="lazy" onerror="this.src='/images/placeholder.webp'">
+                                                    <div class="ep-thumb-overlay">
+                                                        <svg width="28" height="28" viewBox="0 0 24 24" fill="#ffffff"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                                                    </div>
+                                                    <div class="ep-duration-tag">~ 50 دقیقه</div>
+                                                </div>
+                                                <div class="ep-meta-content">
+                                                    <div class="ep-meta-top">
+                                                        <h4 class="ep-title-text">${ep.episode}. قسمت ${ep.episode} - فصل ${s}</h4>
+                                                        ${item.quality ? `<span class="ep-quality-tag">${item.quality}</span>` : ''}
+                                                    </div>
+                                                    <p class="ep-synopsis-text">
+                                                        تماشا و دانلود قسمت ${ep.episode} از فصل ${s} با بالاترین کیفیت، صدای چندکاناله و ${isDubbed ? 'دوبله اختصاصی استودیویی' : 'زیرنویس هماهنگ فارسی'}.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="ep-right-actions">
+                                                ${renderEpisodeBtns(ep.url, epLabel, epVlcTitle, true)}
+                                            </div>
+                                        </div>
+                                    `;
+                                });
+                                html += `</div>`;
+                            } else {
+                                const isDirectVideo = videoExts.some(ext => item.url && item.url.toLowerCase().endsWith(ext));
+                                const epLabel = `${isDubbed ? 'دوبله' : 'زیرنویس'} - فصل ${s} - ${item.quality}`;
+                                const epVlcTitle = (movie.titleFa || movie.title || 'سریال') + ' ' + item.quality;
+                                html += `
+                                    <div class="episodes-grid" style="grid-template-columns: 1fr;">
+                                        <div class="episode-card" data-url="${item.url}">
+                                            <div class="ep-left">
+                                                <span class="ep-num-pill">${item.quality}</span>
+                                                ${item.size ? `<span class="q-size-badge" style="margin-right:8px;">${item.size}</span>` : ''}
+                                            </div>
+                                            ${renderEpisodeBtns(item.url, epLabel, epVlcTitle, isDirectVideo)}
+                                        </div>
+                                    </div>
+                                `;
+                            }
+
+                            html += `</div></div>`;
+                        });
+
+                        html += `</div>`;
+                    });
+                }
+            } else {
+                if (currentList.length === 0) {
+                    html += '<div style="color:#aaa; text-align:center; padding:20px;">هیچ کیفیتی در این بخش ثبت نشده است.</div>';
+                } else {
+                    currentList.forEach((item) => {
+                        const isPlayable = videoExts.some(ext => item.url && item.url.toLowerCase().endsWith(ext));
+                        const label = `${item.quality}${item.size ? ` (${item.size})` : ''} - ${isDubbed ? 'دوبله فارسی' : 'زیرنویس فارسی'}`;
+                        const vlcTitle = (movie.titleFa || movie.title || 'فیلم') + ' ' + (item.quality || '');
+
+                        html += `
+                            <div class="quality-row-card" data-quality="${(item.quality || '').trim()}">
+                                <div class="q-left">
+                                    <span class="q-badge">${item.quality}</span>
+                                    ${item.size ? `<span class="q-size-badge">${item.size}</span>` : ''}
+                                </div>
+                                <div class="q-actions">
+                                    ${renderEpisodeBtns(item.url, label, vlcTitle, isPlayable)}
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+            }
+
+            area.innerHTML = html;
+            populateQualityDropdown();
+            updateAllStreamRowsUI();
+        }
+
+        window.scrollAndPlayFirst = function() {
+            if (streamQueue && streamQueue.length > 0) {
+                playSpecificEpisode(streamQueue[0].url, streamQueue[0].label);
+            } else {
+                const firstBtn = document.querySelector('.btn-ep-play, .btn-stream');
+                if (firstBtn) {
+                    firstBtn.click();
+                } else {
+                    const el = document.getElementById('downloadsArea') || document.querySelector('.player-wrapper');
+                    if (el) window.scrollTo({ top: el.offsetTop - 70, behavior: 'smooth' });
+                }
+            }
+        };
+
+        window.switchSeason = function(s, e) {
+            document.querySelectorAll('.season-tab').forEach(b => b.classList.remove('active'));
+            if (e && e.target && e.target.classList.contains('season-tab')) e.target.classList.add('active');
+            else {
+                document.querySelectorAll('.season-tab').forEach(b => {
+                    if (b.getAttribute('data-season') === String(s) || b.textContent.includes(`فصل ${s}`)) b.classList.add('active');
+                });
+            }
+            const sel = document.getElementById('seasonSelectDropdown');
+            if (sel && sel.value !== String(s)) {
+                sel.value = String(s);
+            }
+            document.querySelectorAll('.season-content').forEach(c => c.style.display = 'none');
+            const target = document.getElementById(`season-${s}`);
+            if (target) {
+                target.style.display = 'block';
+                target.querySelectorAll('.quality-accordion-card, .quality-row-card').forEach(card => {
+                    card.style.display = '';
+                });
+            }
+            populateQualityDropdown();
+        };
+
+        async function loadMovie() {
+            const params = new URLSearchParams(window.location.search);
+            let rawId = params.get('id') || params.get('movieId') || params.get('num') || '';
+            if (!rawId && window.location.search) {
+                const cleanSearch = window.location.search.replace(/^\?/, '').trim();
+                if (cleanSearch) {
+                    const firstPart = cleanSearch.split('&')[0];
+                    if (firstPart.startsWith('tt') || /^\d+$/.test(firstPart)) {
+                        rawId = firstPart;
+                    }
+                }
+            }
+            if (!rawId) {
+                const titleParam = params.get('title') || params.get('movieName') || params.get('name') || params.get('q');
+                if (titleParam) {
+                    rawId = titleParam.trim();
+                }
+            }
+            rawId = (rawId || '').trim();
+            if (!rawId || rawId === 'undefined' || rawId === 'null') {
+                rawId = 'tt0903747';
+            }
+            const id = rawId;
+
+            try {
+                let res = await fetch(`/api/movies/${encodeURIComponent(id)}`);
+                if (!res.ok && id !== 'tt0903747') {
+                    // Try title search fallback if provided in URL params
+                    const fallbackTitle = params.get('title') || params.get('q');
+                    if (fallbackTitle) {
+                        try {
+                            const searchRes = await fetch(`/api/movies?q=${encodeURIComponent(fallbackTitle)}&limit=1`);
+                            if (searchRes.ok) {
+                                const sData = await searchRes.json();
+                                const found = (sData.items || sData.movies || [])[0];
+                                if (found && found.id) {
+                                    res = await fetch(`/api/movies/${encodeURIComponent(found.id)}`);
+                                }
+                            }
+                        } catch (_) {}
+                    }
+                }
+                if (!res.ok && id !== 'tt0903747') {
+                    console.warn(`Series "${id}" not found, falling back to default featured series tt0903747`);
+                    res = await fetch('/api/movies/tt0903747');
+                    showToast('اثر مورد نظر یافت نشد؛ در حال نمایش سریال پیشنهادی...');
+                }
+                if (!res.ok) throw new Error('Series not found');
+                const movie = await res.json();
+                currentMovie = movie;
+
+                if (movie.type === 'movie') {
+                    window.location.replace(`/htmls/moviereview.html?id=${encodeURIComponent(movie.id)}`);
+                    return;
+                }
+
+                let rawTitle = (movie.titleFa || movie.title || '').trim();
+                let cleanTitleFa = rawTitle;
+                if (movie.title) {
+                    const enRegex = new RegExp('\\s*\\(\\s*' + movie.title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*\\)', 'i');
+                    cleanTitleFa = cleanTitleFa.replace(enRegex, '').trim();
+                }
+                cleanTitleFa = cleanTitleFa.replace(/\s*\([A-Za-z0-9\s:.-]+\)$/, '').trim();
+                if (!cleanTitleFa) cleanTitleFa = rawTitle;
+                const title = cleanTitleFa;
+
+                const seriesMetadataMap = {
+                    'tt4574334': {
+                        year: '2016-2025',
+                        maturity: '16+',
+                        cast: 'میلی بابی براون، وینونا رایدر، دیوید هاربر، فین ولفهارد، سدی سینک، کیلب مک‌لاگلین',
+                        creators: 'برادران دافر (The Duffer Brothers)'
+                    },
+                    'tt0903747': {
+                        year: '2008-2013',
+                        maturity: '18+',
+                        cast: 'برایان کرانستون، آرون پاول، آنا گان، دین نوریس، بتسی براندت، باب ادنکیرک',
+                        creators: 'وینس گیلیگان (Vince Gilligan)'
+                    },
+                    'tt0944947': {
+                        year: '2011-2019',
+                        maturity: '18+',
+                        cast: 'امیلیا کلارک، کیت هرینگتون، پیتر دینکلیج، لنا هیدی، نیکولای کاستر والدو',
+                        creators: 'دیوید بنیاف، دی. بی. وایس'
+                    },
+                    'tt3032476': {
+                        year: '2015-2022',
+                        maturity: '18+',
+                        cast: 'باب ادنکیرک، ری سیهورن، جاناتان بنکس، پاتریک فابین، مایکل ماندو',
+                        creators: 'وینس گیلیگان، پیتر گولد'
+                    },
+                    'tt3581920': {
+                        year: '2023-',
+                        maturity: '18+',
+                        cast: 'پدرو پاسکال، بلا رمزی، گابریل لونا، آنا تورو',
+                        creators: 'کریگ مازن، نیل دراکمن'
+                    },
+                    'tt7366338': {
+                        year: '2019',
+                        maturity: '16+',
+                        cast: 'جرد هریس، استلان اسکارشگورد، امیلی واتسون',
+                        creators: 'کریگ مازن (Craig Mazin)'
+                    },
+                    'tt2442560': {
+                        year: '2013-2022',
+                        maturity: '18+',
+                        cast: 'کیلین مورفی، پل اندرسون، تام هاردی، هلن مک‌کروری',
+                        creators: 'استیون نایت (Steven Knight)'
+                    },
+                    'tt1190634': {
+                        year: '2019-',
+                        maturity: '18+',
+                        cast: 'کارل اربن، جک کواید، آنتونی استار، ارین موریارتی',
+                        creators: 'اریک کریپکه (Eric Kripke)'
+                    },
+                    'tt5753856': {
+                        year: '2017-2020',
+                        maturity: '16+',
+                        cast: 'لوییس هوفمان، لیسا ویکاری، مایا شونه، اولیور مازوچی',
+                        creators: 'باران بو اودار، یانتیه فریزه'
+                    },
+                    'tt0108778': {
+                        year: '1994-2004',
+                        maturity: '13+',
+                        cast: 'جنیفر انیستون، کورتنی کاکس، لیسا کودرو، مت له بلانک، متیو پری، دیوید شویمر',
+                        creators: 'دیوید کرین، مارتا کافمن'
+                    },
+                    'tt1475582': {
+                        year: '2010-2017',
+                        maturity: '16+',
+                        cast: 'بندیکت کامبربچ، مارتین فریمن، اونام استابز، روپرت گراوز',
+                        creators: 'مارک گیتیس، استیون موفات'
+                    },
+                    'tt2861424': {
+                        year: '2013-',
+                        maturity: '16+',
+                        cast: 'جاستین رویلند، کریس پارنل، اسپنسر گرمر، سارا چوک',
+                        creators: 'دن هارمون، جاستین رویلند'
+                    },
+                    'tt10919420': {
+                        year: '2021-',
+                        maturity: '18+',
+                        cast: 'لی جونگ-جه، پارک هه-سو، وی ها-جون، جونگ هو-یون',
+                        creators: 'هوانگ دونگ-هیوک'
+                    },
+                    'tt11126994': {
+                        year: '2021-',
+                        maturity: '16+',
+                        cast: 'هیلی استاینفلد، الا پورنل، کوین آلخاندرو، کیتی لیونگ',
+                        creators: 'کریستین لینکه، الکس یی'
+                    },
+                    'tt11198330': {
+                        year: '2022-',
+                        maturity: '18+',
+                        cast: 'اما دآرسی، مت اسمیت، اولیویا کوک، پدی کانسیداین',
+                        creators: 'رایان کوندال، جرج آر. آر. مارتین'
+                    },
+                    'tt7660850': {
+                        year: '2018-2023',
+                        maturity: '18+',
+                        cast: 'برایان کاکس، جرمی استرانگ، سارا اسنوک، کایران کالکین',
+                        creators: 'جسی آرمسترانگ'
+                    },
+                    'tt2356777': {
+                        year: '2014-',
+                        maturity: '18+',
+                        cast: 'متیو مک‌کانهی، وودی هارلسون، ماهرشالا علی، جودی فاستر',
+                        creators: 'نیک پیزولاتو'
+                    },
+                    'tt2085059': {
+                        year: '2011-',
+                        maturity: '18+',
+                        cast: 'دنیل کالویا، برایس دالاس هاوارد، جان هم، الکس لاوتر',
+                        creators: 'چارلی بروکر'
+                    },
+                    'tt1520211': {
+                        year: '2010-2022',
+                        maturity: '18+',
+                        cast: 'اندرو لینکلن، نورمن ریداس، ملیسا مک‌براید، لورن کوهن',
+                        creators: 'فرانک دارابونت'
+                    },
+                    'tt0773262': {
+                        year: '2006-2013',
+                        maturity: '18+',
+                        cast: 'مایکل سی هال، جنیفر کارپنتر، دیوید زایاس، جیمز رمار',
+                        creators: 'جیمز مانوس جونیور'
+                    }
+                };
+
+                const sMeta = seriesMetadataMap[movie.id] || {};
+                const yearVal = sMeta.year || (movie.year && movie.year !== '--' ? movie.year : '2016');
+
+                document.getElementById('pageTitle').textContent = `📺 تماشای سریال ${cleanTitleFa} | صدسط فیلم`;
+                document.getElementById('movieTitleFa').textContent = cleanTitleFa;
+                document.getElementById('movieTitleEn').textContent = movie.title || '';
+                document.getElementById('movieRating').textContent = movie.rating ? `★ ${movie.rating} IMDb` : '★ --';
+                document.getElementById('movieYear').textContent = yearVal;
+                const matEl = document.getElementById('movieMaturity');
+                if (matEl) matEl.textContent = sMeta.maturity || (movie.rating && parseFloat(movie.rating) >= 8.5 ? '16+' : '13+');
+                const typeEl = document.getElementById('movieType');
+                if (typeEl) typeEl.textContent = movie.type === 'tvSeries' ? 'سریال' : 'فیلم';
+                const genreEl = document.getElementById('movieGenre');
+                if (genreEl) genreEl.textContent = movie.genre || '';
+                const votesEl = document.getElementById('movieVotes');
+                if (votesEl) votesEl.textContent = movie.votes ? `${movie.votes} رای` : '';
+                document.getElementById('movieSynopsis').textContent = movie.synopsis || `تماشا و دانلود قسمت‌های سریال «${cleanTitleFa}» با دوبله اختصاصی و زیرنویس هماهنگ فارسی.`;
+
+                // Artworks setup with Metahub and fallback overlay
+                const posterPath = movie.poster || `/images/posters/${movie.id}.webp`;
+                const backdropPath = movie.backdrop || `/images/backdrops/${movie.id}.webp`;
+                const posterEl = document.getElementById('moviePoster');
+                const fallbackEl = document.getElementById('posterFallbackOverlay');
+                if (posterEl) {
+                    posterEl.style.display = 'block';
+                    delete posterEl.dataset.triedMetahub;
+                    posterEl.src = posterPath;
+                }
+                if (fallbackEl) fallbackEl.style.display = 'none';
+
+                const backdropEl = document.getElementById('heroBackdrop');
+                if (backdropEl) {
+                    delete backdropEl.dataset.triedMetahub;
+                    delete backdropEl.dataset.triedPoster;
+                    delete backdropEl.dataset.triedMetahubPoster;
+                    backdropEl.style.display = 'block';
+                    backdropEl.style.filter = '';
+                    backdropEl.style.transform = '';
+                    backdropEl.src = backdropPath;
+                }
+
+                // Season count & metadata
+                const dl = movie.downloads || {};
+                const dubbedSeasons = Array.isArray(dl.dubbed) ? dl.dubbed.map(d => d.season).filter(Boolean) : [];
+                const softsubSeasons = Array.isArray(dl.softsub) ? dl.softsub.map(d => d.season).filter(Boolean) : [];
+                const allSeasons = [...new Set([...dubbedSeasons, ...softsubSeasons])];
+                const seasonCount = allSeasons.length || 1;
+                const seasonLabel = `${seasonCount} فصل (${seasonCount} Season${seasonCount > 1 ? 's' : ''})`;
+                const durationEl = document.getElementById('movieDurationOrSeasons');
+                if (durationEl) durationEl.textContent = seasonLabel;
+
+                // Cast & Creators metadata
+                let castList = sMeta.cast || movie.cast || 'میلی بابی براون، وینونا رایدر، دیوید هاربر، فین ولفهارد';
+                let creatorsList = sMeta.creators || movie.director || movie.creator || 'تیم سازندگان و کارگردانی بین‌المللی';
+
+                const heroCastEl = document.getElementById('heroCast');
+                if (heroCastEl) heroCastEl.textContent = castList;
+                const aboutCastEl = document.getElementById('aboutCastVal');
+                if (aboutCastEl) aboutCastEl.textContent = castList;
+
+                const heroGenresEl = document.getElementById('heroGenres');
+                if (heroGenresEl) heroGenresEl.textContent = movie.genre || 'درام، هیجان‌انگیز';
+                const aboutGenresEl = document.getElementById('aboutGenresVal');
+                if (aboutGenresEl) aboutGenresEl.textContent = movie.genre || 'درام، هیجان‌انگیز';
+
+                const aboutTitleFaEl = document.getElementById('aboutTitleFa');
+                if (aboutTitleFaEl) aboutTitleFaEl.textContent = cleanTitleFa;
+                const aboutCreatorsEl = document.getElementById('aboutCreatorsVal');
+                if (aboutCreatorsEl) aboutCreatorsEl.textContent = creatorsList;
+
+                updateFavBtn(movie.id);
+                document.getElementById('favBtn').onclick = () => toggleFav(movie.id);
+                document.getElementById('shareBtn').onclick = openShareModal;
+                const heroFav = document.getElementById('heroFavBtn');
+                if (heroFav) heroFav.onclick = () => toggleFav(movie.id);
+                const heroShare = document.getElementById('heroShareBtn');
+                if (heroShare) heroShare.onclick = openShareModal;
+
+                document.getElementById('copyStreamBtn').onclick = () => {
+                    if (currentStreamUrl) {
+                        navigator.clipboard.writeText(currentStreamUrl).then(() => showToast('لینک استریم کپی شد! ✓')).catch(() => showToast('خطا در کپی'));
+                    } else {
+                        showToast('ابتدا یک قسمت را انتخاب و پخش کنید');
+                    }
+                };
+
+                const targetEp = parseInt(params.get('ep') || '1', 10);
+
+                // Build smart stream queue (Dubbed lowest size first, then softsub lowest size first)
+                streamQueue = buildStreamQueue(movie, targetEp);
+                window.streamQueue = streamQueue;
+                failedStreamUrls.clear();
+                renderQuickQualityChips(movie);
+
+                const firstItem = (dl.dubbed && dl.dubbed[0]) || (dl.softsub && dl.softsub[0]);
+                const heroVlc = document.getElementById('heroVlcBtn');
+                if (heroVlc && firstItem && firstItem.url) {
+                    heroVlc.href = getVlcUrl(firstItem.url, title);
+                }
+
+                if (isIOS()) {
+                    document.body.classList.add('is-ios');
+                    currentStreamIndex = 0;
+                    window.currentStreamIndex = 0;
+                    currentStreamUrl = '';
+                    if (streamQueue.length > 0 && heroVlc) {
+                        heroVlc.href = getVlcUrl(streamQueue[0].url, title);
+                    }
+                } else {
+                    if (streamQueue.length > 0) {
+                        currentStreamIndex = 0;
+                        window.currentStreamIndex = 0;
+                        const initialStream = streamQueue[0];
+                        initPlayer(initialStream.url, title, initialStream.label, false);
+                    } else {
+                        // Show dedicated Netflix-style Series Hub
+                        const pContainer = document.querySelector('.player-container');
+                        if (pContainer) pContainer.classList.add('has-hub');
+                        document.getElementById('player').innerHTML = `
+                            <div class="player-hub">
+                                <div class="player-hub__icon">📺</div>
+                                <h3 class="player-hub__title">پخش و دانلود قسمت‌های ${title}</h3>
+                                <p class="player-hub__desc">این مجموعه شامل چندین فصل و قسمت است. کیفیت و فصل مورد نظر خود را از جدول زیر انتخاب فرمایید یا لینک مستقیم قسمت را برای پخش در پلیر وارد کنید.</p>
+                                <div class="player-hub__actions">
+                                    <a href="#downloadsArea" class="btn-action btn-action-share" style="text-decoration:none;">⬇️ مشاهده فهرست قسمت‌ها</a>
+                                    <button type="button" class="btn-action btn-action-vlc" onclick="promptDirectStream('${title}')">▶ پخش با لینک مستقیم و VLC</button>
+                                </div>
+                            </div>
+                        `;
+                        document.getElementById('currentQualityName').textContent = 'انتخاب از جدول زیر';
+                        if (firstItem && firstItem.url) {
+                            document.getElementById('vlcBtn').href = getVlcUrl(firstItem.url, title);
+                        }
+                    }
+                }
+
+                renderDownloads(movie);
+
+                // Load series recommendations
+                try {
+                    const recRes = await fetch(`/api/movies?limit=12&type=tvSeries`);
+                    if (recRes.ok) {
+                        const recData = await recRes.json();
+                        const rawList = Array.isArray(recData) ? recData : (recData.items || recData.movies || []);
+                        const list = rawList.filter(m => m.id !== movie.id);
+                        document.getElementById('recommendationsRow').innerHTML = list.map(renderMovieCard).join('');
+                    }
+                } catch (recErr) {
+                    console.warn('Failed to load recommendations:', recErr);
+                }
+            } catch (e) {
+                console.error(e);
+                document.getElementById('movieTitleFa').textContent = 'سریال یافت نشد';
+                document.getElementById('movieSynopsis').textContent = 'متأسفانه سریال مورد نظر در پایگاه داده صدسط پیدا نشد یا شناسه آن نامعتبر است.';
+                document.getElementById('downloadsArea').innerHTML = `
+                    <div style="text-align: center; color: #aaa; padding: 30px;">
+                        <div style="font-size: 2.5rem; margin-bottom: 10px;">🔍</div>
+                        <p style="font-size: 1rem; color: #ddd; margin-bottom: 16px;">این سریال در آرشیو یافت نشد یا شناسه آن نامعتبر است.</p>
+                        <a href="/" class="btn-action btn-action-share" style="display:inline-block; text-decoration:none;">بازگشت به خانه</a>
+                    </div>
+                `;
+                document.getElementById('player').innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#888;">ویدیو یافت نشد</div>';
+            }
+        }
+
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('netflixNav');
+            if (window.scrollY > 40) nav.classList.add('solid');
+            else nav.classList.remove('solid');
+        });
+
+        function setupSubnavScrollSpy() {
+            const subnavLinks = document.querySelectorAll('.subnav-item');
+            if (!subnavLinks.length) return;
+
+            const sections = Array.from(subnavLinks).map(link => {
+                const id = link.getAttribute('href')?.replace('#', '');
+                return id ? document.getElementById(id) : null;
+            }).filter(Boolean);
+
+            window.addEventListener('scroll', () => {
+                const scrollPos = window.scrollY + 160;
+                let currentSectionId = '';
+                for (let i = sections.length - 1; i >= 0; i--) {
+                    const sec = sections[i];
+                    if (sec.offsetTop <= scrollPos) {
+                        currentSectionId = sec.id;
+                        break;
+                    }
+                }
+                if (!currentSectionId && sections.length > 0) {
+                    currentSectionId = sections[0].id;
+                }
+                subnavLinks.forEach(link => {
+                    const href = link.getAttribute('href');
+                    if (href === `#${currentSectionId}`) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            }, { passive: true });
+        }
+        setupSubnavScrollSpy();
+
+        function updateNavProfile() {
+            const user = localStorage.getItem('movieUser');
+            let profile = localStorage.getItem('activeProfile') || (user || 'کاربر اصلی');
+            const profileNameEl = document.getElementById('activeProfileName');
+            if (profileNameEl) profileNameEl.textContent = profile;
+
+            const pic = localStorage.getItem('activeProfilePic') || '1';
+            const avatarEl = document.getElementById('activeProfileAvatar');
+            if (avatarEl) {
+                avatarEl.src = (pic === '3') ? '/movie-streaming-webapp-master/img/profile-pic/3.jpg' : `/movie-streaming-webapp-master/img/profile-pic/${pic}.png`;
+            }
+        }
+        updateNavProfile();
+        loadMovie();
+    </script>
+
+    <!-- STICKY MOBILE BOTTOM NAVIGATION BAR -->
+    <nav class="bottom-nav" id="bottomNav" aria-label="ناوبری اصلی">
+        <a href="/" class="bottom-nav__item" data-tab="home" id="navHome">
+            <span class="bottom-nav__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+            <span class="bottom-nav__label">خانه</span>
+        </a>
+        <a href="/htmls/movies.html" class="bottom-nav__item" data-tab="movies" id="navMovies">
+            <span class="bottom-nav__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 8 7 4-7 4Z"/></svg></span>
+            <span class="bottom-nav__label">فیلم‌ها</span>
+        </a>
+        <a href="/htmls/tvshows.html" class="bottom-nav__item active" data-tab="tvshows" id="navTvShows">
+            <span class="bottom-nav__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg></span>
+            <span class="bottom-nav__label">سریال‌ها</span>
+        </a>
+        <a href="/htmls/search.html" class="bottom-nav__item" data-tab="search" id="navSearch">
+            <span class="bottom-nav__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
+            <span class="bottom-nav__label">جستجو</span>
+        </a>
+        <a href="/htmls/profile-manage.html" class="bottom-nav__item" data-tab="profile" id="navProfile">
+            <span class="bottom-nav__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+            <span class="bottom-nav__label">پروفایل</span>
+        </a>
+    </nav>
+</body>
+</html>

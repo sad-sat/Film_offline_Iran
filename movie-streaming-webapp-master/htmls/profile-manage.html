@@ -1,0 +1,1438 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+    <script>
+        if (window.SadSatNative || (navigator.userAgent && navigator.userAgent.indexOf('SadSatFilmAndroid') !== -1)) {
+            document.documentElement.classList.add('is-native-app');
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👤 مدیریت حساب و انتخاب پروفایل | صدسط فیلم (SadSat FilM)</title>
+    <meta name="theme-color" content="#141414">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SadSat FilM">
+    <link rel="apple-touch-icon" href="/images/icon-192.png">
+    <script src="/pwa-register.js" defer></script>
+    <link rel="stylesheet" href="/index.css">
+    <style>
+        :root {
+            --netflix-red: #e50914;
+            --netflix-dark: #141414;
+            --netflix-card: #1f1f1f;
+            --text-dim: #aaa;
+        }
+        * { box-sizing: border-box; }
+        body {
+            background-color: var(--netflix-dark);
+            color: #fff;
+            font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            direction: rtl;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Top Netflix Navigation */
+        .netflix-nav {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1000;
+            height: 68px;
+            padding: 0 4%;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+            transition: background-color 0.35s ease;
+            max-width: 100vw;
+            box-sizing: border-box;
+            overflow-x: hidden;
+            direction: ltr !important;
+        }
+        .netflix-nav.solid {
+            background: #141414 !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.85);
+        }
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            direction: ltr !important;
+        }
+        .nav-start {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+            direction: ltr !important;
+        }
+        .brand-logo-link {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .sadflix-logo-img {
+            height: 32px;
+            width: auto;
+            display: block;
+            transition: transform 0.2s ease;
+        }
+        .sadflix-logo-img:hover {
+            transform: scale(1.04);
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            direction: ltr !important;
+        }
+        .nav-link {
+            color: #e5e5e5;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+            padding: 4px 8px;
+        }
+        .nav-link:hover {
+            color: #b3b3b3;
+        }
+        .nav-link.active {
+            color: #ffffff;
+            font-weight: 700;
+            cursor: default;
+        }
+        .nav-end {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            direction: ltr !important;
+        }
+        .nav-search-btn {
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+        .nav-search-btn:hover {
+            transform: scale(1.1);
+        }
+        .nav-profile-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        .nav-profile-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: border-color 0.2s;
+        }
+        .nav-profile-link:hover .nav-profile-avatar,
+        .nav-profile-link.active .nav-profile-avatar {
+            border-color: #e50914;
+        }
+
+        /* Main Container */
+        .profile-container {
+            text-align: center;
+            padding: 95px 20px 40px;
+            max-width: 960px;
+            width: 100%;
+            margin: auto;
+        }
+        .profile-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 8px;
+            color: #fff;
+            letter-spacing: -0.5px;
+        }
+        .profile-subtitle {
+            font-size: 1rem;
+            color: var(--text-dim);
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+        .profiles-grid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 32px;
+            flex-wrap: wrap;
+            margin-bottom: 48px;
+        }
+        .profile-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-dim);
+            cursor: pointer;
+            transition: transform 0.25s, color 0.25s;
+            position: relative;
+        }
+        .profile-card:hover {
+            transform: scale(1.08);
+            color: #fff;
+        }
+        .profile-card:hover .avatar-wrap {
+            border-color: #fff;
+            box-shadow: 0 0 24px rgba(255,255,255,0.35);
+        }
+        .profile-card.active .avatar-wrap {
+            border-color: var(--netflix-red);
+            box-shadow: 0 0 26px rgba(229,9,20,0.65);
+        }
+        .avatar-wrap {
+            width: 130px;
+            height: 130px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 3px solid transparent;
+            margin-bottom: 14px;
+            position: relative;
+            background: #222;
+            transition: all 0.25s;
+        }
+        .avatar-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .profile-name {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+        .profile-stats {
+            font-size: 0.78rem;
+            color: #888;
+        }
+        .active-badge {
+            position: absolute;
+            bottom: 6px;
+            right: 6px;
+            background: var(--netflix-red);
+            color: #fff;
+            font-size: 0.7rem;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-weight: 800;
+            display: none;
+        }
+        .profile-card.active .active-badge { display: block; }
+        .user-tag-badge {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            background: rgba(0,0,0,0.75);
+            color: #fbbf24;
+            font-size: 0.68rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 800;
+            display: none;
+        }
+        .profile-card.is-user .user-tag-badge { display: block; }
+
+        /* Action Buttons */
+        .bottom-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .btn-manage {
+            background: transparent;
+            color: #aaa;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 11px 28px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: inherit;
+        }
+        .btn-manage:hover {
+            color: #fff;
+            border-color: #fff;
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-1px);
+        }
+        .btn-manage-primary {
+            background: var(--netflix-red);
+            color: #fff;
+            border-color: var(--netflix-red);
+        }
+        .btn-manage-primary:hover {
+            background: #f40612;
+            border-color: #f40612;
+            color: #fff;
+        }
+
+        /* Interactive Auth Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+        .auth-card {
+            background: #181818;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 14px;
+            max-width: 440px;
+            width: 100%;
+            max-height: calc(100vh - 32px);
+            max-height: calc(100dvh - 32px);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            margin: auto;
+            padding: 32px 28px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+            transform: scale(0.95);
+            transition: transform 0.25s cubic-bezier(0.16,1,0.3,1);
+        }
+        .modal-overlay.active .auth-card {
+            transform: scale(1);
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #aaa;
+            font-size: 1.2rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .modal-close-btn:hover {
+            background: rgba(255,255,255,0.25);
+            color: #fff;
+        }
+        .auth-card-title {
+            font-size: 1.6rem;
+            font-weight: 900;
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: #fff;
+            text-align: right;
+        }
+        .auth-card-desc {
+            font-size: 0.88rem;
+            color: #999;
+            margin-bottom: 24px;
+            text-align: right;
+            line-height: 1.5;
+        }
+
+        /* Auth Tabs */
+        .auth-tabs {
+            display: flex;
+            background: rgba(255,255,255,0.06);
+            border-radius: 8px;
+            padding: 4px;
+            margin-bottom: 22px;
+        }
+        .auth-tab {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #999;
+            padding: 9px 0;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 800;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .auth-tab.active {
+            background: var(--netflix-red);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(229,9,20,0.4);
+        }
+
+        /* Form elements */
+        .form-group {
+            margin-bottom: 18px;
+            text-align: right;
+        }
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #ccc;
+            margin-bottom: 7px;
+        }
+        .input-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .form-input {
+            width: 100%;
+            background: #2b2b2b;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            border-radius: 8px;
+            padding: 12px 14px;
+            font-size: 16px;
+            min-height: 46px;
+            font-family: inherit;
+            direction: ltr;
+            text-align: left;
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: var(--netflix-red);
+            background: #333;
+        }
+        .form-input::placeholder {
+            color: #777;
+            direction: rtl;
+            text-align: right;
+        }
+        #authPassword {
+            padding-left: 44px;
+        }
+        .toggle-pw-btn {
+            position: absolute;
+            left: 10px;
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 4px;
+            touch-action: manipulation;
+        }
+        .toggle-pw-btn:hover { color: #fff; }
+
+        .auth-error-box {
+            background: rgba(229,9,20,0.18);
+            border: 1px solid var(--netflix-red);
+            color: #ff9b9b;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+            display: none;
+            text-align: right;
+            line-height: 1.4;
+        }
+
+        .auth-submit-btn {
+            width: 100%;
+            background: var(--netflix-red);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 13px;
+            font-size: 1rem;
+            font-weight: 800;
+            font-family: inherit;
+            cursor: pointer;
+            margin-top: 6px;
+            transition: background 0.2s, opacity 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .auth-submit-btn:hover { background: #f40612; }
+        .auth-submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .auth-switch-link {
+            display: block;
+            margin-top: 18px;
+            color: #aaa;
+            font-size: 0.85rem;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .auth-switch-link:hover { color: #fff; }
+        .auth-switch-link span { color: var(--netflix-red); font-weight: 800; }
+
+        /* Toast notifications */
+        .toast-notify {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #222;
+            color: #fff;
+            border-right: 4px solid var(--netflix-red);
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 0.92rem;
+            font-weight: 700;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.85);
+            z-index: 6000;
+            display: none;
+            animation: toastIn 0.25s ease;
+        }
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media(max-width: 768px) {
+            .netflix-nav {
+                height: auto;
+                min-height: 84px;
+                padding: 8px 12px 10px;
+                background: rgba(18, 18, 18, 0.98);
+                backdrop-filter: blur(12px);
+                box-shadow: 0 4px 24px rgba(0,0,0,0.85);
+            }
+            .nav-container {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                gap: 0;
+                row-gap: 8px;
+            }
+            .nav-start {
+                display: contents;
+            }
+            .brand-logo-link {
+                order: 1;
+                flex-shrink: 0;
+                display: inline-flex;
+                align-items: center;
+            }
+            .sadflix-logo-img {
+                height: 24px;
+                width: auto;
+            }
+            .nav-end {
+                order: 2;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                flex-shrink: 0;
+            }
+            .nav-links {
+                order: 3;
+                width: 100%;
+                flex-basis: 100%;
+                display: flex !important;
+                align-items: center;
+                gap: 6px;
+                list-style: none;
+                margin: 0;
+                padding: 2px 2px 4px;
+                overflow-x: auto;
+                overflow-y: hidden;
+                white-space: nowrap;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                -webkit-overflow-scrolling: touch;
+            }
+            .nav-links::-webkit-scrollbar {
+                display: none;
+                width: 0;
+                height: 0;
+            }
+            .nav-link {
+                flex-shrink: 0;
+                font-size: 0.78rem;
+                font-weight: 600;
+                padding: 5px 11px;
+                border-radius: 16px;
+                background: rgba(255, 255, 255, 0.1);
+                color: #e5e5e5;
+                text-decoration: none;
+                white-space: nowrap;
+                transition: all 0.2s ease;
+            }
+            .nav-link:hover {
+                color: #ffffff;
+                background: rgba(255, 255, 255, 0.2);
+            }
+            .nav-link.active {
+                background: #e50914;
+                color: #ffffff;
+                font-weight: 700;
+                box-shadow: 0 2px 10px rgba(229, 9, 20, 0.5);
+            }
+            .nav-search-btn svg {
+                width: 20px;
+                height: 20px;
+            }
+            .nav-profile-avatar {
+                width: 28px;
+                height: 28px;
+            }
+            .profile-container { padding: 100px 14px 40px; }
+            .profile-title { font-size: 1.85rem; margin-bottom: 6px; }
+            .profile-subtitle { font-size: 0.92rem; margin-bottom: 28px; }
+            .profiles-grid { gap: 24px 20px; margin-bottom: 36px; }
+            .avatar-wrap { width: 105px; height: 105px; }
+            .auth-card { padding: 28px 22px; }
+            .toast-notify { bottom: 20px; right: 20px; left: 20px; text-align: center; }
+        }
+
+        @media(max-width: 480px) {
+            .profile-nav {
+                padding: 10px 14px;
+                gap: 8px;
+            }
+            .brand-logo {
+                font-size: 1.15rem;
+                gap: 5px;
+            }
+            .brand-badge {
+                font-size: 0.62rem;
+                padding: 1px 5px;
+            }
+            .auth-bar-status {
+                gap: 6px;
+            }
+            .guest-badge {
+                display: none;
+            }
+            .btn-auth-action {
+                padding: 7px 11px;
+                font-size: 0.8rem;
+                gap: 4px;
+                border-radius: 6px;
+            }
+            .user-pill {
+                padding: 3px 8px 3px 4px;
+                gap: 6px;
+                border-radius: 20px;
+            }
+            .user-pill-avatar {
+                width: 26px;
+                height: 26px;
+            }
+            .user-pill-name {
+                font-size: 0.78rem;
+                max-width: 75px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .user-pill-sync {
+                display: none;
+            }
+            .btn-auth-logout {
+                padding: 6px 9px;
+                font-size: 0.78rem;
+                gap: 4px;
+            }
+            .profile-container {
+                padding: 110px 12px 30px;
+            }
+            .profile-title {
+                font-size: 1.55rem;
+                margin-bottom: 4px;
+            }
+            .profile-subtitle {
+                font-size: 0.84rem;
+                margin-bottom: 22px;
+                line-height: 1.5;
+            }
+            .profiles-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 135px));
+                justify-content: center;
+                gap: 20px 20px;
+                margin-bottom: 28px;
+            }
+            .profile-card {
+                width: 100%;
+                max-width: 135px;
+            }
+            .avatar-wrap {
+                width: 92px;
+                height: 92px;
+                border-radius: 12px;
+                margin-bottom: 7px;
+            }
+            .profile-name {
+                font-size: 0.92rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 100%;
+            }
+            .profile-stats {
+                font-size: 0.74rem;
+                line-height: 1.25;
+            }
+            .active-badge {
+                font-size: 0.65rem;
+                padding: 2px 5px;
+                bottom: 4px;
+                right: 4px;
+            }
+            .user-tag-badge {
+                font-size: 0.62rem;
+                padding: 2px 5px;
+                top: 4px;
+                left: 4px;
+            }
+            .bottom-actions {
+                width: 100%;
+                padding: 0 12px;
+            }
+            .btn-manage {
+                width: 100%;
+                max-width: 280px;
+                justify-content: center;
+                padding: 11px 18px;
+                font-size: 0.92rem;
+                min-height: 46px;
+            }
+            .modal-overlay {
+                padding: 10px;
+            }
+            .auth-card {
+                padding: 22px 16px 18px;
+                border-radius: 12px;
+                max-height: calc(100vh - 20px);
+                max-height: calc(100dvh - 20px);
+            }
+            .modal-close-btn {
+                top: 12px;
+                left: 12px;
+                width: 34px;
+                height: 34px;
+                font-size: 1.1rem;
+            }
+            .auth-card-title {
+                font-size: 1.25rem;
+                padding-left: 36px;
+                margin-bottom: 6px;
+            }
+            .auth-card-desc {
+                font-size: 0.8rem;
+                margin-bottom: 16px;
+                line-height: 1.45;
+            }
+            .auth-tabs {
+                margin-bottom: 16px;
+            }
+            .auth-tab {
+                padding: 8px 0;
+                font-size: 0.86rem;
+                min-height: 40px;
+            }
+            .form-group {
+                margin-bottom: 13px;
+            }
+            .form-label {
+                font-size: 0.8rem;
+                margin-bottom: 5px;
+            }
+            .form-input {
+                font-size: 16px;
+                padding: 10px 12px;
+                min-height: 44px;
+            }
+            .toggle-pw-btn {
+                min-width: 36px;
+                min-height: 36px;
+                font-size: 1rem;
+            }
+            .auth-submit-btn {
+                padding: 12px;
+                font-size: 0.95rem;
+                min-height: 46px;
+                border-radius: 8px;
+            }
+            .auth-switch-link {
+                margin-top: 14px;
+                font-size: 0.82rem;
+            }
+        }
+
+        @media(max-width: 360px) {
+            .profiles-grid {
+                grid-template-columns: repeat(2, minmax(0, 115px));
+                gap: 14px 12px;
+                margin-bottom: 22px;
+            }
+            .avatar-wrap {
+                width: 78px;
+                height: 78px;
+            }
+            .profile-name {
+                font-size: 0.85rem;
+            }
+            .brand-logo {
+                font-size: 1.05rem;
+            }
+            .btn-auth-action {
+                padding: 6px 9px;
+                font-size: 0.76rem;
+            }
+        }
+
+        /* Bottom navigation hidden on mobile website */
+        .bottom-nav { display: none !important; }
+        @media(max-width: 768px) {
+            .is-native-app body, body.is-native-app { padding-bottom: calc(70px + env(safe-area-inset-bottom, 12px)) !important; }
+            .is-native-app .bottom-nav, body.is-native-app .bottom-nav { display: flex !important;
+                position: fixed;
+                bottom: max(10px, env(safe-area-inset-bottom, 10px));
+                left: 14px;
+                right: 14px;
+                max-width: 440px;
+                margin: 0 auto;
+                height: 60px;
+                padding: 4px 0.5rem;
+                background: rgba(18, 18, 18, 0.94);
+                backdrop-filter: blur(24px) saturate(190%);
+                -webkit-backdrop-filter: blur(24px) saturate(190%);
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                border-radius: 28px;
+                z-index: 2000;
+                justify-content: space-around;
+                align-items: center;
+                box-shadow: 0 10px 32px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            }
+            .bottom-nav__item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 2px;
+                background: none;
+                border: none;
+                color: #b3b3b3;
+                text-decoration: none;
+                cursor: pointer;
+                padding: 3px 6px;
+                border-radius: 16px;
+                transition: color 0.2s ease, transform 0.2s ease;
+                min-width: 52px;
+                height: 50px;
+                position: relative;
+            }
+            .bottom-nav__icon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 22px;
+                height: 22px;
+            }
+            .bottom-nav__label {
+                font-size: 0.72rem;
+                font-weight: 700;
+                line-height: 1.1;
+                white-space: nowrap;
+            }
+            .bottom-nav__item.active {
+                color: #e50914;
+            }
+            .bottom-nav__item.active .bottom-nav__icon {
+                transform: scale(1.1);
+                color: #e50914;
+            }
+            .bottom-nav__item.active::before {
+                content: '';
+                position: absolute;
+                top: 2px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 14px;
+                height: 3px;
+                background: #e50914;
+                border-radius: 999px;
+                box-shadow: 0 0 10px #e50914;
+            }
+        }
+        @media(min-width: 769px) {
+            .bottom-nav { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Netflix Navigation -->
+    <header class="netflix-nav" id="netflixNav">
+        <div class="nav-container">
+            <div class="nav-start">
+                <a href="/" class="brand-logo-link" aria-label="SadFlix">
+                    <img src="/images/sadflix_logo.png" alt="SadFlix" class="sadflix-logo-img">
+                </a>
+                <nav class="nav-links">
+                    <a href="/htmls/browse.htm" class="nav-link">Home</a>
+                    <a href="/htmls/tvshows.html" class="nav-link">TV Shows</a>
+                    <a href="/htmls/movies.html" class="nav-link">Movies</a>
+                    <a href="/htmls/browse.htm#sliderSpotlight" class="nav-link">New & Popular</a>
+                    <a href="/htmls/browse.htm#favoritesRowContainer" class="nav-link">My List</a>
+                </nav>
+            </div>
+            <div class="nav-end">
+                <a href="/htmls/search.html" class="nav-search-btn" title="جستجو" aria-label="جستجو">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </a>
+                <a href="/htmls/profile-manage.html" class="nav-profile-link active" title="حساب کاربری" aria-label="حساب کاربری">
+                    <img src="/movie-streaming-webapp-master/img/profile-pic/1.png" alt="پروفایل" class="nav-profile-avatar" id="activeProfileAvatar">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Profile Selector -->
+    <main class="profile-container">
+        <!-- Auth Status Controls -->
+        <div class="auth-bar-status" style="margin-bottom: 24px; display: inline-flex; justify-content: center;">
+            <!-- State 1: Guest / Offline -->
+            <div id="authStatusLoggedOut" style="display: flex; align-items: center; gap: 10px;">
+                <span class="guest-badge">حالت مهمان (آفلاین)</span>
+                <button type="button" class="btn-auth-action" onclick="openAuthModal('login')">
+                    <span>🔐</span> <span>ورود / عضویت</span>
+                </button>
+            </div>
+
+            <!-- State 2: Logged In User -->
+            <div id="authStatusLoggedIn" style="display: none; align-items: center; gap: 10px;">
+                <div class="user-pill">
+                    <img id="topBarUserAvatar" src="/img/profile-pic/1.png" alt="آواتار" class="user-pill-avatar">
+                    <div class="user-pill-info">
+                        <span class="user-pill-name" id="topBarUserName">نام کاربری</span>
+                        <span class="user-pill-sync" id="topBarUserSync">☁️ متصل به حساب</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-auth-logout" onclick="handleLogout()" title="خروج از حساب">
+                    <span>🚪</span> <span>خروج</span>
+                </button>
+            </div>
+        </div>
+        <h1 class="profile-title">چه کسی در حال تماشا است؟</h1>
+        <p class="profile-subtitle">پروفایل خود را انتخاب کنید یا برای همگام‌سازی نشان‌شده‌ها وارد حساب کاربری خود شوید.</p>
+
+        <div class="profiles-grid" id="profilesGrid">
+            <!-- Profile 1 (Main User Account) -->
+            <div class="profile-card active" id="cardProfile1" onclick="selectProfile(null, '1')">
+                <div class="avatar-wrap">
+                    <img id="avatarImg1" src="/img/profile-pic/1.png" alt="کاربر">
+                    <span class="active-badge">فعال</span>
+                    <span class="user-tag-badge" id="userTagBadge">حساب کاربری</span>
+                </div>
+                <div class="profile-name" id="profileName1">کاربر اصلی</div>
+                <div class="profile-stats" id="profileStats1">-- نشان‌شده</div>
+            </div>
+
+            <!-- Profile 2 -->
+            <div class="profile-card" onclick="selectProfile('سینمادوست', '2')">
+                <div class="avatar-wrap">
+                    <img src="/img/profile-pic/2.png" alt="سینمادوست">
+                    <span class="active-badge">فعال</span>
+                </div>
+                <div class="profile-name">سینمادوست</div>
+                <div class="profile-stats" id="profileStats2">پیش‌فرض</div>
+            </div>
+
+            <!-- Profile 3 -->
+            <div class="profile-card" onclick="selectProfile('کودک و انیمیشن', '3')">
+                <div class="avatar-wrap">
+                    <img src="/img/profile-pic/3.jpg" alt="کودک و انیمیشن">
+                    <span class="active-badge">فعال</span>
+                </div>
+                <div class="profile-name">کودک و انیمیشن</div>
+                <div class="profile-stats">مخصوص کودکان</div>
+            </div>
+
+            <!-- Profile 4 -->
+            <div class="profile-card" onclick="selectProfile('مهمان', '1')">
+                <div class="avatar-wrap">
+                    <img src="/img/profile-pic/1.png" alt="مهمان">
+                    <span class="active-badge">فعال</span>
+                </div>
+                <div class="profile-name">مهمان</div>
+                <div class="profile-stats">بدون تاریخچه</div>
+            </div>
+        </div>
+
+        <div class="bottom-actions">
+            <a href="/" class="btn-manage btn-manage-primary">🍿 بازگشت به صفحه اصلی</a>
+        </div>
+    </main>
+
+    <!-- Empty footer spacing -->
+    <div style="height: 30px;"></div>
+
+    <!-- Login / Registration Interactive Modal -->
+    <div class="modal-overlay" id="authModalOverlay" onclick="handleOverlayClick(event)">
+        <div class="auth-card" onclick="event.stopPropagation()">
+            <button type="button" class="modal-close-btn" onclick="closeAuthModal()" title="بستن">✕</button>
+            <h2 class="auth-card-title" id="authModalTitle">👤 ورود به حساب کاربری</h2>
+            <p class="auth-card-desc" id="authModalDesc">برای دسترسی به علاقه‌مندی‌ها و امکانات اختصاصی وارد شوید.</p>
+
+            <!-- Mode Selector Tabs -->
+            <div class="auth-tabs">
+                <button type="button" class="auth-tab active" id="tabLogin" onclick="switchAuthMode('login')">ورود به حساب</button>
+                <button type="button" class="auth-tab" id="tabRegister" onclick="switchAuthMode('register')">ثبت‌نام جدید</button>
+            </div>
+
+            <div class="auth-error-box" id="authErrorBox"></div>
+
+            <form id="authForm" onsubmit="handleAuthSubmit(event)">
+                <div class="form-group">
+                    <label class="form-label" for="authUsername">نام کاربری</label>
+                    <div class="input-wrap">
+                        <input type="text" id="authUsername" class="form-input" placeholder="نام کاربری (حداقل ۳ حرف انگلیسی)" required autocomplete="username">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="authPassword">رمز عبور</label>
+                    <div class="input-wrap">
+                        <input type="password" id="authPassword" class="form-input" placeholder="رمز عبور (حداقل ۶ کاراکتر)" required autocomplete="current-password">
+                        <button type="button" class="toggle-pw-btn" onclick="togglePasswordVisibility()" title="نمایش/پنهان رمز">👁️</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="auth-submit-btn" id="authSubmitBtn">
+                    <span id="authBtnSpinner" style="display: none;">⏳</span>
+                    <span id="authBtnText">ورود به حساب</span>
+                </button>
+            </form>
+
+            <a class="auth-switch-link" id="authSwitchLink" onclick="toggleAuthMode()">
+                حساب کاربری ندارید؟ <span>ثبت‌نام کنید</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-notify" id="toast"></div>
+
+    <script>
+        let currentAuthMode = 'login'; // 'login' or 'register'
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            if (!toast) return;
+            toast.textContent = message;
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 2800);
+        }
+
+        function getAuthUser() {
+            return localStorage.getItem('movieUser') || null;
+        }
+
+        function getAuthToken() {
+            return localStorage.getItem('movieToken') || null;
+        }
+
+        function getProfileFavCount(profileName) {
+            const key = 'userFavorites_' + encodeURIComponent(profileName);
+            let favs = JSON.parse(localStorage.getItem(key) || 'null');
+            if (!favs && (profileName === 'کاربر اصلی' || profileName === getAuthUser())) {
+                favs = JSON.parse(localStorage.getItem('userFavorites') || '[]');
+            }
+            return (favs && Array.isArray(favs)) ? favs.length : 0;
+        }
+
+        async function syncFavoritesWithBackend(token) {
+            try {
+                const res = await fetch('/api/favorites', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.status === 401 || res.status === 403) {
+                    localStorage.removeItem('movieToken');
+                    localStorage.removeItem('movieUser');
+                    showToast('نشست کاربری شما منقضی شد. لطفاً دوباره وارد شوید.');
+                    return { expired: true };
+                }
+                if (res.ok) {
+                    const data = await res.json();
+                    const serverFavs = data.favorites || [];
+                    const localFavs = JSON.parse(localStorage.getItem('userFavorites') || '[]');
+                    const combined = Array.from(new Set([...serverFavs, ...localFavs]));
+
+                    localStorage.setItem('userFavorites', JSON.stringify(combined));
+                    const user = getAuthUser();
+                    if (user) {
+                        localStorage.setItem('userFavorites_' + encodeURIComponent(user), JSON.stringify(combined));
+                    }
+                    localStorage.setItem('userFavorites_' + encodeURIComponent('کاربر اصلی'), JSON.stringify(combined));
+
+                    // Push local-only favs to backend
+                    for (const fid of localFavs) {
+                        if (!serverFavs.includes(fid)) {
+                            fetch('/api/favorites', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${token}`
+                                },
+                                body: JSON.stringify({ movieId: fid })
+                            }).catch(() => {});
+                        }
+                    }
+                    return combined.length;
+                }
+            } catch (err) {
+                console.warn('Could not sync favorites with backend:', err);
+            }
+            return null;
+        }
+
+        async function refreshUIState() {
+            const user = getAuthUser();
+            const token = getAuthToken();
+            const loggedOutEl = document.getElementById('authStatusLoggedOut');
+            const loggedInEl = document.getElementById('authStatusLoggedIn');
+            const profile1Name = document.getElementById('profileName1');
+            const profile1Stats = document.getElementById('profileStats1');
+            const profile1Card = document.getElementById('cardProfile1');
+            const userTagBadge = document.getElementById('userTagBadge');
+
+            if (user && token) {
+                // Logged In
+                loggedOutEl.style.display = 'none';
+                loggedInEl.style.display = 'flex';
+                document.getElementById('topBarUserName').textContent = user;
+                profile1Name.textContent = user;
+                profile1Card.classList.add('is-user');
+
+                // Sync favorites
+                const syncResult = await syncFavoritesWithBackend(token);
+                if (syncResult && syncResult.expired) {
+                    return refreshUIState();
+                }
+                const favCount = (typeof syncResult === 'number') ? syncResult : getProfileFavCount(user);
+
+                if (favCount > 0) {
+                    profile1Stats.textContent = `${favCount} اثر (همگام با حساب)`;
+                } else {
+                    profile1Stats.textContent = 'لیست خالی (همگام)';
+                }
+            } else {
+                // Logged Out
+                loggedOutEl.style.display = 'flex';
+                loggedInEl.style.display = 'none';
+                profile1Name.textContent = 'کاربر اصلی';
+                profile1Card.classList.remove('is-user');
+
+                const favCount = getProfileFavCount('کاربر اصلی');
+                if (favCount > 0) {
+                    profile1Stats.textContent = `${favCount} اثر (ذخیره محلی)`;
+                } else {
+                    profile1Stats.textContent = 'لیست خالی (محلی)';
+                }
+            }
+
+            // Sync other profiles
+            const active = localStorage.getItem('activeProfile') || (user || 'کاربر اصلی');
+            document.querySelectorAll('.profile-card').forEach(card => {
+                const nameEl = card.querySelector('.profile-name');
+                if (!nameEl) return;
+                const name = nameEl.textContent.trim();
+                if (card !== profile1Card) {
+                    const stats = card.querySelector('.profile-stats');
+                    if (stats) {
+                        const cnt = getProfileFavCount(name);
+                        if (cnt > 0) stats.textContent = `${cnt} اثر در لیست من`;
+                    }
+                }
+                if (name === active || (card === profile1Card && (active === user || active === 'کاربر اصلی'))) {
+                    card.classList.add('active');
+                } else {
+                    card.classList.remove('active');
+                }
+            });
+        }
+
+        function openAuthModal(mode) {
+            currentAuthMode = mode || 'login';
+            switchAuthMode(currentAuthMode);
+            document.getElementById('authErrorBox').style.display = 'none';
+            document.getElementById('authForm').reset();
+            document.body.style.overflow = 'hidden';
+            document.getElementById('authModalOverlay').classList.add('active');
+            setTimeout(() => { document.getElementById('authUsername').focus(); }, 150);
+        }
+
+        function closeAuthModal() {
+            document.body.style.overflow = '';
+            document.getElementById('authModalOverlay').classList.remove('active');
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeAuthModal();
+        });
+
+        function handleOverlayClick(e) {
+            if (e.target.id === 'authModalOverlay') closeAuthModal();
+        }
+
+        function switchAuthMode(mode) {
+            currentAuthMode = mode;
+            const tabLogin = document.getElementById('tabLogin');
+            const tabRegister = document.getElementById('tabRegister');
+            const title = document.getElementById('authModalTitle');
+            const desc = document.getElementById('authModalDesc');
+            const btnText = document.getElementById('authBtnText');
+            const switchLink = document.getElementById('authSwitchLink');
+            const errorBox = document.getElementById('authErrorBox');
+            errorBox.style.display = 'none';
+
+            if (mode === 'login') {
+                tabLogin.classList.add('active');
+                tabRegister.classList.remove('active');
+                title.textContent = '👤 ورود به حساب کاربری';
+                desc.textContent = 'برای همگام‌سازی لیست علاقه‌مندی‌ها و تماشای آنلاین وارد شوید.';
+                btnText.textContent = 'ورود به حساب';
+                switchLink.innerHTML = 'حساب کاربری ندارید؟ <span>ثبت‌نام کنید</span>';
+            } else {
+                tabRegister.classList.add('active');
+                tabLogin.classList.remove('active');
+                title.textContent = '✨ ثبت‌نام کاربر جدید';
+                desc.textContent = 'یک نام کاربری و رمز عبور انتخاب کنید تا حساب اختصاصی شما ساخته شود.';
+                btnText.textContent = 'ثبت‌نام و ورود';
+                switchLink.innerHTML = 'قبلاً ثبت‌نام کرده‌اید؟ <span>وارد شوید</span>';
+            }
+        }
+
+        function toggleAuthMode() {
+            switchAuthMode(currentAuthMode === 'login' ? 'register' : 'login');
+        }
+
+        function togglePasswordVisibility() {
+            const input = document.getElementById('authPassword');
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        async function handleAuthSubmit(e) {
+            e.preventDefault();
+            const usernameInput = document.getElementById('authUsername');
+            const passwordInput = document.getElementById('authPassword');
+            const errorBox = document.getElementById('authErrorBox');
+            const submitBtn = document.getElementById('authSubmitBtn');
+            const spinner = document.getElementById('authBtnSpinner');
+            const btnText = document.getElementById('authBtnText');
+
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+
+            if (username.length < 3) {
+                errorBox.textContent = 'نام کاربری باید حداقل ۳ حرف باشد.';
+                errorBox.style.display = 'block';
+                return;
+            }
+            if (password.length < 6) {
+                errorBox.textContent = 'رمز عبور باید حداقل ۶ کاراکتر باشد.';
+                errorBox.style.display = 'block';
+                return;
+            }
+
+            errorBox.style.display = 'none';
+            submitBtn.disabled = true;
+            spinner.style.display = 'inline-block';
+
+            const endpoint = currentAuthMode === 'login' ? '/api/auth/login' : '/api/auth/register';
+
+            try {
+                const res = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await res.json();
+
+                if (!res.ok) {
+                    let errMsg = data.error || 'خطایی در پردازش اطلاعات رخ داد.';
+                    if (errMsg.includes('Username already exists')) errMsg = 'این نام کاربری قبلاً ثبت شده است. لطفاً وارد شوید.';
+                    if (errMsg.includes('Invalid username or password')) errMsg = 'نام کاربری یا رمز عبور اشتباه است.';
+                    throw new Error(errMsg);
+                }
+
+                // Both login and register in our backend return token & username
+                if (data.token) {
+                    const uName = data.username || username;
+                    localStorage.setItem('movieToken', data.token);
+                    localStorage.setItem('movieUser', uName);
+                    localStorage.setItem('activeProfile', uName);
+
+                    closeAuthModal();
+                    await refreshUIState();
+                    showToast(`خوش آمدید، ${uName}! حساب کاربری فعال شد. ✓`);
+                } else if (currentAuthMode === 'register') {
+                    showToast('ثبت‌نام با موفقیت انجام شد! اکنون وارد شوید.');
+                    switchAuthMode('login');
+                    document.getElementById('authPassword').value = '';
+                }
+            } catch (err) {
+                errorBox.textContent = err.name === 'TypeError' && err.message.includes('fetch')
+                    ? 'خطای اتصال به سرور! لطفاً از برقراری اینترنت اطمینان حاصل فرمایید.'
+                    : err.message;
+                errorBox.style.display = 'block';
+            } finally {
+                submitBtn.disabled = false;
+                spinner.style.display = 'none';
+            }
+        }
+
+        function handleLogout() {
+            const user = getAuthUser();
+            localStorage.removeItem('movieToken');
+            localStorage.removeItem('movieUser');
+            localStorage.setItem('activeProfile', 'کاربر اصلی');
+            refreshUIState();
+            showToast('از حساب کاربری خارج شدید.');
+        }
+
+        function selectProfile(name, pic) {
+            const user = getAuthUser();
+            const targetName = name || (user || 'کاربر اصلی');
+            const targetPic = pic || '1';
+            
+            localStorage.setItem('activeProfile', targetName);
+            localStorage.setItem('activeProfilePic', targetPic);
+
+            // Isolate favorites for the chosen profile
+            const key = 'userFavorites_' + encodeURIComponent(targetName);
+            let profileFavs = JSON.parse(localStorage.getItem(key) || 'null');
+            if (!profileFavs) {
+                if (targetName === 'کاربر اصلی' || targetName === user) {
+                    profileFavs = JSON.parse(localStorage.getItem('userFavorites') || '[]');
+                } else {
+                    profileFavs = [];
+                }
+                localStorage.setItem(key, JSON.stringify(profileFavs));
+            }
+
+            // Immediately update navbar profile pill
+            const nameEl = document.getElementById('activeProfileName');
+            if (nameEl) nameEl.textContent = targetName;
+            const avatarEl = document.getElementById('activeProfileAvatar');
+            if (avatarEl) {
+                avatarEl.src = (targetPic === '3') ? '/movie-streaming-webapp-master/img/profile-pic/3.jpg' : `/movie-streaming-webapp-master/img/profile-pic/${targetPic}.png`;
+            }
+
+            // Update UI profile cards
+            document.querySelectorAll('.profile-card').forEach(card => {
+                const cName = card.querySelector('.profile-name')?.textContent.trim();
+                if (cName === targetName) {
+                    card.classList.add('active');
+                } else {
+                    card.classList.remove('active');
+                }
+            });
+
+            showToast(`پروفایل «${targetName}» با موفقیت فعال شد. در حال انتقال به صفحه اصلی…`);
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 600);
+        }
+
+        // Close modal on Escape
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeAuthModal();
+        });
+
+        function updateNavProfile() {
+            const user = localStorage.getItem('movieUser');
+            let profile = localStorage.getItem('activeProfile') || (user || 'کاربر اصلی');
+            const profileNameEl = document.getElementById('activeProfileName');
+            if (profileNameEl) profileNameEl.textContent = profile;
+
+            const pic = localStorage.getItem('activeProfilePic') || '1';
+            const avatarEl = document.getElementById('activeProfileAvatar');
+            if (avatarEl) {
+                avatarEl.src = (pic === '3') ? '/movie-streaming-webapp-master/img/profile-pic/3.jpg' : `/movie-streaming-webapp-master/img/profile-pic/${pic}.png`;
+            }
+        }
+        updateNavProfile();
+        // Initialize on page load
+        refreshUIState();
+
+        const activeNav = document.querySelector('.nav-links .nav-link.active');
+        if (activeNav) {
+            try { activeNav.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' }); } catch(_) {}
+        }
+    </script>
+
+    <!-- STICKY MOBILE BOTTOM NAVIGATION BAR -->
+    <nav class="bottom-nav" id="bottomNav" aria-label="ناوبری اصلی">
+        <a href="/" class="bottom-nav__item" data-tab="home" id="navHome">
+            <span class="bottom-nav__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+            <span class="bottom-nav__label">خانه</span>
+        </a>
+        <a href="/htmls/movies.html" class="bottom-nav__item" data-tab="movies" id="navMovies">
+            <span class="bottom-nav__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 8 7 4-7 4Z"/></svg></span>
+            <span class="bottom-nav__label">فیلم‌ها</span>
+        </a>
+        <a href="/htmls/tvshows.html" class="bottom-nav__item" data-tab="tvshows" id="navTvShows">
+            <span class="bottom-nav__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg></span>
+            <span class="bottom-nav__label">سریال‌ها</span>
+        </a>
+        <a href="/htmls/search.html" class="bottom-nav__item" data-tab="search" id="navSearch">
+            <span class="bottom-nav__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
+            <span class="bottom-nav__label">جستجو</span>
+        </a>
+        <a href="/htmls/profile-manage.html" class="bottom-nav__item active" data-tab="profile" id="navProfile">
+            <span class="bottom-nav__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+            <span class="bottom-nav__label">پروفایل</span>
+        </a>
+    </nav>
+</body>
+</html>

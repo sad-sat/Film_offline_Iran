@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎬 صدسط فیلم (SadSat FilM)</title>
+    <meta name="theme-color" content="#141414">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/index.css">
+    <style>
+        body {
+            background-color: #141414;
+            color: #fff;
+            font-family: 'Vazirmatn', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .splash-logo {
+            font-size: 3rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: zoomLogo 1.5s ease-out forwards;
+        }
+        .splash-logo .red-tag { color: #e50914; }
+        .splash-logo .brand-badge {
+            font-size: 1rem;
+            background: #e50914;
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-weight: 800;
+        }
+        .splash-sub {
+            margin-top: 16px;
+            color: #888;
+            font-size: 1.1rem;
+            animation: fadeIn 1s ease-in forwards;
+        }
+        @keyframes zoomLogo {
+            0% { transform: scale(0.7); opacity: 0; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="splash-logo">
+        <span class="red-tag">SadSat</span> FilM <span class="brand-badge">صدسط</span>
+    </div>
+    <div class="splash-sub">در حال انتقال به آرشیو فیلم و سریال…</div>
+
+    <script>
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 1200);
+    </script>
+</body>
+</html>

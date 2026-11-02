@@ -1,0 +1,1010 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+    <script>
+        if (window.SadSatNative || (navigator.userAgent && navigator.userAgent.indexOf('SadSatFilmAndroid') !== -1)) {
+            document.documentElement.classList.add('is-native-app');
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔍 جستجوی پیشرفته فیلم و سریال | صدسط فیلم (SadSat FilM)</title>
+    <meta name="description" content="جستجوی سریع میان هزاران فیلم و سریال برتر با دوبله فارسی و زیرنویس اختصاصی">
+    <meta name="theme-color" content="#141414">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SadSat FilM">
+    <link rel="apple-touch-icon" href="/images/icon-192.png">
+    <script src="/pwa-register.js" defer></script>
+    <link rel="stylesheet" href="/index.css">
+    <style>
+        body {
+            background-color: #141414;
+            color: #fff;
+            font-family: 'Vazirmatn', sans-serif;
+            margin: 0;
+            padding: 0;
+            direction: rtl;
+        }
+        .netflix-nav {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1000;
+            height: 68px;
+            padding: 0 4%;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+            transition: background-color 0.35s ease;
+            direction: ltr !important;
+        }
+        .netflix-nav.solid {
+            background: #141414 !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.85);
+        }
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            direction: ltr !important;
+        }
+        .nav-start {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+            direction: ltr !important;
+        }
+        .brand-logo-link {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .sadflix-logo-img {
+            height: 32px;
+            width: auto;
+            display: block;
+            transition: transform 0.2s ease;
+        }
+        .sadflix-logo-img:hover {
+            transform: scale(1.04);
+        }
+        .card-s-badge,
+        .card-n-badge {
+            position: absolute !important;
+            top: 8px !important;
+            left: 8px !important;
+            z-index: 10 !important;
+            width: 14px !important;
+            height: 22px !important;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.95)) drop-shadow(0 0 2px rgba(0,0,0,0.8));
+            pointer-events: none;
+        }
+        .card-img-wrap .card-s-badge img,
+        .card-s-badge img,
+        .card-n-badge img {
+            width: 14px !important;
+            height: 22px !important;
+            max-width: 14px !important;
+            max-height: 22px !important;
+            object-fit: contain !important;
+            display: block !important;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            direction: ltr !important;
+        }
+        .nav-link {
+            color: #e5e5e5;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+            padding: 4px 8px;
+        }
+        .nav-link:hover {
+            color: #b3b3b3;
+        }
+        .nav-link.active {
+            color: #ffffff;
+            font-weight: 700;
+            cursor: default;
+        }
+        .nav-end {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            direction: ltr !important;
+        }
+        .nav-search-btn {
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+        .nav-search-btn:hover {
+            transform: scale(1.1);
+        }
+        .nav-profile-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        .nav-profile-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: border-color 0.2s;
+        }
+        .nav-profile-link:hover .nav-profile-avatar {
+            border-color: #e50914;
+        }
+        .search-hero {
+            padding: 95px 4% 20px;
+            width: 100%;
+            margin: 0 auto;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .search-hero h1 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin-bottom: 12px;
+        }
+        .search-hero p {
+            color: #aaa;
+            font-size: 1rem;
+            margin-bottom: 24px;
+        }
+
+        .search-input-wrap {
+            position: relative;
+            max-width: 720px;
+            margin: 0 auto 20px;
+        }
+        .search-big-input {
+            width: 100%;
+            background: #202020;
+            border: 2px solid rgba(255,255,255,0.18);
+            border-radius: 50px;
+            padding: 16px 56px 16px 24px;
+            font-size: 1.15rem;
+            color: #fff;
+            outline: none;
+            font-family: inherit;
+            box-sizing: border-box;
+            transition: all 0.25s;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+        }
+        .search-big-input:focus {
+            border-color: #e50914;
+            background: #181818;
+            box-shadow: 0 8px 30px rgba(229,9,20,0.25);
+        }
+        .search-big-icon {
+            position: absolute;
+            right: 22px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.3rem;
+            color: #888;
+            pointer-events: none;
+        }
+        .search-clear-btn {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: none;
+        }
+
+        .genre-chips {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+        .genre-chip {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: #ccc;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .genre-chip:hover, .genre-chip.active {
+            background: #e50914;
+            color: #fff;
+            border-color: #e50914;
+            transform: translateY(-2px);
+        }
+
+        .results-meta {
+            width: 100%;
+            margin: 0 auto 16px;
+            padding: 0 4%;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.95rem;
+            color: #aaa;
+        }
+        .results-count {
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 14px;
+            width: 100%;
+            padding: 0 4% 80px;
+            box-sizing: border-box;
+            margin: 0;
+        }
+        @media (min-width: 1680px) {
+            .results-grid {
+                grid-template-columns: repeat(8, 1fr);
+                gap: 14px;
+            }
+        }
+        @media (min-width: 1400px) and (max-width: 1679px) {
+            .results-grid {
+                grid-template-columns: repeat(7, 1fr);
+                gap: 14px;
+            }
+        }
+        @media (min-width: 1100px) and (max-width: 1399px) {
+            .results-grid {
+                grid-template-columns: repeat(6, 1fr);
+                gap: 12px;
+            }
+        }
+        @media (min-width: 850px) and (max-width: 1099px) {
+            .results-grid {
+                grid-template-columns: repeat(5, 1fr);
+                gap: 10px;
+            }
+        }
+        @media (min-width: 600px) and (max-width: 849px) {
+            .results-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+                padding: 0 16px 60px;
+            }
+        }
+        @media (max-width: 599px) {
+            .results-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+                padding: 0 12px 60px;
+            }
+        }
+
+        .netflix-card {
+            border-radius: 4px !important;
+            overflow: hidden;
+            background: #181818;
+            text-decoration: none;
+            color: #fff;
+            transition: transform 0.28s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.28s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.6);
+        }
+        .netflix-card:hover {
+            transform: scale(1.06);
+            z-index: 20;
+            box-shadow: 0 16px 36px rgba(0,0,0,0.95);
+        }
+        .card-img-wrap {
+            width: 100%;
+            aspect-ratio: 2 / 3;
+            overflow: hidden;
+            position: relative;
+            background: radial-gradient(circle at 50% 30%, #2a2a2a, #121212);
+            border-radius: 0 !important;
+        }
+        .card-img-wrap > img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 0 !important;
+        }
+        .card-img-wrap .card-s-badge img {
+            width: 14px !important;
+            height: 22px !important;
+            max-width: 14px !important;
+            max-height: 22px !important;
+        }
+        .card-img-wrap.no-poster img { display: none; }
+        .card-fallback {
+            display: none;
+            position: absolute;
+            inset: 0;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            text-align: center;
+        }
+        .card-img-wrap.no-poster .card-fallback { display: flex; }
+        .fallback-icon { font-size: 2.2rem; margin-bottom: 6px; opacity: 0.85; }
+        .fallback-title { font-size: 0.75rem; color: #ccc; line-height: 1.3; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; font-weight: 700; }
+
+        .card-rating-badge,
+        .card-fav-btn {
+            display: none !important;
+        }
+
+        .card-info {
+            padding: 8px 10px 8px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            justify-content: space-between;
+        }
+        .card-title-en {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #f1f1f1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.25;
+            direction: ltr;
+            text-align: center;
+            margin-bottom: 2px;
+            letter-spacing: 0.15px;
+        }
+        .netflix-card:hover .card-title-en {
+            color: #fff;
+        }
+        .card-meta {
+            font-size: 0.72rem;
+            color: #888;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            direction: ltr;
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: #888;
+        }
+        .empty-state-icon { font-size: 3rem; margin-bottom: 14px; }
+        .empty-state-title { font-size: 1.25rem; font-weight: 800; color: #eee; margin-bottom: 8px; }
+
+                .load-more-wrap {
+            text-align: center;
+            padding: 24px 0 60px;
+        }
+        .btn-load-more {
+            background: #e50914;
+            color: #fff;
+            border: none;
+            padding: 12px 36px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 800;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(229,9,20,0.35);
+        }
+        .btn-load-more:hover { background: #b80710; transform: scale(1.03); }
+        .btn-load-more:disabled { background: #444; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .toast-notify {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #e50914;
+            color: #fff;
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.8);
+            z-index: 5000;
+            display: none;
+            animation: toastIn 0.25s ease;
+        }
+        @keyframes toastIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media(max-width: 768px) {
+            .netflix-nav {
+                height: auto;
+                min-height: 84px;
+                padding: 8px 12px 10px;
+                background: rgba(18, 18, 18, 0.98);
+                backdrop-filter: blur(12px);
+                box-shadow: 0 4px 24px rgba(0,0,0,0.85);
+            }
+            .nav-container {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                gap: 0;
+                row-gap: 8px;
+            }
+            .nav-start {
+                display: contents;
+            }
+            .brand-logo-link {
+                order: 1;
+                flex-shrink: 0;
+                display: inline-flex;
+                align-items: center;
+            }
+            .sadflix-logo-img {
+                height: 24px;
+                width: auto;
+            }
+            .nav-end {
+                order: 2;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                flex-shrink: 0;
+            }
+            .nav-links {
+                order: 3;
+                width: 100%;
+                flex-basis: 100%;
+                display: flex !important;
+                align-items: center;
+                gap: 6px;
+                list-style: none;
+                margin: 0;
+                padding: 2px 2px 4px;
+                overflow-x: auto;
+                overflow-y: hidden;
+                white-space: nowrap;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                -webkit-overflow-scrolling: touch;
+            }
+            .nav-links::-webkit-scrollbar {
+                display: none;
+                width: 0;
+                height: 0;
+            }
+            .nav-link {
+                flex-shrink: 0;
+                font-size: 0.78rem;
+                font-weight: 600;
+                padding: 5px 11px;
+                border-radius: 16px;
+                background: rgba(255, 255, 255, 0.1);
+                color: #e5e5e5;
+                text-decoration: none;
+                white-space: nowrap;
+                transition: all 0.2s ease;
+            }
+            .nav-link:hover {
+                color: #ffffff;
+                background: rgba(255, 255, 255, 0.2);
+            }
+            .nav-link.active {
+                background: #e50914;
+                color: #ffffff;
+                font-weight: 700;
+                box-shadow: 0 2px 10px rgba(229, 9, 20, 0.5);
+            }
+            .nav-search-btn svg {
+                width: 20px;
+                height: 20px;
+            }
+            .nav-profile-avatar {
+                width: 28px;
+                height: 28px;
+            }
+            .search-hero { padding: 94px 16px 16px; }
+            .search-hero h1 { font-size: 1.6rem; }
+            .search-big-input { font-size: 1rem; padding: 12px 48px 12px 18px; }
+            .results-meta { padding: 0 16px 12px; }
+        }
+        @media(max-width: 480px) {
+            .search-hero { padding: 90px 12px 14px; }
+            .search-hero h1 { font-size: 1.4rem; }
+        }
+
+        /* Bottom navigation hidden on mobile website */
+        .bottom-nav { display: none !important; }
+        @media(max-width: 768px) {
+            .is-native-app body, body.is-native-app { padding-bottom: calc(70px + env(safe-area-inset-bottom, 12px)) !important; }
+            .is-native-app .bottom-nav, body.is-native-app .bottom-nav { display: flex !important;
+                position: fixed;
+                bottom: max(10px, env(safe-area-inset-bottom, 10px));
+                left: 14px;
+                right: 14px;
+                max-width: 440px;
+                margin: 0 auto;
+                height: 60px;
+                padding: 4px 0.5rem;
+                background: rgba(18, 18, 18, 0.94);
+                backdrop-filter: blur(24px) saturate(190%);
+                -webkit-backdrop-filter: blur(24px) saturate(190%);
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                border-radius: 28px;
+                z-index: 2000;
+                justify-content: space-around;
+                align-items: center;
+                box-shadow: 0 10px 32px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            }
+            .bottom-nav__item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 2px;
+                background: none;
+                border: none;
+                color: #b3b3b3;
+                text-decoration: none;
+                cursor: pointer;
+                padding: 3px 6px;
+                border-radius: 16px;
+                transition: color 0.2s ease, transform 0.2s ease;
+                min-width: 52px;
+                height: 50px;
+                position: relative;
+            }
+            .bottom-nav__icon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 22px;
+                height: 22px;
+            }
+            .bottom-nav__label {
+                font-size: 0.72rem;
+                font-weight: 700;
+                line-height: 1.1;
+                white-space: nowrap;
+            }
+            .bottom-nav__item.active {
+                color: #e50914;
+            }
+            .bottom-nav__item.active .bottom-nav__icon {
+                transform: scale(1.1);
+                color: #e50914;
+            }
+            .bottom-nav__item.active::before {
+                content: '';
+                position: absolute;
+                top: 2px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 14px;
+                height: 3px;
+                background: #e50914;
+                border-radius: 999px;
+                box-shadow: 0 0 10px #e50914;
+            }
+        }
+        @media(min-width: 769px) {
+            .bottom-nav { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Netflix Navigation -->
+    <header class="netflix-nav" id="netflixNav">
+        <div class="nav-container">
+            <div class="nav-start">
+                <a href="/" class="brand-logo-link" aria-label="SadFlix">
+                    <img src="/images/sadflix_logo.png" alt="SadFlix" class="sadflix-logo-img">
+                </a>
+                <nav class="nav-links">
+                    <a href="/htmls/browse.htm" class="nav-link">Home</a>
+                    <a href="/htmls/tvshows.html" class="nav-link">TV Shows</a>
+                    <a href="/htmls/movies.html" class="nav-link">Movies</a>
+                    <a href="/htmls/browse.htm#sliderSpotlight" class="nav-link">New & Popular</a>
+                    <a href="/htmls/browse.htm#favoritesRowContainer" class="nav-link">My List</a>
+                </nav>
+            </div>
+            <div class="nav-end">
+                <a href="/htmls/search.html" class="nav-search-btn" title="جستجو" aria-label="جستجو" style="color: #e50914;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </a>
+                <a href="/htmls/profile-manage.html" class="nav-profile-link" title="حساب کاربری" aria-label="حساب کاربری">
+                    <img src="/movie-streaming-webapp-master/img/profile-pic/1.png" alt="پروفایل" class="nav-profile-avatar" id="activeProfileAvatar">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Hero -->
+    <div class="search-hero">
+        <h1>🔍 جستجوی عناوین صدسط فیلم</h1>
+        <p>نام فیلم، سریال یا بازیگر مورد نظر خود را به فارسی یا انگلیسی وارد کنید</p>
+
+        <div class="search-input-wrap">
+            <span class="search-big-icon">🔍</span>
+            <input type="text" id="searchInput" class="search-big-input" placeholder="مثال: بریکینگ بد، Inception، نولان…" autofocus oninput="onSearchInput()">
+            <button type="button" id="clearBtn" class="search-clear-btn" onclick="clearSearch()">✕</button>
+        </div>
+
+        <div class="genre-chips" id="genreChips">
+            <button class="genre-chip" onclick="selectGenre('اکشن')">اکشن</button>
+            <button class="genre-chip" onclick="selectGenre('درام')">درام</button>
+            <button class="genre-chip" onclick="selectGenre('کمدی')">کمدی</button>
+            <button class="genre-chip" onclick="selectGenre('جنایی')">جنایی</button>
+            <button class="genre-chip" onclick="selectGenre('علمی‌تخیلی')">علمی‌تخیلی</button>
+            <button class="genre-chip" onclick="selectGenre('ترسناک')">ترسناک</button>
+            <button class="genre-chip" onclick="selectGenre('انیمیشن')">انیمیشن</button>
+            <button class="genre-chip" onclick="selectGenre('هیجان‌انگیز')">هیجان‌انگیز</button>
+            <button class="genre-chip" onclick="selectGenre('ماجراجویی')">ماجراجویی</button>
+            <button class="genre-chip" onclick="selectGenre('عاشقانه')">عاشقانه</button>
+        </div>
+    </div>
+
+    <!-- Results Meta -->
+    <div class="results-meta" id="resultsMeta" style="display: none;">
+        <span>نتایج جستجو:</span>
+        <span class="results-count" id="resultsCount">۰ عنوان</span>
+    </div>
+
+    <!-- Results Grid -->
+    <div class="results-grid" id="resultsGrid"></div>
+
+    <!-- Load More Pagination Button -->
+    <div class="load-more-wrap" id="loadMoreWrap" style="display: none;">
+        <button type="button" class="btn-load-more" id="loadMoreBtn" onclick="loadMoreResults()">
+            <span id="loadMoreSpinner" style="display: none; margin-left: 8px;">⏳</span>
+            <span id="loadMoreText">نمایش آثار بیشتر</span>
+        </button>
+    </div>
+
+    <div class="toast-notify" id="toast"></div>
+
+    <script>
+        let searchTimeout = null;
+        let activeGenre = '';
+        let searchPage = 1;
+        const searchLimit = 36;
+        let searchTotal = 0;
+        let searchLoaded = 0;
+        let isSearching = false;
+
+        function getActiveProfile() {
+            return localStorage.getItem('activeProfile') || 'کاربر اصلی';
+        }
+
+        function getProfileFavs() {
+            const p = getActiveProfile();
+            const key = 'userFavorites_' + encodeURIComponent(p);
+            let favs = JSON.parse(localStorage.getItem(key) || 'null');
+            if (!favs && p === 'کاربر اصلی') {
+                favs = JSON.parse(localStorage.getItem('userFavorites') || '[]');
+                localStorage.setItem(key, JSON.stringify(favs));
+            }
+            return favs || [];
+        }
+
+        function setProfileFavs(favs) {
+            const p = getActiveProfile();
+            const key = 'userFavorites_' + encodeURIComponent(p);
+            localStorage.setItem(key, JSON.stringify(favs));
+            if (p === 'کاربر اصلی') localStorage.setItem('userFavorites', JSON.stringify(favs));
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            if (!t) return;
+            t.textContent = msg;
+            t.style.display = 'block';
+            setTimeout(() => { t.style.display = 'none'; }, 2400);
+        }
+
+        window.toggleCardFav = function(e, id) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            let favs = getProfileFavs();
+            if (favs.includes(id)) {
+                favs = favs.filter(x => x !== id);
+                showToast('از لیست من حذف شد');
+            } else {
+                favs.push(id);
+                showToast('به لیست من اضافه شد! ✓');
+            }
+            setProfileFavs(favs);
+            document.querySelectorAll(`.netflix-card[data-id="${id}"] .card-fav-btn`).forEach(btn => {
+                const nowFav = favs.includes(id);
+                btn.className = `card-fav-btn ${nowFav ? 'active' : ''}`;
+                btn.textContent = nowFav ? '❤️' : '🤍';
+            });
+        };
+
+        window.onCardPosterError = function(img) {
+            const id = img.dataset.id;
+            if (!img.dataset.triedMetahub && id && id.startsWith('tt')) {
+                img.dataset.triedMetahub = '1';
+                img.src = `https://images.metahub.space/poster/medium/${id}/img`;
+            } else {
+                img.parentElement.classList.add('no-poster');
+            }
+        };
+
+        function renderCard(movie) {
+            const englishTitle = movie.title || movie.titleFa;
+            const poster = movie.poster || `/images/posters/${movie.id}.webp`;
+            const year = movie.year || '';
+            const isSeries = movie.type === 'tvSeries';
+            const link = isSeries ? `/htmls/tvshowreview.html?id=${movie.id}` : `/htmls/moviereview.html?id=${movie.id}`;
+            const icon = isSeries ? '📺' : '🎬';
+
+            return `
+                <a href="${link}" class="netflix-card" data-id="${movie.id}">
+                    <div class="card-img-wrap">
+                        <div class="card-s-badge" aria-hidden="true">
+                            <img src="/images/sadflix_s_badge.png" width="14" height="22" alt="S" style="display: block;">
+                        </div>
+                        <img data-id="${movie.id}" src="${poster}" alt="${englishTitle}" loading="lazy" onload="if(this.naturalWidth <= 1) window.onCardPosterError(this)" onerror="window.onCardPosterError(this)">
+                        <div class="card-fallback">
+                            <span class="fallback-icon">${icon}</span>
+                            <span class="fallback-title">${englishTitle}</span>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title-en" dir="ltr" title="${englishTitle}">${englishTitle}</div>
+                        <div class="card-meta" dir="ltr">
+                            <span>${year}</span>
+                            ${year ? '<span>•</span>' : ''}
+                            <span>${isSeries ? 'Series' : 'Movie'}</span>
+                        </div>
+                    </div>
+                </a>
+            `;
+        }
+
+        async function performSearch(append = false) {
+            if (isSearching) return;
+            isSearching = true;
+
+            if (!append) {
+                searchPage = 1;
+                searchLoaded = 0;
+            }
+
+            const query = document.getElementById('searchInput').value.trim();
+            const grid = document.getElementById('resultsGrid');
+            const meta = document.getElementById('resultsMeta');
+            const countEl = document.getElementById('resultsCount');
+            const clearBtn = document.getElementById('clearBtn');
+            const loadMoreWrap = document.getElementById('loadMoreWrap');
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            const spinner = document.getElementById('loadMoreSpinner');
+            const loadMoreText = document.getElementById('loadMoreText');
+
+            clearBtn.style.display = query ? 'block' : 'none';
+
+            if (!query && !activeGenre) {
+                loadMoreWrap.style.display = 'none';
+                try {
+                    const res = await fetch('/api/meta');
+                    if (res.ok) {
+                        const data = await res.json();
+                        const list = (data.popular_movies || []).slice(0, 30);
+                        meta.style.display = 'flex';
+                        countEl.textContent = 'محبوب‌ترین عناوین روز';
+                        grid.innerHTML = list.map(renderCard).join('');
+                    }
+                } catch (e) {
+                    console.error(e);
+                } finally {
+                    isSearching = false;
+                }
+                return;
+            }
+
+            if (append) {
+                loadMoreBtn.disabled = true;
+                spinner.style.display = 'inline-block';
+                loadMoreText.textContent = 'در حال بارگذاری…';
+            }
+
+            let url = `/api/movies?page=${searchPage}&limit=${searchLimit}`;
+            if (query) url += `&q=${encodeURIComponent(query)}`;
+            if (activeGenre) url += `&genre=${encodeURIComponent(activeGenre)}`;
+
+            try {
+                const res = await fetch(url);
+                if (res.ok) {
+                    const data = await res.json();
+                    const list = Array.isArray(data) ? data : (data.items || data.movies || []);
+                    searchTotal = typeof data.total === 'number' ? data.total : list.length;
+                    
+                    meta.style.display = 'flex';
+
+                    if (!append) {
+                        if (list.length === 0) {
+                            grid.innerHTML = `
+                                <div class="empty-state">
+                                    <div class="empty-state-icon">🔎</div>
+                                    <div class="empty-state-title">عنوانی یافت نشد</div>
+                                    <div>برای عبارت «${query || activeGenre}» نتیجه‌ای پیدا نشد. املای کلمه را بررسی کرده یا عبارت دیگری را جستجو کنید.</div>
+                                </div>
+                            `;
+                            loadMoreWrap.style.display = 'none';
+                            countEl.textContent = '۰ عنوان یافت شد';
+                            return;
+                        }
+                        grid.innerHTML = list.map(renderCard).join('');
+                        searchLoaded = list.length;
+                    } else {
+                        grid.insertAdjacentHTML('beforeend', list.map(renderCard).join(''));
+                        searchLoaded += list.length;
+                    }
+
+                    countEl.textContent = `نمایش ${searchLoaded.toLocaleString('fa-IR')} از ${searchTotal.toLocaleString('fa-IR')} عنوان`;
+
+                    if (searchLoaded < searchTotal && list.length > 0) {
+                        loadMoreWrap.style.display = 'block';
+                        const remaining = searchTotal - searchLoaded;
+                        loadMoreText.textContent = `نمایش آثار بیشتر (باقی‌مانده: ${remaining.toLocaleString('fa-IR')})`;
+                    } else {
+                        loadMoreWrap.style.display = 'none';
+                    }
+                }
+            } catch (e) {
+                console.error(e);
+            } finally {
+                isSearching = false;
+                loadMoreBtn.disabled = false;
+                spinner.style.display = 'none';
+            }
+        }
+
+        function loadMoreResults() {
+            searchPage++;
+            performSearch(true);
+        }
+
+        function onSearchInput() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => { performSearch(false); }, 220);
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('clearBtn').style.display = 'none';
+            performSearch(false);
+        }
+
+        function selectGenre(genre) {
+            const chips = document.querySelectorAll('.genre-chip');
+            const normTarget = genre.replace(/\u200c/g, ' ').replace(/\s+/g, ' ').trim();
+            if (activeGenre && (activeGenre === genre || activeGenre.replace(/\u200c/g, ' ').replace(/\s+/g, ' ').trim() === normTarget)) {
+                activeGenre = '';
+                chips.forEach(c => c.classList.remove('active'));
+            } else {
+                activeGenre = genre;
+                chips.forEach(c => {
+                    const normC = c.textContent.trim().replace(/\u200c/g, ' ').replace(/\s+/g, ' ');
+                    if (c.textContent.trim() === genre || normC === normTarget) c.classList.add('active');
+                    else c.classList.remove('active');
+                });
+            }
+            performSearch(false);
+        }
+
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('netflixNav');
+            if (window.scrollY > 40) nav.classList.add('solid');
+            else nav.classList.remove('solid');
+        });
+
+        function updateNavProfile() {
+            const user = localStorage.getItem('movieUser');
+            let profile = localStorage.getItem('activeProfile') || (user || 'کاربر اصلی');
+            const profileNameEl = document.getElementById('activeProfileName');
+            if (profileNameEl) profileNameEl.textContent = profile;
+
+            const pic = localStorage.getItem('activeProfilePic') || '1';
+            const avatarEl = document.getElementById('activeProfileAvatar');
+            if (avatarEl) {
+                avatarEl.src = (pic === '3') ? '/movie-streaming-webapp-master/img/profile-pic/3.jpg' : `/movie-streaming-webapp-master/img/profile-pic/${pic}.png`;
+            }
+        }
+        updateNavProfile();
+
+        // Continuous infinite scroll auto-loader
+        if (window.IntersectionObserver) {
+            const observer = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting && !isSearching && searchLoaded < searchTotal && searchLoaded > 0) {
+                    loadMoreResults();
+                }
+            }, { rootMargin: '300px' });
+            const lmWrap = document.getElementById('loadMoreWrap');
+            if (lmWrap) observer.observe(lmWrap);
+        }
+
+        // Initialize with query from url if any or default
+        const urlParams = new URLSearchParams(window.location.search);
+        const qParam = urlParams.get('q');
+        const genreParam = urlParams.get('genre') || urlParams.get('category');
+        if (qParam) {
+            document.getElementById('searchInput').value = qParam;
+        }
+        if (genreParam) {
+            selectGenre(genreParam);
+        } else {
+            performSearch(false);
+        }
+
+        const activeNav = document.querySelector('.nav-links .nav-link.active');
+        if (activeNav) {
+            try { activeNav.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' }); } catch(_) {}
+        }
+    </script>
+
+    <!-- STICKY MOBILE BOTTOM NAVIGATION BAR -->
+    <nav class="bottom-nav" id="bottomNav" aria-label="ناوبری اصلی">
+        <a href="/" class="bottom-nav__item" data-tab="home" id="navHome">
+            <span class="bottom-nav__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+            <span class="bottom-nav__label">خانه</span>
+        </a>
+        <a href="/htmls/movies.html" class="bottom-nav__item" data-tab="movies" id="navMovies">
+            <span class="bottom-nav__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 8 7 4-7 4Z"/></svg></span>
+            <span class="bottom-nav__label">فیلم‌ها</span>
+        </a>
+        <a href="/htmls/tvshows.html" class="bottom-nav__item" data-tab="tvshows" id="navTvShows">
+            <span class="bottom-nav__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg></span>
+            <span class="bottom-nav__label">سریال‌ها</span>
+        </a>
+        <a href="/htmls/search.html" class="bottom-nav__item active" data-tab="search" id="navSearch">
+            <span class="bottom-nav__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
+            <span class="bottom-nav__label">جستجو</span>
+        </a>
+        <a href="/htmls/profile-manage.html" class="bottom-nav__item" data-tab="profile" id="navProfile">
+            <span class="bottom-nav__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+            <span class="bottom-nav__label">پروفایل</span>
+        </a>
+    </nav>
+</body>
+</html>
